@@ -12,6 +12,14 @@
         "default": "0"
     },
     {
+        "key": "awsses_log_prune_settings",
+        "default": ""
+    },
+    {
+        "key": "awsses_region",
+        "default": ""
+    },
+    {
         "key": "awsses_secret_key",
         "default": ""
     }

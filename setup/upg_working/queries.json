@@ -17,18 +17,6 @@
                         "unsigned": true,
                         "auto_increment": true
                     },
-                    "to": {
-                        "name": "to",
-                        "type": "MEDIUMTEXT",
-                        "length": null,
-                        "decimals": null,
-                        "values": null,
-                        "allow_null": true,
-                        "default": null,
-                        "comment": "",
-                        "unsigned": false,
-                        "auto_increment": false
-                    },
                     "date": {
                         "name": "date",
                         "type": "INT",
@@ -39,54 +27,6 @@
                         "default": "0",
                         "comment": "",
                         "unsigned": true,
-                        "auto_increment": false
-                    },
-                    "fromEmail": {
-                        "name": "fromEmail",
-                        "type": "MEDIUMTEXT",
-                        "length": null,
-                        "decimals": null,
-                        "values": null,
-                        "allow_null": true,
-                        "default": null,
-                        "comment": "",
-                        "unsigned": false,
-                        "auto_increment": false
-                    },
-                    "fromName": {
-                        "name": "fromName",
-                        "type": "MEDIUMTEXT",
-                        "length": null,
-                        "decimals": null,
-                        "values": null,
-                        "allow_null": true,
-                        "default": null,
-                        "comment": "",
-                        "unsigned": false,
-                        "auto_increment": false
-                    },
-                    "subject": {
-                        "name": "subject",
-                        "type": "MEDIUMTEXT",
-                        "length": null,
-                        "decimals": null,
-                        "values": null,
-                        "allow_null": true,
-                        "default": null,
-                        "comment": "",
-                        "unsigned": false,
-                        "auto_increment": false
-                    },
-                    "result": {
-                        "name": "result",
-                        "type": "MEDIUMTEXT",
-                        "length": null,
-                        "decimals": null,
-                        "values": null,
-                        "allow_null": true,
-                        "default": null,
-                        "comment": "",
-                        "unsigned": false,
                         "auto_increment": false
                     },
                     "messageId": {
@@ -103,6 +43,18 @@
                     },
                     "exception": {
                         "name": "exception",
+                        "type": "MEDIUMTEXT",
+                        "length": null,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": null,
+                        "comment": "",
+                        "unsigned": false,
+                        "auto_increment": false
+                    },
+                    "payload": {
+                        "name": "payload",
                         "type": "MEDIUMTEXT",
                         "length": null,
                         "decimals": null,
