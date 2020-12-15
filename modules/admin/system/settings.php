@@ -44,10 +44,12 @@ class _settings extends \IPS\Dispatcher\Controller
 		$form = new \IPS\Helpers\Form;
 
 		// Add settings
-		$form->addHeader( \IPS\Member::loggedIn()->language()->addToStack( 'awsses_settings_header' ) );
+		$form->addHeader(\IPS\Member::loggedIn()->language()->addToStack('awsses_settings_header'));
+		$form->addMessage('awsses_settings_message');
 		$form->add( new \IPS\Helpers\Form\YesNo( 'awsses_enabled', \IPS\Settings::i()->awsses_enabled, TRUE ) );
 		$form->add( new \IPS\Helpers\Form\Text( 'awsses_access_key', \IPS\Settings::i()->awsses_access_key, TRUE ) );
 		$form->add( new \IPS\Helpers\Form\Text( 'awsses_secret_key', \IPS\Settings::i()->awsses_secret_key, TRUE ) );
+		$form->add( new \IPS\Helpers\Form\Text( 'awsses_region', \IPS\Settings::i()->awsses_region, FALSE, array( 'placeholder' => 'us-west-2' ) ) );
 		$form->add( new \IPS\Helpers\Form\Text( 'awsses_config_set_name', \IPS\Settings::i()->awsses_config_set_name, FALSE ) );
 
 		// If we have values in our form

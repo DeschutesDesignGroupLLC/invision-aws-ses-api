@@ -33,12 +33,12 @@ class _SES extends \IPS\Email
 	 * @param          $secretKey
 	 * @param  string  $region
 	 */
-	public function __construct( $accessKey = NULL, $secretKey = NULL, $region = 'us-west-2' )
+	public function __construct( $accessKey = NULL, $secretKey = NULL, $region = NULL )
 	{
 		// Set class properties
 		$this->accessKey = $accessKey ?: \IPS\Settings::i()->awsses_access_key;
 		$this->secretKey = $secretKey ?: \IPS\Settings::i()->awsses_secret_key;
-		$this->region = $region;
+		$this->region = $region ?: \IPS\Settings::i()->awsses_region ?: 'us-west-2';
 
 		// Set config set
 		$this->configSet = \IPS\Settings::i()->awsses_config_set_name ?: NULL;

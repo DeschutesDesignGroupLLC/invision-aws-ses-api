@@ -12,12 +12,15 @@ $lang = array(
 
 	// Settings
 	'awsses_settings_header' => 'System Settings',
+	'awsses_settings_message' => 'Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.',
 	'awsses_enabled' => 'Enable',
 	'awsses_enabled_desc' => 'Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.',
 	'awsses_access_key' => 'Access Key',
-	'awsses_access_key_desc' => 'You will need to make sure you have attached the AmazonSESFullAccess policy to the IAM role you are using so that IPB can access the access the AWS SES API.',
+	'awsses_access_key_desc' => 'You will need to make sure you have attached the AmazonSESFullAccess policy to the IAM role you are using so that IPB can access the AWS SES API.',
 	'awsses_secret_key' => 'Secret Key',
 	'awsses_config_set_name' => 'Config Set Name',
+	'awsses_region' => 'Region',
+	'awsses_region_desc' => 'Will default to us-west-2 if nothing provided.',
 	'awsses_config_set_name_desc' => 'If you have created a Configuration Set via the AWS Console, enter the name here to begin using it when sending emails.',
 
 	// Log
