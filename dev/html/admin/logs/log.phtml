@@ -1,0 +1,24 @@
+<ips:template parameters="$log" />
+{{$payload = json_decode($log->payload, TRUE);}}
+<div class="ipsBox ipsPadding ipsSpacer_bottom">
+    <h2 class="ipsType_reset ipsSpacer_bottom">{expression="$payload['Message']['Subject']['Data']"}</h2>
+    <div class="ipsTruncate ipsTruncate_line">
+        <p class="ipsType_light ipsType_reset">{expression="implode(', ', $payload['Destination']['ToAddresses'])"}</p>
+        <p class="ipsText_light ipsType_reset">{datetime="$log->date"}</p>
+    </div>
+</div>
+
+<div data-controller="awsses.admin.logs.system">
+    <div class="ipsSpacer_bottom">
+        <h3 class="ipsType_minorHeading">{lang="log_messageId"}</h3>
+        <pre class="prettyprint" id="message" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->messageId}</pre>
+    </div>
+    <div class="ipsSpacer_bottom">
+        <h3 class="ipsType_minorHeading">{lang="log_payload"}</h3>
+        <pre class="prettyprint lang-json" id="payload" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->payload}</pre>
+    </div>
+    <div class="ipsSpacer_bottom">
+        <h3 class="ipsType_minorHeading">{lang="log_exception"}</h3>
+        <pre class="prettyprint lang-html" id="exception" style="min-height: 50px; background-color: white;">{$log->exception|raw}</pre>
+    </div>
+</div>

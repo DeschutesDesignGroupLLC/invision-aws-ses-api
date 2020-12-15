@@ -1,0 +1,18 @@
+{
+    "system": {
+        "settings": {
+            "tab": "awsses",
+            "controller": "settings",
+            "do": "",
+            "restriction": "settings_manage",
+            "subcontrollers": ""
+        },
+        "logs": {
+            "tab": "awsses",
+            "controller": "logs",
+            "do": "",
+            "restriction": "logs_manage",
+            "subcontrollers": ""
+        }
+    }
+}

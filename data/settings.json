@@ -1,0 +1,18 @@
+[
+    {
+        "key": "awsses_access_key",
+        "default": ""
+    },
+    {
+        "key": "awsses_config_set_name",
+        "default": ""
+    },
+    {
+        "key": "awsses_enabled",
+        "default": "0"
+    },
+    {
+        "key": "awsses_secret_key",
+        "default": ""
+    }
+]

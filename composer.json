@@ -1,0 +1,29 @@
+{
+  "name": "deschutesdesigngroupllc/aws-ses-ipb",
+  "description": "A plug and play application for Invision Power Board that allows you to send email via the AWS SES API.",
+  "keywords": [
+    "ipb",
+    "email",
+    "aws",
+    "simple email service"
+  ],
+  "authors": [
+    {
+      "name": "Jon Erickson",
+      "email": "jon@deschutesdesigngroup.com",
+      "homepage": "https://www.deschutesdesigngroup.com",
+      "role": "Owner"
+    }
+  ],
+  "homepage": "https://www.deschutesdesigngroup.com/",
+  "config": {
+    "vendor-dir": "interface/vendor"
+  },
+  "require": {
+    "aws/aws-sdk-php": "^3.169.0",
+    "guzzlehttp/guzzle": "^6.2.1"
+  },
+  "autoload": {
+    "classmap": ["sources"]
+  }
+}
