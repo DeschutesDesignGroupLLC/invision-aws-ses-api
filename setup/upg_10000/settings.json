@@ -1,0 +1,12 @@
+{
+    "added": [
+        "awsses_access_key",
+        "awsses_config_set_name",
+        "awsses_enabled",
+        "awsses_log_prune_settings",
+        "awsses_region",
+        "awsses_secret_key"
+    ],
+    "edited": [],
+    "removed": []
+}

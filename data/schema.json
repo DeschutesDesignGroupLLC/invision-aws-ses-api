@@ -61,6 +61,18 @@
                 "comment": "",
                 "unsigned": false,
                 "auto_increment": false
+            },
+            "errorMessage": {
+                "name": "errorMessage",
+                "type": "MEDIUMTEXT",
+                "length": null,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "auto_increment": false
             }
         },
         "indexes": {

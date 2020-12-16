@@ -35,7 +35,8 @@ $lang = array(
 	// Log Table Columns
 	'log_to' => 'To',
 	'log_messageId' => 'Message ID',
-	'log_exception' => 'Error',
+	'log_exception' => 'Stack Trace',
+	'log_error_message' => 'Error',
 	'log_payload' => 'Payload',
 	'log_subject' => 'Subject'
 );

@@ -38,7 +38,7 @@ class _SES extends \IPS\Email
 		// Set class properties
 		$this->accessKey = $accessKey ?: \IPS\Settings::i()->awsses_access_key;
 		$this->secretKey = $secretKey ?: \IPS\Settings::i()->awsses_secret_key;
-		$this->region = $region ?: \IPS\Settings::i()->awsses_region ?: 'us-west-2';
+		$this->region = $region ?: ( \IPS\Settings::i()->awsses_region ?: 'us-west-2' );
 
 		// Set config set
 		$this->configSet = \IPS\Settings::i()->awsses_config_set_name ?: NULL;
@@ -78,13 +78,13 @@ class _SES extends \IPS\Email
 			$result = $this->client->sendEmail($payload);
 
 			// Log the message
-			\IPS\awsses\Outgoing\Log::log($payload, $result['MessageId'], NULL);
+			\IPS\awsses\Outgoing\Log::log($payload, $result['MessageId']);
 
 		// Email send failed with exception
 		} catch (AwsException $exception) {
 
 			// Log the message
-			\IPS\awsses\Outgoing\Log::log($payload, NULL, preg_replace("/\n/", '<br>', $exception->getTraceAsString()));
+			\IPS\awsses\Outgoing\Log::log($payload, NULL, preg_replace("/\n/", '<br>', $exception->getTraceAsString()), $exception->getAwsErrorMessage());
 
 			// Log our exceptions
 			\IPS\Log::log( $exception, 'awsses' );

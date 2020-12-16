@@ -1,0 +1,40 @@
+{
+    "normal": {
+        "added": [
+            "__app_awsses",
+            "menutab__awsses",
+            "menutab__awsses_icon",
+            "menu__awsses_system",
+            "menu__awsses_system_settings",
+            "menu__awsses_system_logs",
+            "awsses_settings_header",
+            "awsses_settings_message",
+            "awsses_enabled",
+            "awsses_enabled_desc",
+            "awsses_access_key",
+            "awsses_access_key_desc",
+            "awsses_secret_key",
+            "awsses_config_set_name",
+            "awsses_region",
+            "awsses_region_desc",
+            "awsses_config_set_name_desc",
+            "awsses_log",
+            "awsses_logs",
+            "awsses_logs_prune",
+            "awsses_settings_updated",
+            "awsses_log_prune_settings",
+            "log_to",
+            "log_messageId",
+            "log_exception",
+            "log_payload",
+            "log_subject"
+        ],
+        "edited": [],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

@@ -112,14 +112,22 @@ class _Log extends \IPS\Node\Model
 	 *
 	 * @return null
 	 */
-	public static function log($payload = array(), $messageId = NULL, $exception = NULL)
+	public static function log($payload = array(), $messageId = NULL, $exception = NULL, $errorMessage = NULL)
 	{
+		// Unset the Message Body
+		if (isset($payload['Message']['Body']['Html'])) {
+
+			// Remove it from the payload
+			unset($payload['Message']['Body']['Html']);
+		}
+
 		// Create our new log
 		$log = new static;
 		$log->date = time();
 		$log->payload = $payload ? json_encode($payload) : NULL;
 		$log->messageId = $messageId;
 		$log->exception = $exception ? json_encode($exception) : NULL;
+		$log->errorMessage = $errorMessage;
 		$log->save();
 	}
 

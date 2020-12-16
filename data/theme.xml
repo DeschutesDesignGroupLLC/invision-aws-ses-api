@@ -1,5 +1,6 @@
-<ips:template parameters="$log" />
-{{$payload = json_decode($log->payload, TRUE);}}
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="Default" author_name="Invision Power Services, Inc" author_url="https://www.invisioncommunity.com">
+ <template template_group="logs" template_name="log" template_data="$log" template_location="admin" template_app="awsses"><![CDATA[{{$payload = json_decode($log->payload, TRUE);}}
 <div class="ipsBox ipsPadding ipsSpacer_bottom">
     <h2 class="ipsType_reset ipsSpacer_bottom">{expression="$payload['Message']['Subject']['Data']"}</h2>
     <div class="ipsTruncate ipsTruncate_line">
@@ -18,11 +19,11 @@
         <pre class="prettyprint lang-json" id="payload" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->payload}</pre>
     </div>
     <div class="ipsSpacer_bottom">
-        <h3 class="ipsType_minorHeading">{lang="log_error_message"}</h3>
-        <pre class="prettyprint lang-html" id="error_message" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->errorMessage}</pre>
-    </div>
-    <div class="ipsSpacer_bottom">
         <h3 class="ipsType_minorHeading">{lang="log_exception"}</h3>
         <pre class="prettyprint lang-html" id="exception" style="min-height: 50px; background-color: white;">{$log->exception|raw}</pre>
     </div>
-</div>
+</div>]]></template>
+ <template template_group="logs" template_name="status" template_data="$success = true" template_location="admin" template_app="awsses"><![CDATA[<div class="ipsBadge {{if $success}}ipsBadge_positive{{else}}ipsBadge_negative{{endif}}">
+    {{if $success}}Success{{else}}Error{{endif}}
+</div>]]></template>
+</theme>
