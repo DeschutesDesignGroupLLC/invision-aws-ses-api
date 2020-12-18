@@ -15,10 +15,10 @@
             <pre class="prettyprint" id="message" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->messageId}</pre>
         </div>
     {{endif}}
-        <div class="ipsSpacer_bottom">
-            <h3 class="ipsType_minorHeading">{lang="log_payload"}</h3>
-            <pre class="prettyprint lang-json" id="payload" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->payload}</pre>
-        </div>
+    <div class="ipsSpacer_bottom">
+        <h3 class="ipsType_minorHeading">{lang="log_payload"}</h3>
+        <pre class="prettyprint lang-json" id="payload" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->payload}</pre>
+    </div>
     {{if $log->errorMessage}}
         <div class="ipsSpacer_bottom">
             <h3 class="ipsType_minorHeading">{lang="log_error_message"}</h3>

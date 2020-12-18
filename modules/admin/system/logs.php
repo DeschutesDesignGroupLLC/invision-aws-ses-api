@@ -41,13 +41,17 @@ class _logs extends \IPS\Dispatcher\Controller
 	protected function manage()
 	{
 		// Create the table
-		$table = new \IPS\Helpers\Table\Db( \IPS\awsses\Outgoing\Log::$databaseTable, \IPS\Http\Url::internal( 'app=awsses&module=system&controller=logs' ) );
+		$table = new \IPS\Helpers\Table\Db( \IPS\awsses\Outgoing\Log::$databaseTable, \IPS\Http\Url::internal('app=awsses&module=system&controller=logs'));
 		$table->langPrefix = 'log_';
 		$table->include = array( 'date', 'status', 'subject', 'to', 'messageId');
 		$table->sortBy = $table->sortBy ?: 'date';
 		$table->sortDirection = $table->sortDirection ?: 'desc';
-		$table->quickSearch = array( array( 'recipient' ), 'recipient' );
 		$table->rowClasses = array( 'messageId' => array( 'ipsTable_wrap ' ));
+
+		// Quick Search
+		$table->quickSearch = function ($search) {
+			return array("payload LIKE '%{$search}%'");
+		};
 
 		// Table parsers
 		$table->parsers = array(
