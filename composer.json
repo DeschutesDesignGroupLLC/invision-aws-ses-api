@@ -23,7 +23,17 @@
     "aws/aws-sdk-php": "^3.169.0",
     "guzzlehttp/guzzle": "^6.2.1"
   },
+  "require-dev": {
+    "deschutesdesigngroupllc/ips" : "dev-master"
+  },
   "autoload": {
     "classmap": ["sources"]
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/DeschutesDesignGroupLLC/IPS-Source",
+      "no-api": true
+    }
+  ]
 }

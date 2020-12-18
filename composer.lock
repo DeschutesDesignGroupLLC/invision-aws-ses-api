@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89bdfbf093d0ab2114c04f0e2e2b10e9",
+    "content-hash": "8dc746680f8e77392cf13e81cc23a52d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.169.0",
+            "version": "3.171.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d15a231355e4435fc33bab83df075ec31edd0a9b"
+                "reference": "01407effc918634048346d8bd6513b2db0d07ad8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d15a231355e4435fc33bab83df075ec31edd0a9b",
-                "reference": "d15a231355e4435fc33bab83df075ec31edd0a9b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/01407effc918634048346d8bd6513b2db0d07ad8",
+                "reference": "01407effc918634048346d8bd6513b2db0d07ad8",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-12-14T19:12:33+00:00"
+            "time": "2020-12-17T19:16:51+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -743,10 +743,45 @@
             "time": "2020-10-23T14:02:19+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "deschutesdesigngroupllc/ips",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DeschutesDesignGroupLLC/IPS-Source",
+                "reference": "3a8e348599b5666356a211a42d90cf2b5f685ff7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeschutesDesignGroupLLC/IPS-Source/zipball/3a8e348599b5666356a211a42d90cf2b5f685ff7",
+                "reference": "3a8e348599b5666356a211a42d90cf2b5f685ff7",
+                "shasum": ""
+            },
+            "suggest": {
+                "phpdocumentor/phpdocumentor": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3.6"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "description": "Invision power board source files used to test against",
+            "homepage": "https://www.invisioncommunity.com",
+            "time": "2020-12-18T04:14:20+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "deschutesdesigngroupllc/ips": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

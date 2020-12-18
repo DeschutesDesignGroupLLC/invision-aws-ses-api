@@ -20,7 +20,7 @@ $lang = array(
 	'awsses_secret_key' => 'Secret Key',
 	'awsses_config_set_name' => 'Config Set Name',
 	'awsses_region' => 'Region',
-	'awsses_region_desc' => 'Will default to us-west-2 if nothing provided.',
+	'awsses_region_desc' => 'Will default to us-west-2 if nothing provided. View the list of supported regions <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank">here</a>.',
 	'awsses_config_set_name_desc' => 'If you have created a Configuration Set via the AWS Console, enter the name here to begin using it when sending emails.',
 
 	// Log
