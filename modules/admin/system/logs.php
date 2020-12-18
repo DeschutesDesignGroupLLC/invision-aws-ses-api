@@ -133,7 +133,7 @@ class _logs extends \IPS\Dispatcher\Controller
 		catch ( \OutOfRangeException $e ) {
 
 			// Return an error
-			\IPS\Output::i()->error( 'node_error', '2C324/1', 404, '' );
+			\IPS\Output::i()->error( 'awsses_error_log_not_found', '1AWSSES/2', 404 );
 		}
 
 		// Add delete button
@@ -169,7 +169,7 @@ class _logs extends \IPS\Dispatcher\Controller
 		catch ( \OutOfRangeException $e )
 		{
 			// Return error
-			\IPS\Output::i()->error( 'node_error', '2C324/2', 404, '' );
+			\IPS\_Output::i()->error( 'awsses_error_log_not_found', '1AWSSES/1', 404 );
 		}
 
 		// Make sure we confirmed deletion

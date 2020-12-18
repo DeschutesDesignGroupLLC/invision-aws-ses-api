@@ -43,4 +43,7 @@ $lang = array(
 
 	// Task
 	'task__awsSesPruneLogs' => 'Run the prune logs task.',
+
+	// Errors
+	'awsses_error_log_not_found' => 'Unable to find the selected log.'
 );
