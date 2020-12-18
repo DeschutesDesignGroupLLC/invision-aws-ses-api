@@ -35,9 +35,15 @@ class _SES extends \IPS\Email
 	 */
 	public function __construct( $accessKey = NULL, $secretKey = NULL, $region = NULL )
 	{
+		// Decrypt the secret key
+		$decryptedSecret = NULL;
+		if (\IPS\Settings::i()->awsses_secret_key) {
+			$decryptedSecret = \IPS\Text\Encrypt::fromTag(\IPS\Settings::i()->awsses_secret_key)->decrypt();
+		}
+
 		// Set class properties
 		$this->accessKey = $accessKey ?: \IPS\Settings::i()->awsses_access_key;
-		$this->secretKey = $secretKey ?: \IPS\Settings::i()->awsses_secret_key;
+		$this->secretKey = $secretKey ?: $decryptedSecret;
 		$this->region = $region ?: ( \IPS\Settings::i()->awsses_region ?: 'us-west-2' );
 
 		// Set config set

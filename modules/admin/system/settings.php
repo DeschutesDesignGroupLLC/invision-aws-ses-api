@@ -71,7 +71,7 @@ class _settings extends \IPS\Dispatcher\Controller
 			}
 
 			// Save the settings
-			$form->saveAsSettings();
+			$form->saveAsSettings($values);
 		}
 
 		// Output the form
