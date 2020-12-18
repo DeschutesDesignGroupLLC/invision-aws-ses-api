@@ -1,6 +1,9 @@
 {
     "normal": {
-        "added": [],
+        "added": [
+            "task__awsSesPruneLogs",
+            "awsses_error_log_not_found"
+        ],
         "edited": [
             "awsses_region_desc"
         ],

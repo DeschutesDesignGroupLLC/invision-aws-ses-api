@@ -30,5 +30,7 @@
   <word key="log_error_message" js="0">Error</word>
   <word key="log_payload" js="0">Payload</word>
   <word key="log_subject" js="0">Subject</word>
+  <word key="task__awsSesPruneLogs" js="0">Run the prune logs task.</word>
+  <word key="awsses_error_log_not_found" js="0">Unable to find the selected log.</word>
  </app>
 </language>
