@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+    <description>The coding standard for our project.</description>
+    <rule ref="PSR2"/>
+    <file>modules</file>
+    <file>sources</file>
+    <exclude-pattern>data/*</exclude-pattern>
+    <exclude-pattern>extensions/*</exclude-pattern>
+    <exclude-pattern>hooks/*</exclude-pattern>
+    <exclude-pattern>interface/*</exclude-pattern>
+    <exclude-pattern>setup/*</exclude-pattern>
+    <exclude-pattern>tasks/*</exclude-pattern>
+    <exclude-pattern>*.js</exclude-pattern>
+    <exclude-pattern>*.css</exclude-pattern>
+    <arg value="p"/>
+</ruleset>

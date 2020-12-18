@@ -10,6 +10,11 @@ $lang = array(
 	'menu__awsses_system_settings' => 'Settings',
 	'menu__awsses_system_logs' => 'Logs',
 
+	// Restrictions
+	'r__settings_manage' => 'Can change settings?',
+	'r__logs_manage' => 'Can view logs?',
+	'r__logs_prune_settings' => 'Can adjust prune settings?',
+
 	// Settings
 	'awsses_settings_header' => 'System Settings',
 	'awsses_settings_email_override_message' => 'Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.',
@@ -41,7 +46,7 @@ $lang = array(
 	'log_payload' => 'Payload',
 	'log_subject' => 'Subject',
 
-	// Task
+	// Tasks
 	'task__awsSesPruneLogs' => 'Run the prune logs task.',
 
 	// Errors
