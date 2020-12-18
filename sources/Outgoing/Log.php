@@ -10,7 +10,6 @@ if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 }
 
 use Aws\Result;
-use Aws\Exception\AwsException;
 
 /**
  * Class Log

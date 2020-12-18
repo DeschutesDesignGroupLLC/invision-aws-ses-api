@@ -39,5 +39,8 @@ $lang = array(
 	'log_exception' => 'Stack Trace',
 	'log_error_message' => 'Error',
 	'log_payload' => 'Payload',
-	'log_subject' => 'Subject'
+	'log_subject' => 'Subject',
+
+	// Task
+	'task__awsSesPruneLogs' => 'Run the prune logs task.',
 );
