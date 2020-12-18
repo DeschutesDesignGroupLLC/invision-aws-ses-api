@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10000">
+ <app key="awsses" version="10001">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
@@ -8,6 +8,7 @@
   <word key="menu__awsses_system_settings" js="0">Settings</word>
   <word key="menu__awsses_system_logs" js="0">Logs</word>
   <word key="awsses_settings_header" js="0">System Settings</word>
+  <word key="awsses_settings_email_override_message" js="0">Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.</word>
   <word key="awsses_settings_message" js="0">Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.</word>
   <word key="awsses_enabled" js="0">Enable</word>
   <word key="awsses_enabled_desc" js="0">Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.</word>
@@ -16,7 +17,7 @@
   <word key="awsses_secret_key" js="0">Secret Key</word>
   <word key="awsses_config_set_name" js="0">Config Set Name</word>
   <word key="awsses_region" js="0">Region</word>
-  <word key="awsses_region_desc" js="0">Will default to us-west-2 if nothing provided.</word>
+  <word key="awsses_region_desc" js="0"><![CDATA[Will default to us-west-2 if nothing provided. View the list of supported regions <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank">here</a>.]]></word>
   <word key="awsses_config_set_name_desc" js="0">If you have created a Configuration Set via the AWS Console, enter the name here to begin using it when sending emails.</word>
   <word key="awsses_log" js="0">Log</word>
   <word key="awsses_logs" js="0">Logs</word>
@@ -25,7 +26,8 @@
   <word key="awsses_log_prune_settings" js="0">Prune Settings</word>
   <word key="log_to" js="0">To</word>
   <word key="log_messageId" js="0">Message ID</word>
-  <word key="log_exception" js="0">Error</word>
+  <word key="log_exception" js="0">Stack Trace</word>
+  <word key="log_error_message" js="0">Error</word>
   <word key="log_payload" js="0">Payload</word>
   <word key="log_subject" js="0">Subject</word>
  </app>

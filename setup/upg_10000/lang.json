@@ -27,7 +27,9 @@
             "log_messageId",
             "log_exception",
             "log_payload",
-            "log_subject"
+            "log_subject",
+            "awsses_settings_email_override_message",
+            "log_error_message"
         ],
         "edited": [],
         "removed": []
