@@ -45,6 +45,7 @@ class _settings extends \IPS\Dispatcher\Controller
 
 		// Add settings
 		$form->addHeader(\IPS\Member::loggedIn()->language()->addToStack('awsses_settings_header'));
+		$form->addMessage('awsses_settings_email_override_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
 		$form->addMessage('awsses_settings_message');
 		$form->add( new \IPS\Helpers\Form\YesNo( 'awsses_enabled', \IPS\Settings::i()->awsses_enabled, TRUE ) );
 		$form->add( new \IPS\Helpers\Form\Text( 'awsses_access_key', \IPS\Settings::i()->awsses_access_key, TRUE ) );
