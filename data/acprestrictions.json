@@ -4,7 +4,8 @@
             "settings_manage": "settings_manage"
         },
         "logs": {
-            "logs_manage": "logs_manage"
+            "logs_manage": "logs_manage",
+            "logs_prune_settings": "logs_prune_settings"
         }
     }
 }

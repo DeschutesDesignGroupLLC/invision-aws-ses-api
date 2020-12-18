@@ -2,7 +2,10 @@
     "normal": {
         "added": [
             "task__awsSesPruneLogs",
-            "awsses_error_log_not_found"
+            "awsses_error_log_not_found",
+            "r__settings_manage",
+            "r__logs_manage",
+            "r__logs_prune_settings"
         ],
         "edited": [
             "awsses_region_desc"

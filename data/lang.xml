@@ -7,6 +7,9 @@
   <word key="menu__awsses_system" js="0">System</word>
   <word key="menu__awsses_system_settings" js="0">Settings</word>
   <word key="menu__awsses_system_logs" js="0">Logs</word>
+  <word key="r__settings_manage" js="0">Can change settings?</word>
+  <word key="r__logs_manage" js="0">Can view logs?</word>
+  <word key="r__logs_prune_settings" js="0">Can adjust prune settings?</word>
   <word key="awsses_settings_header" js="0">System Settings</word>
   <word key="awsses_settings_email_override_message" js="0">Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.</word>
   <word key="awsses_settings_message" js="0">Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.</word>
