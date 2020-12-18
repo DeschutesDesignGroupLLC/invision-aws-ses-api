@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10001">
+ <app key="awsses" version="10002">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
@@ -17,7 +17,7 @@
   <word key="awsses_secret_key" js="0">Secret Key</word>
   <word key="awsses_config_set_name" js="0">Config Set Name</word>
   <word key="awsses_region" js="0">Region</word>
-  <word key="awsses_region_desc" js="0"><![CDATA[Will default to us-west-2 if nothing provided. View the list of supported regions <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank">here</a>.]]></word>
+  <word key="awsses_region_desc" js="0"><![CDATA[View the list of supported regions <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank">here</a>.]]></word>
   <word key="awsses_config_set_name_desc" js="0">If you have created a Configuration Set via the AWS Console, enter the name here to begin using it when sending emails.</word>
   <word key="awsses_log" js="0">Log</word>
   <word key="awsses_logs" js="0">Logs</word>

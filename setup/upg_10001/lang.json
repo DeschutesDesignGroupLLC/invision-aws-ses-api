@@ -1,0 +1,18 @@
+{
+    "normal": {
+        "added": [
+            "awsses_settings_email_override_message",
+            "log_error_message"
+        ],
+        "edited": [
+            "awsses_region_desc",
+            "log_exception"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}
