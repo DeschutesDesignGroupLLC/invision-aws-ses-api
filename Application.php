@@ -11,7 +11,7 @@
  
 namespace IPS\awsses;
 
-require_once \IPS\ROOT_PATH . '/applications/awsses/interface/vendor/autoload.php';
+require_once \IPS\ROOT_PATH . '/applications/awsses/sources/vendor/autoload.php';
 
 /**
  * AWS Simple Email Service Application Class
