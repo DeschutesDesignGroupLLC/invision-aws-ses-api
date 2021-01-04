@@ -11,13 +11,20 @@
  
 namespace IPS\awsses;
 
-require_once \IPS\ROOT_PATH . '/applications/awsses/sources/vendor/autoload.php';
-
 /**
  * AWS Simple Email Service Application Class
  */
 class _Application extends \IPS\Application
 {
+	/**
+	 * _Application constructor.
+	 */
+	public function __construct()
+	{
+		// Load vendor library
+		require_once static::getRootPath() . '/applications/awsses/sources/vendor/autoload.php';
+	}
+
 	/**
 	 * [Node] Get Icon for tree
 	 *
