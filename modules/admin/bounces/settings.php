@@ -48,6 +48,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		$form->addTab('awsses_settings_tab_soft_bounces');
 		$form->addMessage('awsses_settings_bounce_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
 		$form->addMessage('awsses_settings_header_bounces');
+		$form->add(new \IPS\Helpers\Form\Interval('awsses_soft_bounce_interval', \IPS\Settings::i()->awsses_soft_bounce_interval, true, array('unlimited' => '-1', 'unlimitedLang' => 'awsses_form_process_immediately')));
 		$form->add(new \IPS\Helpers\Form\Select('awsses_soft_bounce_action', \IPS\Settings::i()->awsses_soft_bounce_action, true, array(
 			'options' => array(
 				\IPS\awsses\Manager\SES::AWSSES_ACTION_NOTHING => 'Do Nothing',
@@ -68,6 +69,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		$form->addTab('awsses_settings_tab_hard_bounces');
 		$form->addMessage('awsses_settings_bounce_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
 		$form->addMessage('awsses_settings_header_bounces');
+		$form->add(new \IPS\Helpers\Form\Interval('awsses_hard_bounce_interval', \IPS\Settings::i()->awsses_hard_bounce_interval, true, array('unlimited' => '-1', 'unlimitedLang' => 'awsses_form_process_immediately')));
 		$form->add(new \IPS\Helpers\Form\Select('awsses_hard_bounce_action', \IPS\Settings::i()->awsses_hard_bounce_action, true, array(
 			'options' => array(
 				\IPS\awsses\Manager\SES::AWSSES_ACTION_NOTHING => 'Do Nothing',

@@ -45,6 +45,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		$form = new \IPS\Helpers\Form;
 		$form->addMessage('awsses_settings_bounce_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
 		$form->addMessage('awsses_settings_header_complaints');
+		$form->add(new \IPS\Helpers\Form\Interval('awsses_complaint_interval', \IPS\Settings::i()->awsses_complaint_interval, true, array('unlimited' => '-1', 'unlimitedLang' => 'awsses_form_process_immediately')));
 		$form->add(new \IPS\Helpers\Form\Select('awsses_complaint_action', \IPS\Settings::i()->awsses_complaint_action, true, array(
 			'options' => array(
 				\IPS\awsses\Manager\SES::AWSSES_ACTION_NOTHING => 'Do Nothing',

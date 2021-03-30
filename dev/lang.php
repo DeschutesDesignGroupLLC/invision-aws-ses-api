@@ -25,7 +25,7 @@ $lang = array(
 	'awsses_settings_tab_system' => 'System',
 	'awsses_settings_email_override_message' => 'Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.',
 	'awsses_settings_message' => 'Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.',
-	'awsses_enabled' => 'Enable',
+	'awsses_enabled' => 'Enabled',
 	'awsses_enabled_desc' => 'Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.',
 	'awsses_access_key' => 'Access Key',
 	'awsses_access_key_desc' => 'You will need to make sure you have attached the AmazonSESFullAccess policy to the IAM role you are using so that IPB can access the AWS SES API.',
@@ -39,18 +39,24 @@ $lang = array(
 	'awsses_settings_bounce_message' => 'Bounce and complaint management will not work out of the box. You will need to setup and configure AWS to send notifications to an API endpoint via AWS Simple Notification Service (SNS) to handle bounces. See our documentation for instructions.',
 	'awsses_settings_header_bounces' => 'In order to improve email deliverability and reputation, it is important to properly handle email bounces. AWS Simple Email Service provides a powerful notification system to inform Invision Power Board of bounced emails. Please select the action you\'d like to take in the event of an email bounce.',
 	'awsses_settings_header_complaints' => 'In order to improve email deliverability and reputation, it is important to properly handle email complaints. AWS Simple Email Service provides a powerful notification system to inform Invision Power Board of emails that have received a complaint. Please select the action you\'d like to take in the event of an email complaint.',
+	'awsses_soft_bounce_interval' => 'Process Conditions',
+	'awsses_soft_bounce_interval_desc' => 'Immediately apply the action below when a soft bounce is encountered or if two or more bounces happen within the time specified.',
 	'awsses_soft_bounce_action' => 'On Soft Bounce',
 	'awsses_soft_bounce_action_desc' => 'Please select what will happen to a user when a soft bounce is encountered. Soft bounces may occur when a recipient\'s mailbox is full, the message is too large, the email contains an unacceptable attachment or the recipient\'s mail server rejects the content.',
 	'awsses_soft_bounce_action_group' => 'Soft Bounce Group',
 	'awsses_soft_bounce_action_group_desc' => 'When a soft bounce is encountered, the recipient will be moved to this group.',
 	'awsses_soft_bounce_action_notification' => 'Soft Bounce Notification',
 	'awsses_soft_bounce_action_notification_desc' => 'When a soft bounce is encountered, the recipient will be presented with the following notification.',
+	'awsses_hard_bounce_interval' => 'Process Conditions',
+	'awsses_hard_bounce_interval_desc' => 'Immediately apply the action below when a hard bounce is encountered or if two or more bounces happen within the time specified.',
 	'awsses_hard_bounce_action' => 'On Hard Bounce',
 	'awsses_hard_bounce_action_desc' => 'Please select what will happen to a user when a hard bounce is encountered. Hard bounces occur when a recipient\'s email is not valid.',
 	'awsses_hard_bounce_action_group' => 'Hard Bounce Group',
 	'awsses_hard_bounce_action_group_desc' => 'When a hard bounce is encountered, the recipient will be moved to this group.',
 	'awsses_hard_bounce_action_notification' => 'Hard Bounce Notification',
 	'awsses_hard_bounce_action_notification_desc' => 'When a hard bounce is encountered, the recipient will be presented with the following notification.',
+	'awsses_complaint_interval' => 'Process Conditions',
+	'awsses_complaint_interval_desc' => 'Immediately apply the action below when a complaint is encountered or if two or more bounces happen within the time specified.',
 	'awsses_complaint_action' => 'On Complaint',
 	'awsses_complaint_action_desc' => 'Please select what will happen to a user when a complaint is encountered. A complaint may occure when a recipient reports they don\'t want to receive an email such as marking the email as "Spam".',
 	'awsses_complaint_action_group' => 'Complaint Group',
@@ -80,6 +86,9 @@ $lang = array(
 	'log_action' => 'Action',
 	'log_email' => 'Email',
 
+	// Form
+	'awsses_form_process_immediately' => 'Process Immediately',
+
 	// Action Messages
 	'awsses_action_nothing' => 'No action was applied.',
 	'awsses_action_group' => 'User was moved to a group.',
@@ -87,6 +96,7 @@ $lang = array(
 	'awsses_action_spam' => 'User was marked as a spammer.',
 	'awsses_action_delete' => 'User was deleted.',
 	'awsses_action_ban' => 'User was temporarily banned.',
+	'awsses_action_interval' => 'No action applied. Date outside "Process Conditions" setting.',
 
 	// Tasks
 	'task__awsSesPruneLogs' => 'Run the prune logs task.',

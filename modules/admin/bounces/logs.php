@@ -71,7 +71,7 @@ class _logs extends \IPS\Dispatcher\Controller
 				return "<a href='{$member->acpUrl()}' target='_blank'>{$member->name}</a>";
 			},
 			'email' => function ($val, $row) {
-				return \IPS\Member::load($row['member_id'])->email;
+				return \IPS\Member::load($row['member_id'])->email ?? $row['member_id'];
 			},
 			'type' => function ($val) {
 				$value = ucfirst($val);

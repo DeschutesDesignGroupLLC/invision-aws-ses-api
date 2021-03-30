@@ -19,6 +19,7 @@ class _SES
 	const AWSSES_ACTION_SET_SPAMMER = 'spam';
 	const AWSSES_ACTION_DELETE_MEMBER = 'delete';
 	const AWSSES_ACTION_TEMP_BAN = 'ban';
+	const AWSSES_ACTION_INTERVAL = 'interval';
 
 	/**
 	 * @param  array  $emailAddresses
@@ -33,6 +34,9 @@ class _SES
 		// Get soft bounce settings
 		$actions = \IPS\Settings::i()->awsses_soft_bounce_action;
 
+		// Get interval settings
+		$interval = \IPS\Settings::i()->awsses_soft_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_soft_bounce_interval : false;
+
 		// Loop through the email addresses
 		foreach ($emailAddresses as $emailAddress) {
 
@@ -45,44 +49,90 @@ class _SES
 				// If we found the member
 				if ($member->email) {
 
-					// Loop through the actions
-					foreach ($actions as $action) {
+					// If we have an interval
+					$process = true;
+					if ($interval) {
 
-						// Switch between the actions
-						switch ($action) {
+						// Try and find the latest log
+						try {
+							// Get the latest log entry
+							$log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, array('type=? AND member_id=?', 'soft', $member->member_id), 'date DESC')->first();
+							$last = \IPS\DateTime::ts($log['date']);
 
-							// Move Groups
-							case static::AWSSES_ACTION_MOVE_GROUP:
-								$this->_moveToGroup($member, \IPS\Settings::i()->awsses_soft_bounce_action_group);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_MOVE_GROUP, 'soft');
-								break;
+							// Get our cutoff date
+							$cutoff = new \DateTime;
+							$cutoff->sub(new \DateInterval("PT{$interval}S"));
 
-							// Set validating
-							case static::AWSSES_ACTION_SET_VALIDATING:
-								$this->_setAsValidating($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_SET_VALIDATING, 'soft');
-								break;
+							// If the previous entry was past the cutoff date
+							if ($last < $cutoff) {
+								// Do not process
+								$process = false;
+							}
+						}
 
-							// Set as spammer
-							case static::AWSSES_ACTION_SET_SPAMMER:
-								$this->_setAsSpammer($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_SET_SPAMMER, 'soft');
-								break;
-
-							// Delete member
-							case static::AWSSES_ACTION_DELETE_MEMBER:
-								$this->_deleteMember($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_DELETE_MEMBER, 'soft');
-								break;
-
-							// Temp Ban
-							case static::AWSSES_ACTION_TEMP_BAN:
-								$this->_tempBan($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_TEMP_BAN, 'soft');
-								break;
+						// Unable to find a log
+						catch (\UnderflowException $exception) {
+							// So do not process
+							$process = false;
 						}
 					}
+
+					// If we are processing
+					if ($process) {
+
+						// Loop through the actions
+						foreach ($actions as $action) {
+
+							// Switch between the actions
+							switch ($action) {
+
+								// Move Groups
+								case static::AWSSES_ACTION_MOVE_GROUP:
+									$this->_moveToGroup($member, \IPS\Settings::i()->awsses_soft_bounce_action_group);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_MOVE_GROUP, 'soft');
+									break;
+
+								// Set validating
+								case static::AWSSES_ACTION_SET_VALIDATING:
+									$this->_setAsValidating($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_SET_VALIDATING, 'soft');
+									break;
+
+								// Set as spammer
+								case static::AWSSES_ACTION_SET_SPAMMER:
+									$this->_setAsSpammer($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_SET_SPAMMER, 'soft');
+									break;
+
+								// Delete member
+								case static::AWSSES_ACTION_DELETE_MEMBER:
+									$this->_deleteMember($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_DELETE_MEMBER, 'soft');
+									break;
+
+								// Temp Ban
+								case static::AWSSES_ACTION_TEMP_BAN:
+									$this->_tempBan($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_TEMP_BAN, 'soft');
+									break;
+							}
+						}
+					}
+
+					// No action being applied
+					else {
+
+						// Still log the bounce
+						$this->_logBounceAction($member, static::AWSSES_ACTION_INTERVAL, 'soft');
+					}
 				}
+			}
+
+			// No action being applied
+			else {
+
+				// Still log the bounce
+				$this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
 			}
 		}
 	}
@@ -100,6 +150,9 @@ class _SES
 		// Get hard bounce settings
 		$actions = \IPS\Settings::i()->awsses_hard_bounce_action;
 
+		// Get interval settings
+		$interval = \IPS\Settings::i()->awsses_hard_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_hard_bounce_interval : false;
+
 		// Loop through the email addresses
 		foreach ($emailAddresses as $emailAddress) {
 
@@ -112,44 +165,90 @@ class _SES
 				// If we found the member
 				if ($member->email) {
 
-					// Loop through the actions
-					foreach ($actions as $action) {
+					// If we have an interval
+					$process = true;
+					if ($interval) {
 
-						// Switch between the actions
-						switch ($action) {
+						// Try and find the latest log
+						try {
+							// Get the latest log entry
+							$log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, array('type=? AND member_id=?', 'hard', $member->member_id), 'date DESC')->first();
+							$last = \IPS\DateTime::ts($log['date']);
 
-							// Move Groups
-							case static::AWSSES_ACTION_MOVE_GROUP:
-								$this->_moveToGroup($member, \IPS\Settings::i()->awsses_hard_bounce_action_group);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_MOVE_GROUP, 'hard');
-								break;
+							// Get our cutoff date
+							$cutoff = new \DateTime;
+							$cutoff->sub(new \DateInterval("PT{$interval}S"));
 
-							// Set validating
-							case static::AWSSES_ACTION_SET_VALIDATING:
-								$this->_setAsValidating($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_SET_VALIDATING, 'hard');
-								break;
+							// If the previous entry was past the cutoff date
+							if ($last < $cutoff) {
+								// Do not process
+								$process = false;
+							}
+						}
 
-							// Set as spammer
-							case static::AWSSES_ACTION_SET_SPAMMER:
-								$this->_setAsSpammer($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_SET_SPAMMER, 'hard');
-								break;
-
-							// Delete member
-							case static::AWSSES_ACTION_DELETE_MEMBER:
-								$this->_deleteMember($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_DELETE_MEMBER, 'hard');
-								break;
-
-							// Temp Ban
-							case static::AWSSES_ACTION_TEMP_BAN:
-								$this->_tempBan($member);
-								$this->_logBounceAction($member, static::AWSSES_ACTION_TEMP_BAN, 'hard');
-								break;
+						// Unable to find a log
+						catch (\UnderflowException $exception) {
+							// So do not process
+							$process = false;
 						}
 					}
+
+					// If we are processing
+					if ($process) {
+
+						// Loop through the actions
+						foreach ($actions as $action) {
+
+							// Switch between the actions
+							switch ($action) {
+
+								// Move Groups
+								case static::AWSSES_ACTION_MOVE_GROUP:
+									$this->_moveToGroup($member, \IPS\Settings::i()->awsses_hard_bounce_action_group);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_MOVE_GROUP, 'hard');
+									break;
+
+								// Set validating
+								case static::AWSSES_ACTION_SET_VALIDATING:
+									$this->_setAsValidating($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_SET_VALIDATING, 'hard');
+									break;
+
+								// Set as spammer
+								case static::AWSSES_ACTION_SET_SPAMMER:
+									$this->_setAsSpammer($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_SET_SPAMMER, 'hard');
+									break;
+
+								// Delete member
+								case static::AWSSES_ACTION_DELETE_MEMBER:
+									$this->_deleteMember($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_DELETE_MEMBER, 'hard');
+									break;
+
+								// Temp Ban
+								case static::AWSSES_ACTION_TEMP_BAN:
+									$this->_tempBan($member);
+									$this->_logBounceAction($member, static::AWSSES_ACTION_TEMP_BAN, 'hard');
+									break;
+							}
+						}
+					}
+
+					// No action being applied
+					else {
+
+						// Still log the bounce
+						$this->_logBounceAction($member, static::AWSSES_ACTION_INTERVAL, 'hard');
+					}
 				}
+			}
+
+			// No action being applied
+			else {
+
+				// Still log the bounce
+				$this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
 			}
 		}
 	}
@@ -167,6 +266,9 @@ class _SES
 		// Get complaint settings
 		$actions = \IPS\Settings::i()->awsses_complaint_action;
 
+		// Get interval settings
+		$interval = \IPS\Settings::i()->awsses_complaint_interval !== '-1' ? \IPS\Settings::i()->awsses_complaint_interval : false;
+
 		// Loop through the email addresses
 		foreach ($emailAddresses as $emailAddress) {
 
@@ -179,44 +281,90 @@ class _SES
 				// If we found the member
 				if ($member->email) {
 
-					// Loop through the actions
-					foreach ($actions as $action) {
+					// If we have an interval
+					$process = true;
+					if ($interval) {
 
-						// Switch between the actions
-						switch ($action) {
+						// Try and find the latest log
+						try {
+							// Get the latest log entry
+							$log = \IPS\Db::i()->select('*', \IPS\awsses\Complaint\Log::$databaseTable, array('member_id=?', $member->member_id), 'date DESC')->first();
+							$last = \IPS\DateTime::ts($log['date']);
 
-							// Move Groups
-							case static::AWSSES_ACTION_MOVE_GROUP:
-								$this->_moveToGroup($member, \IPS\Settings::i()->awsses_complaint_action_group);
-								$this->_logComplaintAction($member, static::AWSSES_ACTION_MOVE_GROUP);
-								break;
+							// Get our cutoff date
+							$cutoff = new \DateTime;
+							$cutoff->sub(new \DateInterval("PT{$interval}S"));
 
-							// Set validating
-							case static::AWSSES_ACTION_SET_VALIDATING:
-								$this->_setAsValidating($member);
-								$this->_logComplaintAction($member, static::AWSSES_ACTION_SET_VALIDATING);
-								break;
+							// If the previous entry was past the cutoff date
+							if ($last < $cutoff) {
+								// Do not process
+								$process = false;
+							}
+						}
 
-							// Set as spammer
-							case static::AWSSES_ACTION_SET_SPAMMER:
-								$this->_setAsSpammer($member);
-								$this->_logComplaintAction($member, static::AWSSES_ACTION_SET_SPAMMER);
-								break;
-
-							// Delete member
-							case static::AWSSES_ACTION_DELETE_MEMBER:
-								$this->_deleteMember($member);
-								$this->_logComplaintAction($member, static::AWSSES_ACTION_DELETE_MEMBER);
-								break;
-
-							// Temp Ban
-							case static::AWSSES_ACTION_TEMP_BAN:
-								$this->_tempBan($member);
-								$this->_logComplaintAction($member, static::AWSSES_ACTION_TEMP_BAN);
-								break;
+						// Unable to find a log
+						catch (\UnderflowException $exception) {
+							// So do not process
+							$process = false;
 						}
 					}
+
+					// If we are processing
+					if ($process) {
+
+						// Loop through the actions
+						foreach ($actions as $action) {
+
+							// Switch between the actions
+							switch ($action) {
+
+								// Move Groups
+								case static::AWSSES_ACTION_MOVE_GROUP:
+									$this->_moveToGroup($member, \IPS\Settings::i()->awsses_complaint_action_group);
+									$this->_logComplaintAction($member, static::AWSSES_ACTION_MOVE_GROUP);
+									break;
+
+								// Set validating
+								case static::AWSSES_ACTION_SET_VALIDATING:
+									$this->_setAsValidating($member);
+									$this->_logComplaintAction($member, static::AWSSES_ACTION_SET_VALIDATING);
+									break;
+
+								// Set as spammer
+								case static::AWSSES_ACTION_SET_SPAMMER:
+									$this->_setAsSpammer($member);
+									$this->_logComplaintAction($member, static::AWSSES_ACTION_SET_SPAMMER);
+									break;
+
+								// Delete member
+								case static::AWSSES_ACTION_DELETE_MEMBER:
+									$this->_deleteMember($member);
+									$this->_logComplaintAction($member, static::AWSSES_ACTION_DELETE_MEMBER);
+									break;
+
+								// Temp Ban
+								case static::AWSSES_ACTION_TEMP_BAN:
+									$this->_tempBan($member);
+									$this->_logComplaintAction($member, static::AWSSES_ACTION_TEMP_BAN);
+									break;
+							}
+						}
+					}
+
+					// No action being applied
+					else {
+
+						// Still log the complaint
+						$this->_logComplaintAction($member, static::AWSSES_ACTION_INTERVAL);
+					}
 				}
+			}
+
+			// No action being applied
+			else {
+
+				// Still log the complaint
+				$this->_logComplaintAction($emailAddress, static::AWSSES_ACTION_NOTHING);
 			}
 		}
 	}
