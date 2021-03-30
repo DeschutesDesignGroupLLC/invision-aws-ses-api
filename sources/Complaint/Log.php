@@ -1,6 +1,6 @@
 <?php
 
-namespace IPS\awsses\Outgoing;
+namespace IPS\awsses\Complaint;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
@@ -28,7 +28,7 @@ class _Log extends \IPS\Node\Model
      *
      * @var string
      */
-    public static $databaseTable = 'awsses_mail_logs';
+    public static $databaseTable = 'awsses_complaint_logs';
 
     /**
      * [ActiveRecord] Database Prefix
@@ -49,7 +49,7 @@ class _Log extends \IPS\Node\Model
      *
      * @var string
      */
-    public static $nodeTitle = 'Outgoing Logs';
+    public static $nodeTitle = 'Complaint Logs';
 
     /**
      * [Node] Node Modal View
@@ -88,7 +88,7 @@ class _Log extends \IPS\Node\Model
      *
      * @var string
      */
-    public static $permType = 'log';
+    public static $permType = 'complaint_log';
 
     /**
      * [Node] Node Permission Map
@@ -100,7 +100,7 @@ class _Log extends \IPS\Node\Model
     );
 
     /**
-     * Log a Successful Email
+     * Log a Complaint Email
      *
      * @param  Result  $result
      * @param          $to
@@ -110,35 +110,15 @@ class _Log extends \IPS\Node\Model
      *
      * @return null
      */
-    public static function log($payload = array(), $messageId = null, $exception = null, $errorMessage = null)
-    {
-        // Unset the Message Body
-        if (isset($payload['Message']['Body']['Html'])) {
-            // Remove it from the payload
-            unset($payload['Message']['Body']['Html']);
-        }
-
-        // Create our new log
-        $log = new static;
-        $log->date = time();
-        $log->payload = $payload ? json_encode($payload) : null;
-        $log->messageId = $messageId;
-        $log->exception = $exception ? json_encode($exception) : null;
-        $log->errorMessage = $errorMessage;
-        $log->save();
-    }
-
-    /**
-     * Prune logs
-     *
-     * @param   int     $days   Older than (days) to prune
-     * @return  void
-     */
-    public static function pruneLogs($days)
-    {
-        // Select from the database where date is greater than
-        \IPS\Db::i()->delete(static::$databaseTable, array( 'date<?', \IPS\DateTime::create()->sub(new \DateInterval('P' . $days . 'D'))->getTimestamp() ));
-    }
+	public static function log($member, $action)
+	{
+		// Create our new log
+		$log = new static;
+		$log->date = time();
+		$log->member_id = $member->member_id;
+		$log->action = $action;
+		$log->save();
+	}
 
     public function codingStandards()
     {

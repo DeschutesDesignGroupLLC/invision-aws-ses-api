@@ -39,8 +39,8 @@ class _settings extends \IPS\Dispatcher\Controller
      */
     protected function manage()
     {
-        // Create a new form
-        $form = new \IPS\Helpers\Form;
+	    // Create a new form
+	    $form = new \IPS\Helpers\Form;
 
         // Decrypt the secret key
         $secret = null;
@@ -48,8 +48,7 @@ class _settings extends \IPS\Dispatcher\Controller
             $secret = \IPS\Text\Encrypt::fromTag(\IPS\Settings::i()->awsses_secret_key)->decrypt();
         }
 
-        // Add settings
-        $form->addHeader(\IPS\Member::loggedIn()->language()->addToStack('awsses_settings_header'));
+        // Add system settings
         $form->addMessage('awsses_settings_email_override_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
         $form->addMessage('awsses_settings_message');
         $form->add(new \IPS\Helpers\Form\YesNo('awsses_enabled', \IPS\Settings::i()->awsses_enabled, true));
@@ -58,7 +57,7 @@ class _settings extends \IPS\Dispatcher\Controller
         $form->add(new \IPS\Helpers\Form\Text('awsses_region', \IPS\Settings::i()->awsses_region, true, array( 'placeholder' => 'us-west-2', '' )));
         $form->add(new \IPS\Helpers\Form\Text('awsses_config_set_name', \IPS\Settings::i()->awsses_config_set_name, false));
 
-        // If we have values in our form
+	    // If we have values in our form
         if ($values = $form->values()) {
             // Log
             \IPS\Session::i()->log('awsses_settings_updated');
