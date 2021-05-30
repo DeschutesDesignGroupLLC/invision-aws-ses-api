@@ -9,6 +9,7 @@ if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
 }
 
 use Aws\Sns\Message;
+use Aws\Sns\MessageValidator;
 
 class _SES extends \IPS\Patterns\Singleton
 {
@@ -24,11 +25,11 @@ class _SES extends \IPS\Patterns\Singleton
 			$sns = Message::fromRawPostData();
 
 			// Validate the message
-//			$validator = new MessageValidator();
-//			$validator->validate($sns);
-//
-//			// If validated
-//			if ($validator->isValid($sns)) {
+			$validator = new MessageValidator();
+			$validator->validate($sns);
+
+			// If validated
+			if ($validator->isValid($sns)) {
 				if ($sns['Type'] === 'Notification') {
 					// Get our message components
 					$message = $sns['Message'];
@@ -47,7 +48,7 @@ class _SES extends \IPS\Patterns\Singleton
 					}
 				}
 			}
-//		}
+		}
 
 		// We encountered an error
 		catch (\Exception $exception)

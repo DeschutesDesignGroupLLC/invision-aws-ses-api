@@ -7,5 +7,21 @@
             "logs_manage": "logs_manage",
             "logs_prune_settings": "logs_prune_settings"
         }
+    },
+    "bounces": {
+        "logs": {
+            "logs_manage": "logs_manage"
+        },
+        "settings": {
+            "settings_manage": "settings_manage"
+        }
+    },
+    "complaints": {
+        "logs": {
+            "logs_manage": "logs_manage"
+        },
+        "settings": {
+            "settings_manage": "settings_manage"
+        }
     }
 }

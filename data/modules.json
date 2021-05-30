@@ -3,6 +3,16 @@
         "system": {
             "default_controller": "settings",
             "protected": 0,
+            "default": 1
+        },
+        "bounces": {
+            "default_controller": "",
+            "protected": 0,
+            "default": 0
+        },
+        "complaints": {
+            "default_controller": "",
+            "protected": 0,
             "default": 0
         }
     }

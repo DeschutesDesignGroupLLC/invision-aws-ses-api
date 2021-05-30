@@ -1,0 +1,70 @@
+{
+    "normal": {
+        "added": [
+            "menu__awsses_bounces",
+            "menu__awsses_bounces_logs",
+            "menu__awsses_bounces_settings",
+            "menu__awsses_complaints",
+            "menu__awsses_complaints_logs",
+            "menu__awsses_complaints_settings",
+            "awsses_settings_tab_system",
+            "awsses_settings_tab_hard_bounces",
+            "awsses_settings_tab_soft_bounces",
+            "awsses_settings_bounce_message",
+            "awsses_settings_header_bounces",
+            "awsses_settings_header_complaints",
+            "awsses_soft_bounce_interval",
+            "awsses_soft_bounce_interval_desc",
+            "awsses_soft_bounce_action",
+            "awsses_soft_bounce_action_desc",
+            "awsses_soft_bounce_action_group",
+            "awsses_soft_bounce_action_group_desc",
+            "awsses_soft_bounce_action_notification",
+            "awsses_soft_bounce_action_notification_desc",
+            "awsses_hard_bounce_interval",
+            "awsses_hard_bounce_interval_desc",
+            "awsses_hard_bounce_action",
+            "awsses_hard_bounce_action_desc",
+            "awsses_hard_bounce_action_group",
+            "awsses_hard_bounce_action_group_desc",
+            "awsses_hard_bounce_action_notification",
+            "awsses_hard_bounce_action_notification_desc",
+            "awsses_complaint_interval",
+            "awsses_complaint_interval_desc",
+            "awsses_complaint_action",
+            "awsses_complaint_action_desc",
+            "awsses_complaint_action_group",
+            "awsses_complaint_action_group_desc",
+            "awsses_complaint_action_notification",
+            "awsses_complaint_action_notification_desc",
+            "awsses_bounce_logs",
+            "awsses_complaint_logs",
+            "log_type",
+            "log_action",
+            "log_email",
+            "awsses_form_process_immediately",
+            "awsses_action_nothing",
+            "awsses_action_group",
+            "awsses_action_validating",
+            "awsses_action_spam",
+            "awsses_action_delete",
+            "awsses_action_ban",
+            "awsses_action_interval",
+            "__api_awsses_bounces",
+            "__api_awsses_complaints"
+        ],
+        "edited": [
+            "menu__awsses_system",
+            "awsses_enabled",
+            "awsses_logs"
+        ],
+        "removed": [
+            "awsses_settings_header"
+        ]
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "added": [
+        "awsses_complaint_action",
+        "awsses_complaint_action_group",
+        "awsses_complaint_interval",
+        "awsses_hard_bounce_action",
+        "awsses_hard_bounce_action_group",
+        "awsses_hard_bounce_interval",
+        "awsses_soft_bounce_action",
+        "awsses_soft_bounce_action_group",
+        "awsses_soft_bounce_interval"
+    ],
+    "edited": [],
+    "removed": []
+}

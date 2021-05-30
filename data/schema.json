@@ -1,6 +1,6 @@
 {
-    "awsses_logs": {
-        "name": "awsses_logs",
+    "awsses_mail_logs": {
+        "name": "awsses_mail_logs",
         "columns": {
             "id": {
                 "name": "id",
@@ -86,6 +86,151 @@
                     null
                 ]
             }
-        }
+        },
+        "comment": "A record of mail sent logs"
+    },
+    "awsses_bounce_logs": {
+        "name": "awsses_bounce_logs",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "comment": "ID Number",
+                "decimals": null,
+                "default": null,
+                "length": 20,
+                "name": "id",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": []
+            },
+            "member_id": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 255,
+                "name": "member_id",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
+            },
+            "type": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
+            },
+            "action": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "action",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
+            },
+            "date": {
+                "allow_null": false,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "date",
+                "type": "INT",
+                "unsigned": true,
+                "values": []
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci"
+    },
+    "awsses_complaint_logs": {
+        "name": "awsses_complaint_logs",
+        "columns": {
+            "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "comment": "ID Number",
+                "decimals": null,
+                "default": null,
+                "length": 20,
+                "name": "id",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": []
+            },
+            "member_id": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 255,
+                "name": "member_id",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
+            },
+            "action": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 255,
+                "name": "action",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
+            },
+            "date": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 10,
+                "name": "date",
+                "type": "INT",
+                "unsigned": true,
+                "values": []
+            }
+        },
+        "indexes": {
+            "PRIMARY": {
+                "type": "primary",
+                "name": "PRIMARY",
+                "length": [
+                    null
+                ],
+                "columns": [
+                    "id"
+                ]
+            }
+        },
+        "collation": "utf8mb4_unicode_ci"
     }
 }

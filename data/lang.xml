@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10004">
+ <app key="awsses" version="10005">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
-  <word key="menu__awsses_system" js="0">System</word>
+  <word key="menu__awsses_system" js="0">Mail</word>
   <word key="menu__awsses_system_settings" js="0">Settings</word>
   <word key="menu__awsses_system_logs" js="0">Logs</word>
+  <word key="menu__awsses_bounces" js="0">Bounces</word>
+  <word key="menu__awsses_bounces_logs" js="0">Logs</word>
+  <word key="menu__awsses_bounces_settings" js="0">Settings</word>
+  <word key="menu__awsses_complaints" js="0">Complaints</word>
+  <word key="menu__awsses_complaints_logs" js="0">Logs</word>
+  <word key="menu__awsses_complaints_settings" js="0">Settings</word>
   <word key="r__settings_manage" js="0">Can change settings?</word>
   <word key="r__logs_manage" js="0">Can view logs?</word>
   <word key="r__logs_prune_settings" js="0">Can adjust prune settings?</word>
-  <word key="awsses_settings_header" js="0">System Settings</word>
+  <word key="awsses_settings_tab_system" js="0">System</word>
   <word key="awsses_settings_email_override_message" js="0">Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.</word>
   <word key="awsses_settings_message" js="0">Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.</word>
-  <word key="awsses_enabled" js="0">Enable</word>
+  <word key="awsses_enabled" js="0">Enabled</word>
   <word key="awsses_enabled_desc" js="0">Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.</word>
   <word key="awsses_access_key" js="0">Access Key</word>
   <word key="awsses_access_key_desc" js="0">You will need to make sure you have attached the AmazonSESFullAccess policy to the IAM role you are using so that IPB can access the AWS SES API.</word>
@@ -22,8 +28,39 @@
   <word key="awsses_region" js="0">Region</word>
   <word key="awsses_region_desc" js="0"><![CDATA[View the list of supported regions <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html" target="_blank">here</a>.]]></word>
   <word key="awsses_config_set_name_desc" js="0">If you have created a Configuration Set via the AWS Console, enter the name here to begin using it when sending emails.</word>
+  <word key="awsses_settings_tab_hard_bounces" js="0">Hard Bounces</word>
+  <word key="awsses_settings_tab_soft_bounces" js="0">Soft Bounces</word>
+  <word key="awsses_settings_bounce_message" js="0">Bounce and complaint management will not work out of the box. You will need to setup and configure AWS to send notifications to an API endpoint via AWS Simple Notification Service (SNS) to handle bounces. See our documentation for instructions.</word>
+  <word key="awsses_settings_header_bounces" js="0">In order to improve email deliverability and reputation, it is important to properly handle email bounces. AWS Simple Email Service provides a powerful notification system to inform Invision Power Board of bounced emails. Please select the action you'd like to take in the event of an email bounce.</word>
+  <word key="awsses_settings_header_complaints" js="0">In order to improve email deliverability and reputation, it is important to properly handle email complaints. AWS Simple Email Service provides a powerful notification system to inform Invision Power Board of emails that have received a complaint. Please select the action you'd like to take in the event of an email complaint.</word>
+  <word key="awsses_soft_bounce_interval" js="0">Process Conditions</word>
+  <word key="awsses_soft_bounce_interval_desc" js="0">Immediately apply the action below when a soft bounce is encountered or if two or more bounces happen within the time specified.</word>
+  <word key="awsses_soft_bounce_action" js="0">On Soft Bounce</word>
+  <word key="awsses_soft_bounce_action_desc" js="0">Please select what will happen to a user when a soft bounce is encountered. Soft bounces may occur when a recipient's mailbox is full, the message is too large, the email contains an unacceptable attachment or the recipient's mail server rejects the content.</word>
+  <word key="awsses_soft_bounce_action_group" js="0">Soft Bounce Group</word>
+  <word key="awsses_soft_bounce_action_group_desc" js="0">When a soft bounce is encountered, the recipient will be moved to this group.</word>
+  <word key="awsses_soft_bounce_action_notification" js="0">Soft Bounce Notification</word>
+  <word key="awsses_soft_bounce_action_notification_desc" js="0">When a soft bounce is encountered, the recipient will be presented with the following notification.</word>
+  <word key="awsses_hard_bounce_interval" js="0">Process Conditions</word>
+  <word key="awsses_hard_bounce_interval_desc" js="0">Immediately apply the action below when a hard bounce is encountered or if two or more bounces happen within the time specified.</word>
+  <word key="awsses_hard_bounce_action" js="0">On Hard Bounce</word>
+  <word key="awsses_hard_bounce_action_desc" js="0">Please select what will happen to a user when a hard bounce is encountered. Hard bounces occur when a recipient's email is not valid.</word>
+  <word key="awsses_hard_bounce_action_group" js="0">Hard Bounce Group</word>
+  <word key="awsses_hard_bounce_action_group_desc" js="0">When a hard bounce is encountered, the recipient will be moved to this group.</word>
+  <word key="awsses_hard_bounce_action_notification" js="0">Hard Bounce Notification</word>
+  <word key="awsses_hard_bounce_action_notification_desc" js="0">When a hard bounce is encountered, the recipient will be presented with the following notification.</word>
+  <word key="awsses_complaint_interval" js="0">Process Conditions</word>
+  <word key="awsses_complaint_interval_desc" js="0">Immediately apply the action below when a complaint is encountered or if two or more bounces happen within the time specified.</word>
+  <word key="awsses_complaint_action" js="0">On Complaint</word>
+  <word key="awsses_complaint_action_desc" js="0">Please select what will happen to a user when a complaint is encountered. A complaint may occure when a recipient reports they don't want to receive an email such as marking the email as &quot;Spam&quot;.</word>
+  <word key="awsses_complaint_action_group" js="0">Complaint Group</word>
+  <word key="awsses_complaint_action_group_desc" js="0">When a complaint is encountered, the recipient will be moved to this group.</word>
+  <word key="awsses_complaint_action_notification" js="0">Complaint Notification</word>
+  <word key="awsses_complaint_action_notification_desc" js="0">When a complaint is encountered, the recipient will be presented with the following notification.</word>
   <word key="awsses_log" js="0">Log</word>
-  <word key="awsses_logs" js="0">Logs</word>
+  <word key="awsses_logs" js="0">Outgoing Logs</word>
+  <word key="awsses_bounce_logs" js="0">Bounce Logs</word>
+  <word key="awsses_complaint_logs" js="0">Complaint Logs</word>
   <word key="awsses_logs_prune" js="0">Prune Settings</word>
   <word key="awsses_settings_updated" js="0">The AWS Simple Email Service settings have been updated.</word>
   <word key="awsses_log_prune_settings" js="0">Prune Settings</word>
@@ -33,7 +70,20 @@
   <word key="log_error_message" js="0">Error</word>
   <word key="log_payload" js="0">Payload</word>
   <word key="log_subject" js="0">Subject</word>
+  <word key="log_type" js="0">Type</word>
+  <word key="log_action" js="0">Action</word>
+  <word key="log_email" js="0">Email</word>
+  <word key="awsses_form_process_immediately" js="0">Process Immediately</word>
+  <word key="awsses_action_nothing" js="0">No action was applied.</word>
+  <word key="awsses_action_group" js="0">User was moved to a group.</word>
+  <word key="awsses_action_validating" js="0">User status was set to validating.</word>
+  <word key="awsses_action_spam" js="0">User was marked as a spammer.</word>
+  <word key="awsses_action_delete" js="0">User was deleted.</word>
+  <word key="awsses_action_ban" js="0">User was temporarily banned.</word>
+  <word key="awsses_action_interval" js="0">No action applied. Date outside &quot;Process Conditions&quot; setting.</word>
   <word key="task__awsSesPruneLogs" js="0">Run the prune logs task.</word>
   <word key="awsses_error_log_not_found" js="0">Unable to find the selected log.</word>
+  <word key="__api_awsses_bounces" js="0">Bounce Notifications</word>
+  <word key="__api_awsses_complaints" js="0">Complaint Notifications</word>
  </app>
 </language>

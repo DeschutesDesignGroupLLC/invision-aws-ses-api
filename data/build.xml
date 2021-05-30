@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <build>
- <module key="admin/system"><![CDATA[{"default_controller":"settings","protected":0,"default":0}]]></module>
+ <module key="admin/system"><![CDATA[{"default_controller":"settings","protected":0,"default":1}]]></module>
+ <module key="admin/bounces"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
+ <module key="admin/complaints"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
  <task frequency="P0Y0M1DT0H0M0S">awsSesPruneLogs</task>
  <setting key="awsses_access_key"><![CDATA[{"key":"awsses_access_key","default":""}]]></setting>
+ <setting key="awsses_complaint_action"><![CDATA[{"key":"awsses_complaint_action","default":"nothing"}]]></setting>
+ <setting key="awsses_complaint_action_group"><![CDATA[{"key":"awsses_complaint_action_group","default":""}]]></setting>
+ <setting key="awsses_complaint_interval"><![CDATA[{"key":"awsses_complaint_interval","default":"-1"}]]></setting>
  <setting key="awsses_config_set_name"><![CDATA[{"key":"awsses_config_set_name","default":""}]]></setting>
  <setting key="awsses_enabled"><![CDATA[{"key":"awsses_enabled","default":"0"}]]></setting>
+ <setting key="awsses_hard_bounce_action"><![CDATA[{"key":"awsses_hard_bounce_action","default":"nothing"}]]></setting>
+ <setting key="awsses_hard_bounce_action_group"><![CDATA[{"key":"awsses_hard_bounce_action_group","default":""}]]></setting>
+ <setting key="awsses_hard_bounce_interval"><![CDATA[{"key":"awsses_hard_bounce_interval","default":"-1"}]]></setting>
  <setting key="awsses_log_prune_settings"><![CDATA[{"key":"awsses_log_prune_settings","default":""}]]></setting>
  <setting key="awsses_region"><![CDATA[{"key":"awsses_region","default":""}]]></setting>
  <setting key="awsses_secret_key"><![CDATA[{"key":"awsses_secret_key","default":""}]]></setting>
+ <setting key="awsses_soft_bounce_action"><![CDATA[{"key":"awsses_soft_bounce_action","default":"nothing"}]]></setting>
+ <setting key="awsses_soft_bounce_action_group"><![CDATA[{"key":"awsses_soft_bounce_action_group","default":""}]]></setting>
+ <setting key="awsses_soft_bounce_interval"><![CDATA[{"key":"awsses_soft_bounce_interval","default":"-1"}]]></setting>
  <hook key="Email"><![CDATA[{"type":"C","class":"\\IPS\\Email"}]]></hook>
 </build>
