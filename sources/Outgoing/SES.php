@@ -109,28 +109,13 @@ class _SES extends \IPS\Email
      */
     public function _composeEmailPayload($to, $cc = array(), $bcc = array(), $fromEmail = null, $fromName = null, $additionalHeaders = array())
     {
-        // Convert our to to the appropriate data structure
-        $recipients = \is_array($to) ? $to : [$to];
-        $toEmails = array();
-        foreach ($recipients as $recipient) {
-            // Is this a member or email string
-            if ($recipient instanceof \IPS\Member) {
-                // Add the email to the recipient list
-                $toEmails[] = $recipient->email;
-                continue;
-            }
-
-            // Add the email to the recipient list
-            $toEmails[] = $recipient;
-        }
-
-        // Create our message parts
-        $subject = $this->compileSubject(static::_getMemberFromRecipients($to));
+	    // Parse our $to recipients
+	    $toRecipients = array_unique( array_map( 'trim', explode( ',', static::_parseRecipients( $to, TRUE ) ) ) );
 
         // Compose the email payload
-        return [
+        $payload = [
             'Destination' => [
-                'ToAddresses' => $toEmails
+                'ToAddresses' => $toRecipients
             ],
             'ReplyToAddresses' => [$fromEmail ?: \IPS\Settings::i()->email_out],
             'Source' => $fromEmail ?: \IPS\Settings::i()->email_out,
@@ -147,10 +132,25 @@ class _SES extends \IPS\Email
                 ],
                 'Subject' => [
                     'Charset' => 'UTF-8',
-                    'Data' => $subject,
+                    'Data' => $this->compileSubject(static::_getMemberFromRecipients($to)),
                 ],
             ],
             'ConfigurationSet' => $this->configSet,
         ];
+
+	    // If any carbon copy
+	    if ( $cc ) {
+		    // Add to recipients array
+		    $payload['Destination']['CcAddresses'] = array_unique( array_map( 'trim', explode( ',', static::_parseRecipients( $cc, TRUE ) ) ) );
+	    }
+
+	    // If any blind carbon copy
+	    if ( $bcc ) {
+		    // Add to recipients array
+		    $payload['Destination']['BccAddresses'] = array_unique( array_map( 'trim', explode( ',', static::_parseRecipients( $bcc, TRUE ) ) ) );
+	    }
+
+        // Return our payload
+	    return $payload;
     }
 }
