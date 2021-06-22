@@ -23,7 +23,7 @@ class _complaints extends \IPS\Api\Controller
 	public function POSTindex()
 	{
 		// Handle POST request
-		return \IPS\awsses\Api\SES::i()->handleIncomingComplaintRequest();
+		return \IPS\awsses\Api\SES::i()->handleIncomingRequest('complaint');
 	}
 }
 

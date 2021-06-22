@@ -112,13 +112,13 @@ class _Log extends \IPS\Node\Model
      */
     public static function log($member, $action, $type)
     {
-	    // Create our new log
+        // Create our new log
         $log = new static;
         $log->date = time();
-	    $log->member_id = $member instanceof \IPS\Member ? $member->member_id : $member;
+        $log->member_id = $member instanceof \IPS\Member ? $member->member_id : $member;
         $log->type = $type;
         $log->action = $action;
-	    $log->save();
+        $log->save();
     }
 
     public function codingStandards()

@@ -4,6 +4,7 @@
     <rule ref="PSR2"/>
     <file>modules</file>
     <file>sources</file>
+    <exclude-pattern>sources/vendor/*</exclude-pattern>
     <exclude-pattern>data/*</exclude-pattern>
     <exclude-pattern>extensions/*</exclude-pattern>
     <exclude-pattern>hooks/*</exclude-pattern>

@@ -4,142 +4,166 @@ namespace IPS\awsses\Api;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-	header(( isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden');
-	exit;
+    header(( isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden');
+    exit;
 }
 
+use Aws\Exception\AwsException;
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;
 
 class _SES extends \IPS\Patterns\Singleton
 {
-	/**
-	 * Process an incoming API request
-	 */
-	protected function _processRequest($endpoint = 'bounce')
-	{
-		// Try and process the SNS message
-		try
-		{
-			// Get the message data from the POST request
-			$sns = Message::fromRawPostData();
+    /**
+     * @param  string  $type
+     *
+     * @return $this
+     */
+    public function handleIncomingRequest($type = 'bounce')
+    {
+        // Get the message data from the POST request
+        $message = Message::fromRawPostData();
 
-			// Validate the message
-			$validator = new MessageValidator();
-			$validator->validate($sns);
+        // If this is a subscription confirmation request
+        if ($message['Type'] === 'SubscriptionConfirmation') {
+            // Confirm subscription
+            return $this->_confirmSubscription($message);
+        }
 
-			// If validated
-			if ($validator->isValid($sns)) {
-				if ($sns['Type'] === 'Notification') {
-					// Get our message components
-					$message = $sns['Message'];
-					$type = $message['notificationType'];
+        // Handle the request
+        $this->_processRequest($message, $type);
 
-					// If a bounce
-					if ($type === 'Bounce' && $endpoint === 'bounce') {
-						// Handle the bounced emails
-						$this->_parseBouncedEmails($message);
-					}
+        // Return
+        return $this;
+    }
 
-					// If a complaint
-					if ($type === 'Complaint' && $endpoint === 'complaint') {
-						// Handle the bounced emails
-						$this->_parseComplaintEmails($message);
-					}
-				}
-			}
-		}
 
-		// We encountered an error
-		catch (\Exception $exception)
-		{
-			// Log our exception
-			\IPS\Log::log($exception, 'awsses');
-		}
-	}
+    /**
+     * Process an incoming API request
+     */
+    protected function _processRequest($message, $endpoint = 'bounce')
+    {
+        // Try and process the SNS message
+        try {
+            // Validate the message
+            $validator = new MessageValidator();
+            $validator->validate($message);
 
-	/**
-	 * Handle POST request to complaints endpoint
-	 */
-	public function handleIncomingComplaintRequest()
-	{
-		// Process request
-		$this->_processRequest('complaint');
+            // If validated
+            if ($validator->isValid($message)) {
+                if ($message['Type'] === 'Notification') {
+                    // Get our message components
+                    $notification = $message['Message'];
+                    $type = $notification['notificationType'];
 
-		// Return
-		return $this;
-	}
+                    // If a bounce
+                    if ($type === 'Bounce' && $endpoint === 'bounce') {
+                        // Handle the bounced emails
+                        $this->_parseBouncedEmails($notification);
+                    }
 
-	/**
-	 * Handle POST request to bounces endpoint
-	 */
-	public function handleIncomingBounceRequest()
-	{
-		// Process request
-		$this->_processRequest('bounce');
+                    // If a complaint
+                    if ($type === 'Complaint' && $endpoint === 'complaint') {
+                        // Handle the bounced emails
+                        $this->_parseComplaintEmails($notification);
+                    }
+                }
+            }
+        }
 
-		// Return
-		return $this;
-	}
+        // We encountered an error
+        catch (\Exception $exception) {
+            // Log our exception
+            \IPS\Log::log($exception, 'awsses');
+        }
+    }
 
-	/**
-	 * Parse the bounced emails
-	 *
-	 * @param $message
-	 */
-	protected function _parseBouncedEmails($message)
-	{
-		// Get our bounced email addresses
-		$recipients = array();
-		foreach ($message['bounce']['bouncedRecipients'] as $recipient) {
-			$recipients[] = $recipient['emailAddress'];
-		}
+    /**
+     * Parse the bounced emails
+     *
+     * @param $message
+     */
+    protected function _parseBouncedEmails($message)
+    {
+        // Get our bounced email addresses
+        $recipients = array();
+        foreach ($message['bounce']['bouncedRecipients'] as $recipient) {
+            $recipients[] = $recipient['emailAddress'];
+        }
 
-		// Handle soft/hard bounces
-		switch ($message['bounce']['bounceType'])
-		{
-			// Soft bounce
-			case 'Transient':
-				// Process the email addresses
-				$manager = new \IPS\awsses\Manager\SES();
-				$manager->processSoftBouncedEmailAddresses($recipients);
-				break;
+        // Handle soft/hard bounces
+        switch ($message['bounce']['bounceType']) {
+            // Soft bounce
+            case 'Transient':
+                // Process the email addresses
+                $manager = new \IPS\awsses\Manager\SES();
+                $manager->processSoftBouncedEmailAddresses($recipients);
+                break;
 
-			// Hard bounce
-			case 'Permanent':
-				// Process the email addresses
-				$manager = new \IPS\awsses\Manager\SES();
-				$manager->processHardBouncedEmailAddresses($recipients);
-				break;
-		}
-	}
+            // Hard bounce
+            case 'Permanent':
+                // Process the email addresses
+                $manager = new \IPS\awsses\Manager\SES();
+                $manager->processHardBouncedEmailAddresses($recipients);
+                break;
+        }
+    }
 
-	/**
-	 * Parse the complaint emails
-	 *
-	 * @param $message
-	 */
-	protected function _parseComplaintEmails($message)
-	{
-		// Get our bounced email addresses
-		$recipients = array();
-		foreach ($message['complaint']['complainedRecipients'] as $recipient) {
-			$recipients[] = $recipient['emailAddress'];
-		}
+    /**
+     * Parse the complaint emails
+     *
+     * @param $message
+     */
+    protected function _parseComplaintEmails($message)
+    {
+        // Get our bounced email addresses
+        $recipients = array();
+        foreach ($message['complaint']['complainedRecipients'] as $recipient) {
+            $recipients[] = $recipient['emailAddress'];
+        }
 
-		// Process complaints
-		$manager = new \IPS\awsses\Manager\SES();
-		$manager->processComplaintEmailAddresses($recipients);
-	}
+        // Process complaints
+        $manager = new \IPS\awsses\Manager\SES();
+        $manager->processComplaintEmailAddresses($recipients);
+    }
 
-	/**
-	 * Get output for API
-	 *
-	 * @return string
-	 */
-	public function getOutput()
-	{
-		// Return empty string
-		return null;
-	}
+    /**
+     * @param  array  $headers
+     *
+     * @return _SES
+     */
+    protected function _confirmSubscription($message)
+    {
+        // Try and subscribe to the subscription
+        try {
+            // Set up our SNS Client
+            $manager = new \IPS\awsses\Manager\SNS();
+
+            // Subscribe to the subscription
+            $manager->client->confirmSubscription([
+                'Token' => $message['Token'],
+                'TopicArn' => $message['TopicArn']
+            ]);
+        }
+
+        // Catch any exceptions
+        catch (AwsException $exception) {
+            // Log our exceptions
+            \IPS\Log::log($exception, 'awsses');
+        }
+
+        // Return
+        return $this;
+    }
+
+    /**
+     * Get output for API
+     *
+     * @return string
+     */
+    public function getOutput()
+    {
+        // Return empty string
+        return null;
+    }
 }

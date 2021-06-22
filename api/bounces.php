@@ -23,7 +23,7 @@ class _bounces extends \IPS\Api\Controller
 	public function POSTindex()
 	{
 		// Handle POST request
-		return \IPS\awsses\Api\SES::i()->handleIncomingBounceRequest();
+		return \IPS\awsses\Api\SES::i()->handleIncomingRequest('bounce');
 	}
 }
 
