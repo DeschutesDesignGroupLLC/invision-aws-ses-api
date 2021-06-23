@@ -70,13 +70,17 @@ class _SES extends \IPS\Email
         // Parse our $to recipients
         $toRecipients = array_unique(array_map('trim', explode(',', static::_parseRecipients($to, true))));
 
-        // Compose the email payload
+        // Get from settings
+        $newFromName = $fromName ?? \IPS\Settings::i()->board_name;
+	    $newFromEmail = $fromEmail ?? \IPS\Settings::i()->email_out;
+
+	    // Compose the email payload
         $payload = [
             'Destination' => [
                 'ToAddresses' => $toRecipients
             ],
             'ReplyToAddresses' => [$fromEmail ?? \IPS\Settings::i()->email_out],
-            'Source' => $fromEmail ?? \IPS\Settings::i()->email_out,
+            'Source' => "{$newFromName} <{$newFromEmail}>",
             'Message' =>[
                 'Body' => [
                     'Html' => [
