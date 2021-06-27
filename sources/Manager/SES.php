@@ -74,7 +74,7 @@ class _SES extends Manager
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
             // Make sure nothing is not checked
-            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions)) {
+            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
                 // Try to find the member
                 $member = \IPS\Member::load($emailAddress, 'email');
 
@@ -172,7 +172,7 @@ class _SES extends Manager
             $emailAddresses = [$emailAddresses];
         }
 
-        // Get hard bounce settings
+	    // Get hard bounce settings
         $actions = \IPS\Settings::i()->awsses_hard_bounce_action;
 
         // Get interval settings
@@ -180,8 +180,8 @@ class _SES extends Manager
 
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
-            // Make sure nothing is not checked
-            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions)) {
+	        // Make sure nothing is not checked and we have some actions saved
+            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
                 // Try to find the member
                 $member = \IPS\Member::load($emailAddress, 'email');
 
@@ -263,7 +263,8 @@ class _SES extends Manager
 
             // No action being applied
             else {
-                // Still log the bounce
+
+	            // Still log the bounce
                 $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
             }
         }
@@ -288,7 +289,7 @@ class _SES extends Manager
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
             // Make sure nothing is not checked
-            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions)) {
+            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
                 // Try to find the member
                 $member = \IPS\Member::load($emailAddress, 'email');
 

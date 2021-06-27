@@ -45,12 +45,18 @@ class _SES extends \IPS\Patterns\Singleton
     {
         // Try and process the SNS message
         try {
-            // Validate the message
-            $validator = new MessageValidator();
-            $validator->validate($message);
 
-            // If validated
-            if ($validator->isValid($message)) {
+            // If not in dev, validate the message
+	        $valid = true;
+	        if (!\IPS\IN_DEV) {
+		        // Validate the message
+		        $validator = new MessageValidator();
+		        $validator->validate($message);
+		        $valid = $validator->isValid($message);
+	        }
+
+            // If valid
+            if ($valid) {
                 if ($message['Type'] === 'Notification') {
                     // Get our message components
                     $notification = $message['Message'];
