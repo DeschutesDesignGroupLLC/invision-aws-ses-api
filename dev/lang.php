@@ -9,12 +9,8 @@ $lang = array(
 	'menu__awsses_system' => 'Mail',
 	'menu__awsses_system_settings' => 'Settings',
 	'menu__awsses_system_logs' => 'Logs',
-	'menu__awsses_bounces' => 'Bounces',
-	'menu__awsses_bounces_logs' => 'Logs',
-	'menu__awsses_bounces_settings' => 'Settings',
-	'menu__awsses_complaints' => 'Complaints',
-	'menu__awsses_complaints_logs' => 'Logs',
-	'menu__awsses_complaints_settings' => 'Settings',
+	'menu__awsses_system_bounces' => 'Bounces',
+	'menu__awsses_system_complaints' => 'Complaints',
 
 	// Restrictions
 	'r__settings_manage' => 'Can change settings?',
@@ -24,11 +20,11 @@ $lang = array(
 	// Settings
 	'awsses_settings_tab_system' => 'System',
 	'awsses_settings_email_override_message' => 'Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.',
-	'awsses_settings_message' => 'Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.',
+	'awsses_settings_message' => 'Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess and AmazonSNSFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.',
 	'awsses_enabled' => 'Enabled',
 	'awsses_enabled_desc' => 'Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.',
 	'awsses_access_key' => 'Access Key',
-	'awsses_access_key_desc' => 'You will need to make sure you have attached the AmazonSESFullAccess policy to the IAM role you are using so that IPB can access the AWS SES API.',
+	'awsses_access_key_desc' => 'You will need to make sure you have attached the AmazonSESFullAccess and AmazonSNSFullAccess policy to the IAM role you are using so that IPB can access the AWS Simple Email Service and AWS Simple Notification Service API.',
 	'awsses_secret_key' => 'Secret Key',
 	'awsses_config_set_name' => 'Config Set Name',
 	'awsses_region' => 'Region',
@@ -85,6 +81,7 @@ $lang = array(
 	'log_type' => 'Type',
 	'log_action' => 'Action',
 	'log_email' => 'Email',
+	'log_status' => 'Status',
 
 	// Form
 	'awsses_form_process_immediately' => 'Process Immediately',

@@ -72,9 +72,9 @@ class _SES extends \IPS\Email
 
         // Get from settings
         $newFromName = $fromName ?? \IPS\Settings::i()->board_name;
-	    $newFromEmail = $fromEmail ?? \IPS\Settings::i()->email_out;
+        $newFromEmail = $fromEmail ?? \IPS\Settings::i()->email_out;
 
-	    // Compose the email payload
+        // Compose the email payload
         $payload = [
             'Destination' => [
                 'ToAddresses' => $toRecipients

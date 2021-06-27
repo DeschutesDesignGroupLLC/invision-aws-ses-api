@@ -1,7 +1,6 @@
 <?php
 
-
-namespace IPS\awsses\modules\admin\complaints;
+namespace IPS\awsses\modules\admin\system;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
@@ -10,9 +9,9 @@ if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
 }
 
 /**
- * settings
+ * complaints
  */
-class _settings extends \IPS\Dispatcher\Controller
+class _complaints extends \IPS\Dispatcher\Controller
 {
     /**
      * @brief   Has been CSRF-protected

@@ -41,6 +41,8 @@ class _awsSesPruneLogs extends \IPS\Task
 		{
 			// Prune the logs
 			\IPS\awsses\Outgoing\Log::pruneLogs( \IPS\Settings::i()->awsses_log_prune_settings );
+			\IPS\awsses\Bounce\Log::pruneLogs( \IPS\Settings::i()->awsses_log_prune_settings );
+			\IPS\awsses\Complaint\Log::pruneLogs( \IPS\Settings::i()->awsses_log_prune_settings );
 		}
 
 		// Return nothing

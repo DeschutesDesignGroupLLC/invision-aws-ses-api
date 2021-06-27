@@ -1,7 +1,13 @@
 <?php
+/*
+ * Copyright (c) 6/22/21, 5:12 PM Deschutes Design Group LLC.year. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
 
-
-namespace IPS\awsses\modules\admin\bounces;
+namespace IPS\awsses\modules\admin\system;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
@@ -10,9 +16,9 @@ if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
 }
 
 /**
- * settings
+ * bounces
  */
-class _settings extends \IPS\Dispatcher\Controller
+class _bounces extends \IPS\Dispatcher\Controller
 {
     /**
      * @brief   Has been CSRF-protected

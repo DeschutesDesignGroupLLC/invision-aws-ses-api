@@ -7,34 +7,16 @@
             "restriction": "settings_manage",
             "subcontrollers": ""
         },
-        "logs": {
+        "bounces": {
             "tab": "awsses",
-            "controller": "logs",
-            "do": "",
-            "restriction": "logs_manage",
-            "subcontrollers": ""
-        }
-    },
-    "bounces": {
-        "settings": {
-            "tab": "awsses",
-            "controller": "settings",
+            "controller": "bounces",
             "do": "",
             "restriction": "settings_manage",
             "subcontrollers": ""
         },
-        "logs": {
+        "complaints": {
             "tab": "awsses",
-            "controller": "logs",
-            "do": "",
-            "restriction": "logs_manage",
-            "subcontrollers": ""
-        }
-    },
-    "complaints": {
-        "settings": {
-            "tab": "awsses",
-            "controller": "settings",
+            "controller": "complaints",
             "do": "",
             "restriction": "settings_manage",
             "subcontrollers": ""

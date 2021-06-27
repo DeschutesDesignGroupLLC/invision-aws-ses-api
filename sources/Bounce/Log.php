@@ -121,6 +121,18 @@ class _Log extends \IPS\Node\Model
         $log->save();
     }
 
+	/**
+	 * Prune logs
+	 *
+	 * @param   int     $days   Older than (days) to prune
+	 * @return  void
+	 */
+	public static function pruneLogs($days)
+	{
+		// Select from the database where date is greater than
+		\IPS\Db::i()->delete(static::$databaseTable, array( 'date<?', \IPS\DateTime::create()->sub(new \DateInterval('P' . $days . 'D'))->getTimestamp() ));
+	}
+
     public function codingStandards()
     {
         return null;
