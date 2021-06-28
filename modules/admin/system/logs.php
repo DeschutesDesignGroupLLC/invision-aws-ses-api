@@ -42,7 +42,7 @@ class _logs extends \IPS\Dispatcher\Controller
         // Create the table
         $table = new \IPS\Helpers\Table\Db(\IPS\awsses\Outgoing\Log::$databaseTable, \IPS\Http\Url::internal('app=awsses&module=system&controller=logs'));
         $table->langPrefix = 'log_';
-        $table->include = array( 'date', 'status', 'subject', 'to', 'messageId');
+        $table->include = array( 'date', 'status', 'subject', 'to', 'cc', 'bcc');
         $table->sortBy = $table->sortBy ?: 'date';
         $table->sortDirection = $table->sortDirection ?: 'desc';
         $table->rowClasses = array( 'messageId' => array( 'ipsTable_wrap ' ));
@@ -67,6 +67,16 @@ class _logs extends \IPS\Dispatcher\Controller
                 $payload = json_decode($row['payload'], true);
                 return array_key_exists('ToAddresses', $payload['Destination']) ? implode(', ', $payload['Destination']['ToAddresses']) : null;
             },
+	        'cc' => function ($val, $row) {
+		        // Return the date
+		        $payload = json_decode($row['payload'], true);
+		        return array_key_exists('CcAddresses', $payload['Destination']) ? implode(', ', $payload['Destination']['CcAddresses']) : null;
+	        },
+	        'bcc' => function ($val, $row) {
+		        // Return the date
+		        $payload = json_decode($row['payload'], true);
+		        return array_key_exists('ToAddresses', $payload['BccAddresses']) ? implode(', ', $payload['Destination']['BccAddresses']) : null;
+	        },
             'subject' => function ($val, $row) {
                 // Return the recipient
                 $payload = json_decode($row['payload'], true);
@@ -108,12 +118,12 @@ class _logs extends \IPS\Dispatcher\Controller
         // Add our other logs
 	    $actions['bounces'] = array(
 		    'title' => 'awsses_bounce_logs',
-		    'icon' => 'cog',
+		    'icon' => 'exclamation-circle',
 		    'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=bounces'),
 	    );
 	    $actions['complaints'] = array(
 		    'title' => 'awsses_complaint_logs',
-		    'icon' => 'cog',
+		    'icon' => 'exclamation-circle',
 		    'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=complaints'),
 	    );
 

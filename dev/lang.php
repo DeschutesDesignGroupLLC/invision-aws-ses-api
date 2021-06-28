@@ -73,6 +73,8 @@ $lang = array(
 
 	// Log Table Columns
 	'log_to' => 'To',
+	'log_cc' => 'CC',
+	'log_bcc' => 'BCC',
 	'log_messageId' => 'Message ID',
 	'log_exception' => 'Stack Trace',
 	'log_error_message' => 'Error',
