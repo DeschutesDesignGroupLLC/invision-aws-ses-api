@@ -157,6 +157,12 @@ class _SES extends Manager
                         $this->_logBounceAction($member, static::AWSSES_ACTION_INTERVAL, 'soft');
                     }
                 }
+
+                // Member not found
+                else {
+	                // Still log the bounce
+	                $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
+                }
             }
 
             // No action being applied
@@ -268,6 +274,12 @@ class _SES extends Manager
                         // Still log the bounce
                         $this->_logBounceAction($member, static::AWSSES_ACTION_INTERVAL, 'hard');
                     }
+                }
+
+                // Member not found
+                else {
+	                // Still log the bounce
+	                $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
                 }
             }
 
@@ -381,6 +393,12 @@ class _SES extends Manager
                         // Still log the complaint
                         $this->_logComplaintAction($member, static::AWSSES_ACTION_INTERVAL);
                     }
+                }
+
+                // Member not found
+                else {
+	                // Still log the bounce
+	                $this->_logComplaintAction($emailAddress, static::AWSSES_ACTION_NOTHING);
                 }
             }
 
