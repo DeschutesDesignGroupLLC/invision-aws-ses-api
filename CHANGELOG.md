@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2021-07-13
+### Fixed
+- API Manager now properly parses SNS notifications for Bounce and Complaint Management.
+- Saved settings are now formatted correctly.
+
 ## [1.0.3] - 2021-05-29
 ### Added
 - Ready for 4.6.

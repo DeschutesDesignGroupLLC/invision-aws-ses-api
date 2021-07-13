@@ -1,0 +1,28 @@
+{
+    "normal": {
+        "added": [
+            "menu__awsses_system_bounces",
+            "menu__awsses_system_complaints",
+            "log_cc",
+            "log_bcc",
+            "log_status"
+        ],
+        "edited": [
+            "awsses_settings_message",
+            "awsses_access_key_desc"
+        ],
+        "removed": [
+            "menu__awsses_bounces",
+            "menu__awsses_bounces_logs",
+            "menu__awsses_bounces_settings",
+            "menu__awsses_complaints",
+            "menu__awsses_complaints_logs",
+            "menu__awsses_complaints_settings"
+        ]
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

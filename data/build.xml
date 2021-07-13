@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <build>
  <module key="admin/system"><![CDATA[{"default_controller":"settings","protected":0,"default":1}]]></module>
- <module key="admin/bounces"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
- <module key="admin/complaints"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
  <task frequency="P0Y0M1DT0H0M0S">awsSesPruneLogs</task>
  <setting key="awsses_access_key"><![CDATA[{"key":"awsses_access_key","default":""}]]></setting>
  <setting key="awsses_complaint_action"><![CDATA[{"key":"awsses_complaint_action","default":"nothing"}]]></setting>

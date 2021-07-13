@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10006">
+ <app key="awsses" version="10007">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
   <word key="menu__awsses_system" js="0">Mail</word>
   <word key="menu__awsses_system_settings" js="0">Settings</word>
   <word key="menu__awsses_system_logs" js="0">Logs</word>
-  <word key="menu__awsses_bounces" js="0">Bounces</word>
-  <word key="menu__awsses_bounces_logs" js="0">Logs</word>
-  <word key="menu__awsses_bounces_settings" js="0">Settings</word>
-  <word key="menu__awsses_complaints" js="0">Complaints</word>
-  <word key="menu__awsses_complaints_logs" js="0">Logs</word>
-  <word key="menu__awsses_complaints_settings" js="0">Settings</word>
+  <word key="menu__awsses_system_bounces" js="0">Bounces</word>
+  <word key="menu__awsses_system_complaints" js="0">Complaints</word>
   <word key="r__settings_manage" js="0">Can change settings?</word>
   <word key="r__logs_manage" js="0">Can view logs?</word>
   <word key="r__logs_prune_settings" js="0">Can adjust prune settings?</word>
   <word key="awsses_settings_tab_system" js="0">System</word>
   <word key="awsses_settings_email_override_message" js="0">Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.</word>
-  <word key="awsses_settings_message" js="0">Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.</word>
+  <word key="awsses_settings_message" js="0">Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess and AmazonSNSFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.</word>
   <word key="awsses_enabled" js="0">Enabled</word>
   <word key="awsses_enabled_desc" js="0">Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.</word>
   <word key="awsses_access_key" js="0">Access Key</word>
-  <word key="awsses_access_key_desc" js="0">You will need to make sure you have attached the AmazonSESFullAccess policy to the IAM role you are using so that IPB can access the AWS SES API.</word>
+  <word key="awsses_access_key_desc" js="0">You will need to make sure you have attached the AmazonSESFullAccess and AmazonSNSFullAccess policy to the IAM role you are using so that IPB can access the AWS Simple Email Service and AWS Simple Notification Service API.</word>
   <word key="awsses_secret_key" js="0">Secret Key</word>
   <word key="awsses_config_set_name" js="0">Config Set Name</word>
   <word key="awsses_region" js="0">Region</word>
@@ -65,6 +61,8 @@
   <word key="awsses_settings_updated" js="0">The AWS Simple Email Service settings have been updated.</word>
   <word key="awsses_log_prune_settings" js="0">Prune Settings</word>
   <word key="log_to" js="0">To</word>
+  <word key="log_cc" js="0">CC</word>
+  <word key="log_bcc" js="0">BCC</word>
   <word key="log_messageId" js="0">Message ID</word>
   <word key="log_exception" js="0">Stack Trace</word>
   <word key="log_error_message" js="0">Error</word>
@@ -73,6 +71,7 @@
   <word key="log_type" js="0">Type</word>
   <word key="log_action" js="0">Action</word>
   <word key="log_email" js="0">Email</word>
+  <word key="log_status" js="0">Status</word>
   <word key="awsses_form_process_immediately" js="0">Process Immediately</word>
   <word key="awsses_action_nothing" js="0">No action was applied.</word>
   <word key="awsses_action_group" js="0">User was moved to a group.</word>
