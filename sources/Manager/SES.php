@@ -68,6 +68,11 @@ class _SES extends Manager
         // Get soft bounce settings
         $actions = \IPS\Settings::i()->awsses_soft_bounce_action;
 
+	    // Make sure our actions are an array
+	    if (!\is_array($actions)) {
+		    $actions = [$actions];
+	    }
+
         // Get interval settings
         $interval = \IPS\Settings::i()->awsses_soft_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_soft_bounce_interval : false;
 
@@ -174,6 +179,11 @@ class _SES extends Manager
 
 	    // Get hard bounce settings
         $actions = \IPS\Settings::i()->awsses_hard_bounce_action;
+
+	    // Make sure our actions are an array
+	    if (!\is_array($actions)) {
+		    $actions = [$actions];
+	    }
 
         // Get interval settings
         $interval = \IPS\Settings::i()->awsses_hard_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_hard_bounce_interval : false;
@@ -282,6 +292,11 @@ class _SES extends Manager
 
         // Get complaint settings
         $actions = \IPS\Settings::i()->awsses_complaint_action;
+
+	    // Make sure our actions are an array
+	    if (!\is_array($actions)) {
+		    $actions = [$actions];
+	    }
 
         // Get interval settings
         $interval = \IPS\Settings::i()->awsses_complaint_interval !== '-1' ? \IPS\Settings::i()->awsses_complaint_interval : false;
