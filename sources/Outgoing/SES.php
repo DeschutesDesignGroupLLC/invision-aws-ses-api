@@ -80,7 +80,7 @@ class _SES extends \IPS\Email
                 'ToAddresses' => $toRecipients
             ],
             'ReplyToAddresses' => [$fromEmail ?? \IPS\Settings::i()->email_out],
-            'Source' => "{$newFromName} <{$newFromEmail}>",
+            'Source' => "\"{$newFromName}\" <{$newFromEmail}>",
             'Message' =>[
                 'Body' => [
                     'Html' => [
