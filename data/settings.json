@@ -20,6 +20,10 @@
         "default": ""
     },
     {
+        "key": "awsses_default_verified_identity",
+        "default": ""
+    },
+    {
         "key": "awsses_enabled",
         "default": "0"
     },
@@ -58,5 +62,9 @@
     {
         "key": "awsses_soft_bounce_interval",
         "default": "-1"
+    },
+    {
+        "key": "awsses_verified_identities",
+        "default": ""
     }
 ]

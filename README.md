@@ -24,12 +24,15 @@ Amazon SES is one of the most robust and cheapest transactional email service pr
 10. Copy the corresponding region identifier and input it into the corresponding field within the Invision Power Board ACP settings.
 11. Save your Invision Power Board ACP settings.
 12. Back within the AWS Console, select Domains -> Verify a New Domain to add the domain you wish to send emails from. This is called Verified Identities - Add Identity, if you are using the new AWS console.
-13. Make sure to check the "Generate DKIM Settings" checkbox. These are enabled by default if using the new AWS console. This will help with your deliverability.
-14. Update your DNS records for the domain you are verifying by adding the TXT and CNAME records that are presented.
-15. Make sure to not update the MX records as this will affect your ability to receive the emails. We are only configuring sending emails.
-16. Once the domain has been verified, you are ready to start sending emails.
-17. While in the sandbox environment, you will need to add your test receiving email address under the Email Addresses section or else you will receive a sending error.
-18. Once everything is configured, proceed back to the Invision Power Board ACP and proceed to Email Settings. You can use the built in Test Email Settings feature to test AWS SES. You will see the corresponding logs under the AWS SES application and any generated errors.
+13. You may enter as many email addresses as you wish to send email from.
+14. Make sure to check the "Generate DKIM Settings" checkbox. These are enabled by default if using the new AWS console. This will help with your deliverability.
+15. Update your DNS records for the domain you are verifying by adding the TXT and CNAME records that are presented.
+16. Make sure to not update the MX records as this will affect your ability to receive the emails. We are only configuring sending emails.
+17. For each verified identity you add, enter the same email address in the corresponding field of your Invision Power Board ACP settings.
+18. Once an email address has been verified, you are ready to start sending emails.
+19. Fill in the Default Sending Email Address field of your Invision Power Board ACP settings. This will help your Invision Power Board website not send emails from unverified domains. This may happen through third party applications.
+20. While in the sandbox environment, you will need to add your test receiving email address under the Email Addresses section or else you will receive a sending error.
+21. Once everything is configured, proceed back to the Invision Power Board ACP and proceed to Email Settings. You can use the built in Test Email Settings feature to test AWS SES. You will see the corresponding logs under the AWS SES application and any generated errors.
 
 **Simple Notification Service Installation For Handling Bounces/Complaints:**
 

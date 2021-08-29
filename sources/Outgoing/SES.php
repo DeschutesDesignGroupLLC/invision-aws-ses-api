@@ -70,16 +70,19 @@ class _SES extends \IPS\Email
         // Parse our $to recipients
         $toRecipients = array_unique(array_map('trim', explode(',', static::_parseRecipients($to, true))));
 
+        // Get instance of SES Manager
+        $manager = new \IPS\awsses\Manager\SES();
+
         // Get from settings
         $newFromName = $fromName ?? \IPS\Settings::i()->board_name;
-        $newFromEmail = $fromEmail ?? \IPS\Settings::i()->email_out;
+        $newFromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
 
         // Compose the email payload
         $payload = [
             'Destination' => [
                 'ToAddresses' => $toRecipients
             ],
-            'ReplyToAddresses' => [$fromEmail ?? \IPS\Settings::i()->email_out],
+            'ReplyToAddresses' => [$newFromEmail],
             'Source' => "\"{$newFromName}\" <{$newFromEmail}>",
             'Message' =>[
                 'Body' => [

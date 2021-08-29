@@ -68,10 +68,10 @@ class _SES extends Manager
         // Get soft bounce settings
         $actions = \IPS\Settings::i()->awsses_soft_bounce_action;
 
-	    // Make sure our actions are an array
-	    if (!\is_array($actions)) {
-		    $actions = [$actions];
-	    }
+        // Make sure our actions are an array
+        if (!\is_array($actions)) {
+            $actions = [$actions];
+        }
 
         // Get interval settings
         $interval = \IPS\Settings::i()->awsses_soft_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_soft_bounce_interval : false;
@@ -160,8 +160,8 @@ class _SES extends Manager
 
                 // Member not found
                 else {
-	                // Still log the bounce
-	                $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
+                    // Still log the bounce
+                    $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
                 }
             }
 
@@ -183,20 +183,20 @@ class _SES extends Manager
             $emailAddresses = [$emailAddresses];
         }
 
-	    // Get hard bounce settings
+        // Get hard bounce settings
         $actions = \IPS\Settings::i()->awsses_hard_bounce_action;
 
-	    // Make sure our actions are an array
-	    if (!\is_array($actions)) {
-		    $actions = [$actions];
-	    }
+        // Make sure our actions are an array
+        if (!\is_array($actions)) {
+            $actions = [$actions];
+        }
 
         // Get interval settings
         $interval = \IPS\Settings::i()->awsses_hard_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_hard_bounce_interval : false;
 
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
-	        // Make sure nothing is not checked and we have some actions saved
+            // Make sure nothing is not checked and we have some actions saved
             if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
                 // Try to find the member
                 $member = \IPS\Member::load($emailAddress, 'email');
@@ -278,15 +278,14 @@ class _SES extends Manager
 
                 // Member not found
                 else {
-	                // Still log the bounce
-	                $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
+                    // Still log the bounce
+                    $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
                 }
             }
 
             // No action being applied
             else {
-
-	            // Still log the bounce
+                // Still log the bounce
                 $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
             }
         }
@@ -305,10 +304,10 @@ class _SES extends Manager
         // Get complaint settings
         $actions = \IPS\Settings::i()->awsses_complaint_action;
 
-	    // Make sure our actions are an array
-	    if (!\is_array($actions)) {
-		    $actions = [$actions];
-	    }
+        // Make sure our actions are an array
+        if (!\is_array($actions)) {
+            $actions = [$actions];
+        }
 
         // Get interval settings
         $interval = \IPS\Settings::i()->awsses_complaint_interval !== '-1' ? \IPS\Settings::i()->awsses_complaint_interval : false;
@@ -397,8 +396,8 @@ class _SES extends Manager
 
                 // Member not found
                 else {
-	                // Still log the bounce
-	                $this->_logComplaintAction($emailAddress, static::AWSSES_ACTION_NOTHING);
+                    // Still log the bounce
+                    $this->_logComplaintAction($emailAddress, static::AWSSES_ACTION_NOTHING);
                 }
             }
 
@@ -490,5 +489,24 @@ class _SES extends Manager
     {
         // Create our log
         \IPS\awsses\Complaint\Log::log($member, $action);
+    }
+
+    /**
+     * @param  null  $fromEmail
+     *
+     * @return mixed
+     */
+    public function getSendingEmailAddress($fromEmail = null)
+    {
+        // Get default
+        $email = \IPS\Settings::i()->awsses_default_verified_identity;
+
+        // If we have an incoming email and it's a valid verified identitiy
+        if ($fromEmail && \in_array($fromEmail, explode(',', \IPS\Settings::i()->awsses_verified_identities))) {
+            return $fromEmail;
+        }
+
+        // Return our default email
+        return $email;
     }
 }

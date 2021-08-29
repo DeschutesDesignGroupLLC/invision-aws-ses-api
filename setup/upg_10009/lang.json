@@ -1,0 +1,17 @@
+{
+    "normal": {
+        "added": [
+            "awsses_verified_identities",
+            "awsses_verified_identities_desc",
+            "awsses_default_verified_identity",
+            "awsses_default_verified_identity_desc"
+        ],
+        "edited": [],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

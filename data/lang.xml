@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10008">
+ <app key="awsses" version="10009">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
@@ -53,6 +53,10 @@
   <word key="awsses_complaint_action_group_desc" js="0">When a complaint is encountered, the recipient will be moved to this group.</word>
   <word key="awsses_complaint_action_notification" js="0">Complaint Notification</word>
   <word key="awsses_complaint_action_notification_desc" js="0">When a complaint is encountered, the recipient will be presented with the following notification.</word>
+  <word key="awsses_verified_identities" js="0">Verified Identities</word>
+  <word key="awsses_verified_identities_desc" js="0">Please enter all your verified identities (email addresses) that will be used to send email through AWS Simple Email Service. Each one must be added via the AWS Console. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.</word>
+  <word key="awsses_default_verified_identity" js="0">Default Sending Email Address</word>
+  <word key="awsses_default_verified_identity_desc" js="0">If the sending email address does not match one of the identities above, this email address will be used to send the email.</word>
   <word key="awsses_log" js="0">Log</word>
   <word key="awsses_logs" js="0">Outgoing Logs</word>
   <word key="awsses_bounce_logs" js="0">Bounce Logs</word>

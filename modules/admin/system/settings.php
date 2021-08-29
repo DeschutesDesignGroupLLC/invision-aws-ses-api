@@ -56,6 +56,8 @@ class _settings extends \IPS\Dispatcher\Controller
         $form->add(new \IPS\Helpers\Form\Password('awsses_secret_key', $secret, true));
         $form->add(new \IPS\Helpers\Form\Text('awsses_region', \IPS\Settings::i()->awsses_region, true, array( 'placeholder' => 'us-west-2', '' )));
         $form->add(new \IPS\Helpers\Form\Text('awsses_config_set_name', \IPS\Settings::i()->awsses_config_set_name, false));
+        $form->add(new \IPS\Helpers\Form\Stack('awsses_verified_identities', explode(',', \IPS\Settings::i()->awsses_verified_identities), true, array('stackFieldType' => 'Email')));
+        $form->add(new \IPS\Helpers\Form\Email('awsses_default_verified_identity', \IPS\Settings::i()->awsses_default_verified_identity, true));
 
         // If we have values in our form
         if ($values = $form->values()) {
@@ -65,6 +67,11 @@ class _settings extends \IPS\Dispatcher\Controller
             // Encrypt the secret key
             if ($values['awsses_secret_key']) {
                 $values['awsses_secret_key'] = \IPS\Text\Encrypt::fromPlaintext($values['awsses_secret_key'])->tag();
+            }
+
+            // If we have verified identities
+            if ($values['awsses_verified_identities']) {
+                $values['awsses_verified_identities'] = implode(',', $values['awsses_verified_identities']);
             }
 
             // Save the settings

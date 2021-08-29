@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2021-08-29
+### Added
+- All verified identities will now need to be saved in your Invision Power Board ACP settings. This will help the application with determining the appropriate sending email address to use.
+
 ## [1.0.6] - 2021-08-08
 ### Fixed
 - FROM name is now double-quoted to comply with RFC 3696 which enables support for ASCII graphic characters in your FROM name.
