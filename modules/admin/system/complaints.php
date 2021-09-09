@@ -39,6 +39,12 @@ class _complaints extends \IPS\Dispatcher\Controller
      */
     protected function manage()
     {
+	    // Modify groups array
+	    $groups = array();
+	    foreach (\IPS\Member\Group::groups() as $group) {
+		    $groups[ $group->g_id ] = $group->name;
+	    }
+
         // Create a new form
         $form = new \IPS\Helpers\Form;
         $form->addMessage('awsses_settings_bounce_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
@@ -58,7 +64,7 @@ class _complaints extends \IPS\Dispatcher\Controller
                 'group' => array('awsses_complaint_action_group'),
             )
         )));
-        $form->add(new \IPS\Helpers\Form\Select('awsses_complaint_action_group', \IPS\Settings::i()->awsses_complaint_action_group, false, array('options' => \IPS\Member\Group::groups()), null, null, null, 'awsses_complaint_action_group'));
+        $form->add(new \IPS\Helpers\Form\Select('awsses_complaint_action_group', \IPS\Settings::i()->awsses_complaint_action_group, false, array('options' => $groups), null, null, null, 'awsses_complaint_action_group'));
 
         // If we have values in our form
         if ($values = $form->values()) {

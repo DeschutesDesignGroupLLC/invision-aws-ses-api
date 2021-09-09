@@ -50,6 +50,12 @@ class _bounces extends \IPS\Dispatcher\Controller
         // Create a new form
         $form = new \IPS\Helpers\Form;
 
+        // Modify groups array
+	    $groups = array();
+	    foreach (\IPS\Member\Group::groups() as $group) {
+		    $groups[ $group->g_id ] = $group->name;
+	    }
+
         // Hard Bounces
         $form->addTab('awsses_settings_tab_soft_bounces');
         $form->addMessage('awsses_settings_bounce_message', 'ipsPad ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
@@ -69,7 +75,7 @@ class _bounces extends \IPS\Dispatcher\Controller
                 'group' => array('awsses_soft_bounce_action_group'),
             )
         )));
-        $form->add(new \IPS\Helpers\Form\Select('awsses_soft_bounce_action_group', \IPS\Settings::i()->awsses_soft_bounce_action_group, false, array('options' => \IPS\Member\Group::groups()), null, null, null, 'awsses_soft_bounce_action_group'));
+        $form->add(new \IPS\Helpers\Form\Select('awsses_soft_bounce_action_group', \IPS\Settings::i()->awsses_soft_bounce_action_group, false, array('options' => $groups), null, null, null, 'awsses_soft_bounce_action_group'));
 
         // Soft Bounces
         $form->addTab('awsses_settings_tab_hard_bounces');
@@ -90,7 +96,7 @@ class _bounces extends \IPS\Dispatcher\Controller
                 'group' => array('awsses_hard_bounce_action_group'),
             )
         )));
-        $form->add(new \IPS\Helpers\Form\Select('awsses_hard_bounce_action_group', \IPS\Settings::i()->awsses_hard_bounce_action_group, false, array('options' => \IPS\Member\Group::groups()), null, null, null, 'awsses_hard_bounce_action_group'));
+        $form->add(new \IPS\Helpers\Form\Select('awsses_hard_bounce_action_group', \IPS\Settings::i()->awsses_hard_bounce_action_group, false, array('options' => $groups), null, null, null, 'awsses_hard_bounce_action_group'));
 
         // If we have values in our form
         if ($values = $form->values()) {

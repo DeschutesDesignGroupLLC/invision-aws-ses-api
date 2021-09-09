@@ -501,7 +501,7 @@ class _SES extends Manager
         // Get default
         $email = \IPS\Settings::i()->awsses_default_verified_identity;
 
-        // If we have an incoming email and it's a valid verified identitiy
+        // If we have an incoming email, and it's a valid verified identity
         if ($fromEmail && \in_array($fromEmail, explode(',', \IPS\Settings::i()->awsses_verified_identities))) {
             return $fromEmail;
         }

@@ -65,22 +65,22 @@ class _logs extends \IPS\Dispatcher\Controller
             'to' => function ($val, $row) {
                 // Return the date
                 $payload = json_decode($row['payload'], true);
-                return array_key_exists('ToAddresses', $payload['Destination']) ? implode(', ', $payload['Destination']['ToAddresses']) : null;
+                return isset($payload['Destination']['ToAddresses']) ? implode(', ', $payload['Destination']['ToAddresses']) : null;
             },
             'cc' => function ($val, $row) {
                 // Return the date
                 $payload = json_decode($row['payload'], true);
-                return array_key_exists('CcAddresses', $payload['Destination']) ? implode(', ', $payload['Destination']['CcAddresses']) : null;
+                return isset($payload['Destination']['CcAddresses']) ? implode(', ', $payload['Destination']['CcAddresses']) : null;
             },
             'bcc' => function ($val, $row) {
                 // Return the date
                 $payload = json_decode($row['payload'], true);
-                return array_key_exists('ToAddresses', $payload['BccAddresses']) ? implode(', ', $payload['Destination']['BccAddresses']) : null;
+                return isset($payload['BccAddresses']['BccAddresses']) ? implode(', ', $payload['Destination']['BccAddresses']) : null;
             },
             'subject' => function ($val, $row) {
                 // Return the recipient
                 $payload = json_decode($row['payload'], true);
-                return array_key_exists('Subject', $payload['Message']) ? $payload['Message']['Subject']['Data'] : null;
+                return isset($payload['Message']['Subject']) ? $payload['Message']['Subject']['Data'] : null;
             }
         );
 
