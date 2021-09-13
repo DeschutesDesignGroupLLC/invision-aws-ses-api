@@ -14,11 +14,11 @@ use Aws\Sns\MessageValidator;
 
 class _SES extends \IPS\Patterns\Singleton
 {
-    /**
-     * @param  string  $type
-     *
-     * @return $this
-     */
+	/**
+	 * @param  string  $type
+	 *
+	 * @return $this
+	 */
     public function handleIncomingRequest($type = 'bounce')
     {
         // Get the message data from the POST request
@@ -37,10 +37,12 @@ class _SES extends \IPS\Patterns\Singleton
         return $this;
     }
 
-
-    /**
-     * Process an incoming API request
-     */
+	/**
+	 * Process an incoming API request
+	 *
+	 * @param          $message
+	 * @param  string  $endpoint
+	 */
     protected function _processRequest($message, $endpoint = 'bounce')
     {
         // Try and process the SNS message

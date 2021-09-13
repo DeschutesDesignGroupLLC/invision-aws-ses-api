@@ -46,7 +46,6 @@ class _bounces extends \IPS\Dispatcher\Controller
      */
     protected function manage()
     {
-
         // Create a new form
         $form = new \IPS\Helpers\Form;
 

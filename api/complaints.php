@@ -18,7 +18,7 @@ class _complaints extends \IPS\Api\Controller
 	 * POST /awsses/complaints
 	 * Webhook for processing complaint notifications from AWS Simple Notification Service.
 	 *
-	 * @return  null
+	 * @return		null
 	 */
 	public function POSTindex()
 	{

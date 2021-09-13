@@ -18,7 +18,7 @@ class _bounces extends \IPS\Api\Controller
 	 * POST /awsses/bounces
 	 * Webhook for processing bounce notifications from AWS Simple Notification Service.
 	 *
-	 * @return  null
+	 * @return		null
 	 */
 	public function POSTindex()
 	{
