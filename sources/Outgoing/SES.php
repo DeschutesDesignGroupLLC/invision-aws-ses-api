@@ -74,16 +74,19 @@ class _SES extends \IPS\Email
         $manager = new \IPS\awsses\Manager\SES();
 
         // Get from settings
-        $newFromName = $fromName ?? \IPS\Settings::i()->board_name;
-        $newFromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
+	    $fromName = $fromName ?? \IPS\Settings::i()->board_name;
+	    $fromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
+
+        // Encode from name, support non ASCII characters
+	    $encodedFromName = base64_encode($fromName);
 
         // Compose the email payload
         $payload = [
             'Destination' => [
                 'ToAddresses' => $toRecipients
             ],
-            'ReplyToAddresses' => [$newFromEmail],
-            'Source' => "\"{$newFromName}\" <{$newFromEmail}>",
+            'ReplyToAddresses' => [$fromEmail],
+            'Source' => "=?utf-8?B?{$encodedFromName}?= <{$fromEmail}>",
             'Message' =>[
                 'Body' => [
                     'Html' => [
