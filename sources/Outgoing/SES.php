@@ -77,16 +77,13 @@ class _SES extends \IPS\Email
 	    $fromName = $fromName ?? \IPS\Settings::i()->board_name;
 	    $fromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
 
-        // Encode from name, support non ASCII characters
-	    $encodedFromName = base64_encode($fromName);
-
         // Compose the email payload
         $payload = [
             'Destination' => [
                 'ToAddresses' => $toRecipients
             ],
             'ReplyToAddresses' => [$fromEmail],
-            'Source' => "=?utf-8?B?{$encodedFromName}?= <{$fromEmail}>",
+            'Source' => static::encodeHeader($fromName, $fromEmail),
             'Message' =>[
                 'Body' => [
                     'Html' => [
