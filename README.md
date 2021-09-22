@@ -8,6 +8,8 @@ Amazon SES is one of the most robust and cheapest transactional email service pr
 
 **Feature Requests and Bug Reports:** Click [here](https://gitreports.com/issue/DeschutesDesignGroupLLC/AWS-SES-IPB) to file a bug report or suggest a feature for our development team.
 
+**Support Topic:** Click [here](https://invisioncommunity.com/forums/topic/463340-aws-simple-email-service-with-bounce-management/) to read the Invision Power Board support topic.
+
 **[View AWS Simple Email Service Pricing](https://aws.amazon.com/ses/pricing/)**
 
 **Simple Email Service Installation For Sending Emails:**
