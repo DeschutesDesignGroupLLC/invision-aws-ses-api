@@ -50,10 +50,10 @@ class _bounces extends \IPS\Dispatcher\Controller
         $form = new \IPS\Helpers\Form;
 
         // Modify groups array
-	    $groups = array();
-	    foreach (\IPS\Member\Group::groups() as $group) {
-		    $groups[ $group->g_id ] = $group->name;
-	    }
+        $groups = array();
+        foreach (\IPS\Member\Group::groups() as $group) {
+            $groups[ $group->g_id ] = $group->name;
+        }
 
         // Hard Bounces
         $form->addTab('awsses_settings_tab_soft_bounces');

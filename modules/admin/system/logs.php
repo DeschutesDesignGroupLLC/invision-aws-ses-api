@@ -170,9 +170,6 @@ class _logs extends \IPS\Dispatcher\Controller
                 $member = \IPS\Member::load($val);
                 return "<a href='{$member->acpUrl()}' target='_blank'>{$member->name}</a>";
             },
-            'email' => function ($val, $row) {
-                return \IPS\Member::load($row['member_id'])->email ?? $row['member_id'];
-            },
             'type' => function ($val) {
                 $value = ucfirst($val);
                 return "{$value} Bounce";
@@ -249,9 +246,6 @@ class _logs extends \IPS\Dispatcher\Controller
             'member_id' => function ($val) {
                 $member = \IPS\Member::load($val);
                 return "<a href='{$member->acpUrl()}' target='_blank'>{$member->name}</a>";
-            },
-            'email' => function ($val, $row) {
-                return \IPS\Member::load($row['member_id'])->email ?? $row['member_id'];
             },
             'action' => function ($val) {
                 return \IPS\Member::loggedIn()->language()->addToStack("awsses_action_$val");
@@ -340,7 +334,7 @@ class _logs extends \IPS\Dispatcher\Controller
         // Unable to load the log
         catch (\OutOfRangeException $e) {
             // Return error
-            \IPS\_Output::i()->error('awsses_error_log_not_found', '1AWSSES/1', 404);
+            \IPS\Output::i()->error('awsses_error_log_not_found', '1AWSSES/1', 404);
         }
 
         // Make sure we confirmed deletion

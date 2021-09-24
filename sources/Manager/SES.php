@@ -121,31 +121,31 @@ class _SES extends Manager
                                 // Move Groups
                                 case static::AWSSES_ACTION_MOVE_GROUP:
                                     $this->_moveToGroup($member, \IPS\Settings::i()->awsses_soft_bounce_action_group);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_MOVE_GROUP, 'soft');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_MOVE_GROUP, 'soft');
                                     break;
 
                                 // Set validating
                                 case static::AWSSES_ACTION_SET_VALIDATING:
                                     $this->_setAsValidating($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_SET_VALIDATING, 'soft');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_VALIDATING, 'soft');
                                     break;
 
                                 // Set as spammer
                                 case static::AWSSES_ACTION_SET_SPAMMER:
                                     $this->_setAsSpammer($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_SET_SPAMMER, 'soft');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_SPAMMER, 'soft');
                                     break;
 
                                 // Delete member
                                 case static::AWSSES_ACTION_DELETE_MEMBER:
                                     $this->_deleteMember($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_DELETE_MEMBER, 'soft');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_DELETE_MEMBER, 'soft');
                                     break;
 
                                 // Temp Ban
                                 case static::AWSSES_ACTION_TEMP_BAN:
                                     $this->_tempBan($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_TEMP_BAN, 'soft');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN, 'soft');
                                     break;
                             }
                         }
@@ -154,21 +154,21 @@ class _SES extends Manager
                     // No action being applied
                     else {
                         // Still log the bounce
-                        $this->_logBounceAction($member, static::AWSSES_ACTION_INTERVAL, 'soft');
+                        $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_INTERVAL, 'soft');
                     }
                 }
 
                 // Member not found
                 else {
                     // Still log the bounce
-                    $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
+                    $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
                 }
             }
 
             // No action being applied
             else {
                 // Still log the bounce
-                $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
+                $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
             }
         }
     }
@@ -239,31 +239,31 @@ class _SES extends Manager
                                 // Move Groups
                                 case static::AWSSES_ACTION_MOVE_GROUP:
                                     $this->_moveToGroup($member, \IPS\Settings::i()->awsses_hard_bounce_action_group);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_MOVE_GROUP, 'hard');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_MOVE_GROUP, 'hard');
                                     break;
 
                                 // Set validating
                                 case static::AWSSES_ACTION_SET_VALIDATING:
                                     $this->_setAsValidating($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_SET_VALIDATING, 'hard');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_VALIDATING, 'hard');
                                     break;
 
                                 // Set as spammer
                                 case static::AWSSES_ACTION_SET_SPAMMER:
                                     $this->_setAsSpammer($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_SET_SPAMMER, 'hard');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_SPAMMER, 'hard');
                                     break;
 
                                 // Delete member
                                 case static::AWSSES_ACTION_DELETE_MEMBER:
                                     $this->_deleteMember($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_DELETE_MEMBER, 'hard');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_DELETE_MEMBER, 'hard');
                                     break;
 
                                 // Temp Ban
                                 case static::AWSSES_ACTION_TEMP_BAN:
                                     $this->_tempBan($member);
-                                    $this->_logBounceAction($member, static::AWSSES_ACTION_TEMP_BAN, 'hard');
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN, 'hard');
                                     break;
                             }
                         }
@@ -272,21 +272,21 @@ class _SES extends Manager
                     // No action being applied
                     else {
                         // Still log the bounce
-                        $this->_logBounceAction($member, static::AWSSES_ACTION_INTERVAL, 'hard');
+                        $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_INTERVAL, 'hard');
                     }
                 }
 
                 // Member not found
                 else {
                     // Still log the bounce
-                    $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
+                    $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
                 }
             }
 
             // No action being applied
             else {
                 // Still log the bounce
-                $this->_logBounceAction($emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
+                $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
             }
         }
     }
@@ -357,31 +357,31 @@ class _SES extends Manager
                                 // Move Groups
                                 case static::AWSSES_ACTION_MOVE_GROUP:
                                     $this->_moveToGroup($member, \IPS\Settings::i()->awsses_complaint_action_group);
-                                    $this->_logComplaintAction($member, static::AWSSES_ACTION_MOVE_GROUP);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_MOVE_GROUP);
                                     break;
 
                                 // Set validating
                                 case static::AWSSES_ACTION_SET_VALIDATING:
                                     $this->_setAsValidating($member);
-                                    $this->_logComplaintAction($member, static::AWSSES_ACTION_SET_VALIDATING);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_SET_VALIDATING);
                                     break;
 
                                 // Set as spammer
                                 case static::AWSSES_ACTION_SET_SPAMMER:
                                     $this->_setAsSpammer($member);
-                                    $this->_logComplaintAction($member, static::AWSSES_ACTION_SET_SPAMMER);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_SET_SPAMMER);
                                     break;
 
                                 // Delete member
                                 case static::AWSSES_ACTION_DELETE_MEMBER:
                                     $this->_deleteMember($member);
-                                    $this->_logComplaintAction($member, static::AWSSES_ACTION_DELETE_MEMBER);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_DELETE_MEMBER);
                                     break;
 
                                 // Temp Ban
                                 case static::AWSSES_ACTION_TEMP_BAN:
                                     $this->_tempBan($member);
-                                    $this->_logComplaintAction($member, static::AWSSES_ACTION_TEMP_BAN);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN);
                                     break;
                             }
                         }
@@ -390,21 +390,21 @@ class _SES extends Manager
                     // No action being applied
                     else {
                         // Still log the complaint
-                        $this->_logComplaintAction($member, static::AWSSES_ACTION_INTERVAL);
+                        $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_INTERVAL);
                     }
                 }
 
                 // Member not found
                 else {
                     // Still log the bounce
-                    $this->_logComplaintAction($emailAddress, static::AWSSES_ACTION_NOTHING);
+                    $this->_logComplaintAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING);
                 }
             }
 
             // No action being applied
             else {
                 // Still log the complaint
-                $this->_logComplaintAction($emailAddress, static::AWSSES_ACTION_NOTHING);
+                $this->_logComplaintAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING);
             }
         }
     }
@@ -475,20 +475,20 @@ class _SES extends Manager
      * @param  null    $action
      * @param  string  $type
      */
-    protected function _logBounceAction($member = null, $action = null, $type = 'soft')
+    protected function _logBounceAction($member = null, $email = null, $action = null, $type = 'soft')
     {
         // Create our log
-        \IPS\awsses\Bounce\Log::log($member, $action, $type);
+        \IPS\awsses\Bounce\Log::log($member, $email, $action, $type);
     }
 
     /**
      * @param  null  $member
      * @param  null  $action
      */
-    protected function _logComplaintAction($member = null, $action = null)
+    protected function _logComplaintAction($member = null, $email = null, $action = null)
     {
         // Create our log
-        \IPS\awsses\Complaint\Log::log($member, $action);
+        \IPS\awsses\Complaint\Log::log($member, $email, $action);
     }
 
     /**

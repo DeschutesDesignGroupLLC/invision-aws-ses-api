@@ -39,11 +39,11 @@ class _complaints extends \IPS\Dispatcher\Controller
      */
     protected function manage()
     {
-	    // Modify groups array
-	    $groups = array();
-	    foreach (\IPS\Member\Group::groups() as $group) {
-		    $groups[ $group->g_id ] = $group->name;
-	    }
+        // Modify groups array
+        $groups = array();
+        foreach (\IPS\Member\Group::groups() as $group) {
+            $groups[ $group->g_id ] = $group->name;
+        }
 
         // Create a new form
         $form = new \IPS\Helpers\Form;

@@ -74,8 +74,8 @@ class _SES extends \IPS\Email
         $manager = new \IPS\awsses\Manager\SES();
 
         // Get from settings
-	    $fromName = $fromName ?? \IPS\Settings::i()->board_name;
-	    $fromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
+        $fromName = $fromName ?? \IPS\Settings::i()->board_name;
+        $fromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
 
         // Compose the email payload
         $payload = [

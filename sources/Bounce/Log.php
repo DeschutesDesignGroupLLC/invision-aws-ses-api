@@ -110,12 +110,13 @@ class _Log extends \IPS\Node\Model
      *
      * @return null
      */
-    public static function log($member, $action, $type)
+    public static function log($member, $email, $action, $type)
     {
         // Create our new log
         $log = new static;
         $log->date = time();
-        $log->member_id = $member instanceof \IPS\Member ? $member->member_id : $member;
+        $log->member_id = $member instanceof \IPS\Member ? $member->member_id : null;
+        $log->email = $email;
         $log->type = $type;
         $log->action = $action;
         $log->save();
