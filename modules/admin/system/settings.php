@@ -4,7 +4,7 @@ namespace IPS\awsses\modules\admin\system;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header(( isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden');
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
     exit;
 }
 
@@ -54,9 +54,12 @@ class _settings extends \IPS\Dispatcher\Controller
         $form->add(new \IPS\Helpers\Form\YesNo('awsses_enabled', \IPS\Settings::i()->awsses_enabled, true));
         $form->add(new \IPS\Helpers\Form\Text('awsses_access_key', \IPS\Settings::i()->awsses_access_key, true));
         $form->add(new \IPS\Helpers\Form\Password('awsses_secret_key', $secret, true));
-        $form->add(new \IPS\Helpers\Form\Text('awsses_region', \IPS\Settings::i()->awsses_region, true, array( 'placeholder' => 'us-west-2', '' )));
+        $form->add(new \IPS\Helpers\Form\Text('awsses_region', \IPS\Settings::i()->awsses_region, true, [
+            'placeholder' => 'us-west-2',
+            ''
+        ]));
         $form->add(new \IPS\Helpers\Form\Text('awsses_config_set_name', \IPS\Settings::i()->awsses_config_set_name, false));
-        $form->add(new \IPS\Helpers\Form\Stack('awsses_verified_identities', explode(',', \IPS\Settings::i()->awsses_verified_identities), true, array('stackFieldType' => \IPS\awsses\Helpers\Form\VerifiedIdentity::class)));
+        $form->add(new \IPS\Helpers\Form\Stack('awsses_verified_identities', explode(',', \IPS\Settings::i()->awsses_verified_identities), true, ['stackFieldType' => \IPS\awsses\Helpers\Form\VerifiedIdentity::class]));
         $form->add(new \IPS\Helpers\Form\Email('awsses_default_verified_identity', \IPS\Settings::i()->awsses_default_verified_identity, true));
 
         // If we have values in our form
