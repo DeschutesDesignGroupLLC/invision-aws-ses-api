@@ -503,10 +503,10 @@ class _SES extends Manager
      */
     public function getSendingEmailAddress($fromEmail = null)
     {
-        // Get default
+        // Get default sending email address
         $email = \IPS\Settings::i()->awsses_default_verified_identity;
 
-        // If we have an incoming email, and it's a valid verified identity
+        // Get saved verified identities
         $identities = explode(',', \IPS\Settings::i()->awsses_verified_identities);
 
         // If a valid email

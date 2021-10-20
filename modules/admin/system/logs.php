@@ -42,7 +42,7 @@ class _logs extends \IPS\Dispatcher\Controller
         // Create the table
         $table = new \IPS\Helpers\Table\Db(\IPS\awsses\Outgoing\Log::$databaseTable, \IPS\Http\Url::internal('app=awsses&module=system&controller=logs'));
         $table->langPrefix = 'log_';
-        $table->include = array( 'date', 'status', 'subject', 'to', 'cc', 'bcc');
+        $table->include = array( 'date', 'status', 'subject', 'from', 'to', 'cc', 'bcc');
         $table->sortBy = $table->sortBy ?: 'date';
         $table->sortDirection = $table->sortDirection ?: 'desc';
         $table->rowClasses = array( 'messageId' => array( 'ipsTable_wrap ' ));
@@ -56,11 +56,21 @@ class _logs extends \IPS\Dispatcher\Controller
         $table->parsers = array(
             'date' => function ($val) {
                 // Return the date
-                return \IPS\DateTime::ts($val);
+                return \IPS\DateTime::ts($val)->html();
             },
             'status' => function ($val, $row) {
                 // Return the status
                 return \IPS\Theme::i()->getTemplate('logs', 'awsses', 'admin')->status(isset($row['messageId']) ? true : false);
+            },
+            'from' => function ($val, $row) {
+                // Return the date
+                $payload = json_decode($row['payload'], true);
+                if (isset($payload['Source'])) {
+                    $decoded = imap_mime_header_decode($payload['Source']);
+                    $name = isset($decoded[0]) ? str_replace(['<', '>', '"'], "", $decoded[0]->text) : null;
+                    $email = isset($decoded[1]) ? str_replace(['<', '>', '"'], "", $decoded[1]->text) : null;
+                }
+                return $email ? (string) $email : (string) $name;
             },
             'to' => function ($val, $row) {
                 // Return the date
@@ -164,7 +174,7 @@ class _logs extends \IPS\Dispatcher\Controller
         // Table parsers
         $table->parsers = array(
             'date' => function ($val) {
-                return \IPS\DateTime::ts($val);
+                return \IPS\DateTime::ts($val)->html();
             },
             'member_id' => function ($val) {
                 $member = \IPS\Member::load($val);
@@ -241,7 +251,7 @@ class _logs extends \IPS\Dispatcher\Controller
         // Table parsers
         $table->parsers = array(
             'date' => function ($val) {
-                return \IPS\DateTime::ts($val);
+                return \IPS\DateTime::ts($val)->html();
             },
             'member_id' => function ($val) {
                 $member = \IPS\Member::load($val);
