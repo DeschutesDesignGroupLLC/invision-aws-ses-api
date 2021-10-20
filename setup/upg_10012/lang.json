@@ -1,0 +1,18 @@
+{
+    "normal": {
+        "added": [
+            "log_from",
+            "awsses_form_bad_verified_identity"
+        ],
+        "edited": [
+            "awsses_verified_identities_desc",
+            "awsses_default_verified_identity_desc"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

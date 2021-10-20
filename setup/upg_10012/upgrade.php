@@ -1,6 +1,6 @@
 <?php
 
-namespace IPS\awsses\setup\upg_working;
+namespace IPS\awsses\setup\upg_10012;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
@@ -10,7 +10,7 @@ if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
 }
 
 /**
- * {version_human} Upgrade Code
+ * 1.0.10 Upgrade Code
  */
 class _Upgrade
 {

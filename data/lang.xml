@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10011">
+ <app key="awsses" version="10012">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
@@ -54,9 +54,9 @@
   <word key="awsses_complaint_action_notification" js="0">Complaint Notification</word>
   <word key="awsses_complaint_action_notification_desc" js="0">When a complaint is encountered, the recipient will be presented with the following notification.</word>
   <word key="awsses_verified_identities" js="0">Verified Identities</word>
-  <word key="awsses_verified_identities_desc" js="0">Please enter all your verified identities (email addresses) that will be used to send email through AWS Simple Email Service. Each one must be added via the AWS Console. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.</word>
+  <word key="awsses_verified_identities_desc" js="0">Please enter all your verified identities (email addresses or domains) that will be used to send email through AWS Simple Email Service. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.</word>
   <word key="awsses_default_verified_identity" js="0">Default Sending Email Address</word>
-  <word key="awsses_default_verified_identity_desc" js="0">If the sending email address does not match one of the identities above, this email address will be used to send the email.</word>
+  <word key="awsses_default_verified_identity_desc" js="0">If the sending email address does not match one of the identities above, this email address will be used to send the email. This email address must be a verified identity.</word>
   <word key="awsses_log" js="0">Log</word>
   <word key="awsses_logs" js="0">Outgoing Logs</word>
   <word key="awsses_bounce_logs" js="0">Bounce Logs</word>
@@ -65,6 +65,7 @@
   <word key="awsses_settings_updated" js="0">The AWS Simple Email Service settings have been updated.</word>
   <word key="awsses_log_prune_settings" js="0">Prune Settings</word>
   <word key="log_to" js="0">To</word>
+  <word key="log_from" js="0">From</word>
   <word key="log_cc" js="0">CC</word>
   <word key="log_bcc" js="0">BCC</word>
   <word key="log_messageId" js="0">Message ID</word>
@@ -77,6 +78,7 @@
   <word key="log_email" js="0">Email</word>
   <word key="log_status" js="0">Status</word>
   <word key="awsses_form_process_immediately" js="0">Process Immediately</word>
+  <word key="awsses_form_bad_verified_identity" js="0">Please make sure all values are a valid email address or domain.</word>
   <word key="awsses_action_nothing" js="0">No action was applied.</word>
   <word key="awsses_action_group" js="0">User was moved to a group.</word>
   <word key="awsses_action_validating" js="0">User status was set to validating.</word>

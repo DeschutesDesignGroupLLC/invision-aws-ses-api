@@ -151,6 +151,18 @@
                 "type": "INT",
                 "unsigned": true,
                 "values": []
+            },
+            "email": {
+                "name": "email",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "auto_increment": false
             }
         },
         "indexes": {
@@ -217,6 +229,18 @@
                 "type": "INT",
                 "unsigned": true,
                 "values": []
+            },
+            "email": {
+                "name": "email",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "auto_increment": false
             }
         },
         "indexes": {
