@@ -18,7 +18,7 @@ class _Manager
      *
      * @param          $accessKey
      * @param          $secretKey
-     * @param  string  $region
+     * @param string   $region
      */
     public function __construct($accessKey = null, $secretKey = null, $region = null)
     {
@@ -31,6 +31,6 @@ class _Manager
         // Set class properties
         $this->accessKey = $accessKey ?? \IPS\Settings::i()->awsses_access_key;
         $this->secretKey = $secretKey ?? $decryptedSecret;
-        $this->region = $region ?? ( \IPS\Settings::i()->awsses_region ?? 'us-west-2' );
+        $this->region = $region ?? (\IPS\Settings::i()->awsses_region ?? 'us-west-2');
     }
 }

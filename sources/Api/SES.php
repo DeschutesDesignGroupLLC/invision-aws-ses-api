@@ -4,7 +4,7 @@ namespace IPS\awsses\Api;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header(( isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden');
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
     exit;
 }
 
@@ -15,7 +15,7 @@ use Aws\Sns\MessageValidator;
 class _SES extends \IPS\Patterns\Singleton
 {
     /**
-     * @param  string  $type
+     * @param string $type
      *
      * @return $this
      */
@@ -41,7 +41,7 @@ class _SES extends \IPS\Patterns\Singleton
      * Process an incoming API request
      *
      * @param          $message
-     * @param  string  $endpoint
+     * @param string   $endpoint
      */
     protected function _processRequest($message, $endpoint = 'bounce')
     {
@@ -76,9 +76,7 @@ class _SES extends \IPS\Patterns\Singleton
                     }
                 }
             }
-        }
-
-        // We encountered an error
+        } // We encountered an error
         catch (\Exception $exception) {
             // Log our exception
             \IPS\Log::log($exception, 'awsses');
@@ -93,7 +91,7 @@ class _SES extends \IPS\Patterns\Singleton
     protected function _parseBouncedEmails($message)
     {
         // Get our bounced email addresses
-        $recipients = array();
+        $recipients = [];
         foreach ($message['bounce']['bouncedRecipients'] as $recipient) {
             $recipients[] = $recipient['emailAddress'];
         }
@@ -105,14 +103,14 @@ class _SES extends \IPS\Patterns\Singleton
                 // Process the email addresses
                 $manager = new \IPS\awsses\Manager\SES();
                 $manager->processSoftBouncedEmailAddresses($recipients);
-                break;
+            break;
 
             // Hard bounce
             case 'Permanent':
                 // Process the email addresses
                 $manager = new \IPS\awsses\Manager\SES();
                 $manager->processHardBouncedEmailAddresses($recipients);
-                break;
+            break;
         }
     }
 
@@ -124,7 +122,7 @@ class _SES extends \IPS\Patterns\Singleton
     protected function _parseComplaintEmails($message)
     {
         // Get our bounced email addresses
-        $recipients = array();
+        $recipients = [];
         foreach ($message['complaint']['complainedRecipients'] as $recipient) {
             $recipients[] = $recipient['emailAddress'];
         }
@@ -135,7 +133,7 @@ class _SES extends \IPS\Patterns\Singleton
     }
 
     /**
-     * @param  array  $headers
+     * @param $message
      *
      * @return _SES
      */
@@ -151,9 +149,7 @@ class _SES extends \IPS\Patterns\Singleton
                 'Token' => $message['Token'],
                 'TopicArn' => $message['TopicArn']
             ]);
-        }
-
-        // Catch any exceptions
+        } // Catch any exceptions
         catch (AwsException $exception) {
             // Log our exceptions
             \IPS\Log::log($exception, 'awsses');

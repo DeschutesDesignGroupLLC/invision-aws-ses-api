@@ -4,7 +4,7 @@ namespace IPS\awsses\Outgoing;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header(( isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden');
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
     exit;
 }
 
@@ -12,6 +12,7 @@ use Aws\Exception\AwsException;
 
 /**
  * Class AWS SES
+ *
  * @package IPS\awsses\Outgoing
  */
 class _SES extends \IPS\Email
@@ -19,16 +20,17 @@ class _SES extends \IPS\Email
     /**
      * Send the email
      *
-     * @param   mixed   $to                 The member or email address, or array of members or email addresses, to send to
-     * @param   mixed   $cc                 Addresses to CC (can also be email, member or array of either)
-     * @param   mixed   $bcc                Addresses to BCC (can also be email, member or array of either)
-     * @param   mixed   $fromEmail          The email address to send from. If NULL, default setting is used
-     * @param   mixed   $fromName           The name the email should appear from. If NULL, default setting is used
-     * @param   array   $additionalHeaders  The name the email should appear from. If NULL, default setting is used
+     * @param mixed $to                The member or email address, or array of members or email addresses, to send to
+     * @param mixed $cc                Addresses to CC (can also be email, member or array of either)
+     * @param mixed $bcc               Addresses to BCC (can also be email, member or array of either)
+     * @param mixed $fromEmail         The email address to send from. If NULL, default setting is used
+     * @param mixed $fromName          The name the email should appear from. If NULL, default setting is used
+     * @param array $additionalHeaders The name the email should appear from. If NULL, default setting is used
+     *
      * @return  void
      * @throws  \IPS\Email\Outgoing\Exception
      */
-    public function _send($to, $cc = array(), $bcc = array(), $fromEmail = null, $fromName = null, $additionalHeaders = array())
+    public function _send($to, $cc = [], $bcc = [], $fromEmail = null, $fromName = null, $additionalHeaders = [])
     {
         // Create an instance of our SES manager
         $manager = new \IPS\awsses\Manager\SES();
@@ -44,7 +46,7 @@ class _SES extends \IPS\Email
             // Log the message
             \IPS\awsses\Outgoing\Log::log($payload, $result['MessageId']);
 
-        // Email send failed with exception
+            // Email send failed with exception
         } catch (AwsException $exception) {
             // Log the message
             \IPS\awsses\Outgoing\Log::log($payload, null, preg_replace("/\n/", '<br>', $exception->getTraceAsString()), $exception->getAwsErrorMessage());
@@ -56,16 +58,16 @@ class _SES extends \IPS\Email
 
     /**
      * @param         $to
-     * @param  array  $cc
-     * @param  array  $bcc
-     * @param  null   $fromEmail
-     * @param  null   $fromName
-     * @param  array  $additionalHeaders
-     * @param  null   $configSet
+     * @param array   $cc
+     * @param array   $bcc
+     * @param null    $fromEmail
+     * @param null    $fromName
+     * @param array   $additionalHeaders
+     * @param null    $configSet
      *
      * @return array
      */
-    public function _composeEmailPayload($to, $cc = array(), $bcc = array(), $fromEmail = null, $fromName = null, $additionalHeaders = array(), $configSet = null)
+    public function _composeEmailPayload($to, $cc = [], $bcc = [], $fromEmail = null, $fromName = null, $additionalHeaders = [], $configSet = null)
     {
         // Parse our $to recipients
         $toRecipients = array_unique(array_map('trim', explode(',', static::_parseRecipients($to, true))));
@@ -84,7 +86,7 @@ class _SES extends \IPS\Email
             ],
             'ReplyToAddresses' => [$fromEmail],
             'Source' => static::encodeHeader($fromName, $fromEmail),
-            'Message' =>[
+            'Message' => [
                 'Body' => [
                     'Html' => [
                         'Charset' => 'UTF-8',

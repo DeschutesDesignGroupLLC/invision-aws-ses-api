@@ -4,7 +4,7 @@ namespace IPS\awsses\Bounce;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header(( isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden');
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
     exit;
 }
 
@@ -12,6 +12,7 @@ use Aws\Result;
 
 /**
  * Class Log
+ *
  * @package IPS\awsses\Outgoing
  */
 class _Log extends \IPS\Node\Model
@@ -63,11 +64,11 @@ class _Log extends \IPS\Node\Model
      *
      * @var array
      */
-    protected static $restrictions = array(
+    protected static $restrictions = [
         'app' => 'awsses',
         'module' => 'system',
         'prefix' => 'logs_'
-    );
+    ];
 
     /**
      * [Node] Node Permission Language Prefix
@@ -95,18 +96,18 @@ class _Log extends \IPS\Node\Model
      *
      * @var array
      */
-    public static $permissionMap = array(
+    public static $permissionMap = [
         'view' => 'view',
-    );
+    ];
 
     /**
      * Log a Bounced Email
      *
-     * @param  Result  $result
+     * @param Result   $result
      * @param          $to
-     * @param  null    $fromName
-     * @param  null    $fromEmail
-     * @param  null    $subject
+     * @param null     $fromName
+     * @param null     $fromEmail
+     * @param null     $subject
      *
      * @return null
      */
@@ -125,13 +126,17 @@ class _Log extends \IPS\Node\Model
     /**
      * Prune logs
      *
-     * @param   int     $days   Older than (days) to prune
+     * @param int $days Older than (days) to prune
+     *
      * @return  void
      */
     public static function pruneLogs($days)
     {
         // Select from the database where date is greater than
-        \IPS\Db::i()->delete(static::$databaseTable, array( 'date<?', \IPS\DateTime::create()->sub(new \DateInterval('P' . $days . 'D'))->getTimestamp() ));
+        \IPS\Db::i()->delete(static::$databaseTable, [
+            'date<?',
+            \IPS\DateTime::create()->sub(new \DateInterval('P' . $days . 'D'))->getTimestamp()
+        ]);
     }
 
     public function codingStandards()

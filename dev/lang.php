@@ -60,9 +60,9 @@ $lang = array(
 	'awsses_complaint_action_notification' => 'Complaint Notification',
 	'awsses_complaint_action_notification_desc' => 'When a complaint is encountered, the recipient will be presented with the following notification.',
 	'awsses_verified_identities' => 'Verified Identities',
-	'awsses_verified_identities_desc' => 'Please enter all your verified identities (email addresses) that will be used to send email through AWS Simple Email Service. Each one must be added via the AWS Console. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.',
+	'awsses_verified_identities_desc' => 'Please enter all your verified identities (email addresses or domains) that will be used to send email through AWS Simple Email Service. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.',
 	'awsses_default_verified_identity' => 'Default Sending Email Address',
-	'awsses_default_verified_identity_desc' => 'If the sending email address does not match one of the identities above, this email address will be used to send the email.',
+	'awsses_default_verified_identity_desc' => 'If the sending email address does not match one of the identities above, this email address will be used to send the email. This email address must be a verified identity.',
 
 	// Log
 	'awsses_log' => 'Log',
@@ -91,6 +91,7 @@ $lang = array(
 
 	// Form
 	'awsses_form_process_immediately' => 'Process Immediately',
+	'awsses_form_bad_verified_identity' => 'Please make sure all values are a valid email address or domain.',
 
 	// Action Messages
 	'awsses_action_nothing' => 'No action was applied.',
