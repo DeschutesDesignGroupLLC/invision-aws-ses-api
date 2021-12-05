@@ -159,7 +159,7 @@ class _logs extends \IPS\Dispatcher\Controller
     protected function bounces()
     {
         // Create the table
-        $table = new \IPS\Helpers\Table\Db('awsses_bounce_logs', \IPS\Http\Url::internal('app=awsses&module=bounces&controller=logs&do=bounces'));
+        $table = new \IPS\Helpers\Table\Db('awsses_bounce_logs', \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=bounces'));
         $table->langPrefix = 'log_';
         $table->include = ['date', 'member_id', 'email', 'type', 'action'];
         $table->sortBy = $table->sortBy ?: 'date';
@@ -242,7 +242,7 @@ class _logs extends \IPS\Dispatcher\Controller
     protected function complaints()
     {
         // Create the table
-        $table = new \IPS\Helpers\Table\Db('awsses_complaint_logs', \IPS\Http\Url::internal('app=awsses&module=complaints&controller=logs&do=complaints'));
+        $table = new \IPS\Helpers\Table\Db('awsses_complaint_logs', \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=complaints'));
         $table->langPrefix = 'log_';
         $table->include = ['date', 'member_id', 'email', 'action'];
         $table->sortBy = $table->sortBy ?: 'date';
