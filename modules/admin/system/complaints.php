@@ -60,7 +60,8 @@ class _complaints extends \IPS\Dispatcher\Controller
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_SET_VALIDATING => 'Set Member As Validating',
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_SET_SPAMMER => 'Flag As Spammer',
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_DELETE_MEMBER => 'Delete Recipient',
-                \IPS\awsses\Manager\SES::AWSSES_ACTION_TEMP_BAN => 'Temporarily Ban'
+                \IPS\awsses\Manager\SES::AWSSES_ACTION_TEMP_BAN => 'Temporarily Ban',
+                \IPS\awsses\Manager\SES::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL => 'Unsubscribe From Admin Emails/Newsletter'
             ],
             'multiple' => true,
             'toggles' => [

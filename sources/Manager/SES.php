@@ -15,13 +15,14 @@ class _SES extends Manager
     /**
      * Actions on receipt of bounce or complaint
      */
-    const AWSSES_ACTION_NOTHING        = 'nothing';
-    const AWSSES_ACTION_MOVE_GROUP     = 'group';
-    const AWSSES_ACTION_SET_VALIDATING = 'validating';
-    const AWSSES_ACTION_SET_SPAMMER    = 'spam';
-    const AWSSES_ACTION_DELETE_MEMBER  = 'delete';
-    const AWSSES_ACTION_TEMP_BAN       = 'ban';
-    const AWSSES_ACTION_INTERVAL       = 'interval';
+    const AWSSES_ACTION_NOTHING                 = 'nothing';
+    const AWSSES_ACTION_MOVE_GROUP              = 'group';
+    const AWSSES_ACTION_SET_VALIDATING          = 'validating';
+    const AWSSES_ACTION_SET_SPAMMER             = 'spam';
+    const AWSSES_ACTION_DELETE_MEMBER           = 'delete';
+    const AWSSES_ACTION_TEMP_BAN                = 'ban';
+    const AWSSES_ACTION_INTERVAL                = 'interval';
+    const AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL = 'admin_mail';
 
     /**
      * @var null SES Configuration Set
@@ -149,6 +150,12 @@ class _SES extends Manager
                                     $this->_tempBan($member);
                                     $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN, 'soft');
                                 break;
+
+                                // Unsubscribe admin email
+                                case static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL:
+                                    $this->_unsubsribeFromAdminEmails($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL, 'soft');
+                                break;
                             }
                         }
                     }
@@ -269,6 +276,12 @@ class _SES extends Manager
                                     $this->_tempBan($member);
                                     $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN, 'hard');
                                 break;
+
+                                // Unsubscribe admin email
+                                case static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL:
+                                    $this->_unsubsribeFromAdminEmails($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL, 'hard');
+                                break;
                             }
                         }
                     }
@@ -388,6 +401,12 @@ class _SES extends Manager
                                     $this->_tempBan($member);
                                     $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN);
                                 break;
+
+                                // Unsubscribe admin eamil
+                                case static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL:
+                                    $this->_unsubsribeFromAdminEmails($member);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL);
+                                break;
                             }
                         }
                     }
@@ -473,6 +492,15 @@ class _SES extends Manager
     {
         // Set as spammer
         $member->delete();
+    }
+
+    /**
+     * @param null $member
+     */
+    protected function _unsubsribeFromAdminEmails($member = null)
+    {
+        // Set admin emails to false
+        $member->allow_admin_mails = false;
     }
 
     /**
