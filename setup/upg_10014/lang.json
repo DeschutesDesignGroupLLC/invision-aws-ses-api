@@ -1,0 +1,22 @@
+{
+    "normal": {
+        "added": [
+            "awsses_complaint_ignore_admins",
+            "awsses_complaint_ignore_admins_desc",
+            "awsses_soft_bounce_ignore_admins",
+            "awsses_soft_bounce_ignore_admins_desc",
+            "awsses_hard_bounce_ignore_admins",
+            "awsses_hard_bounce_ignore_admins_desc",
+            "awsses_action_admin_mail"
+        ],
+        "edited": [
+            "awsses_action_interval"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}
