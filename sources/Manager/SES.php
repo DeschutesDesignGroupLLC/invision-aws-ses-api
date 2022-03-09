@@ -74,9 +74,6 @@ class _SES extends Manager
             $actions = [$actions];
         }
 
-        // Get interval settings
-        $interval = \IPS\Settings::i()->awsses_soft_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_soft_bounce_interval : false;
-
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
             // Make sure nothing is not checked
@@ -86,34 +83,8 @@ class _SES extends Manager
 
                 // If we found the member
                 if ($member->email) {
-                    // If we have an interval
-                    $process = true;
-                    if ($interval) {
-                        // Try and find the latest log
-                        try {
-                            // Get the latest log entry
-                            $log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, [
-                                'type=? AND member_id=?',
-                                'soft',
-                                $member->member_id
-                            ], 'date DESC')->first();
-                            $last = \IPS\DateTime::ts($log['date']);
-
-                            // Get our cutoff date
-                            $cutoff = new \DateTime;
-                            $cutoff->sub(new \DateInterval("PT{$interval}S"));
-
-                            // If the previous entry was past the cutoff date
-                            if ($last < $cutoff) {
-                                // Do not process
-                                $process = false;
-                            }
-                        } // Unable to find a log
-                        catch (\UnderflowException $exception) {
-                            // So do not process
-                            $process = false;
-                        }
-                    }
+                    // Determine if we should process this action
+                    $process = $this->_shouldProcessAction($member, 'soft');
 
                     // If we are processing
                     if ($process) {
@@ -200,9 +171,6 @@ class _SES extends Manager
             $actions = [$actions];
         }
 
-        // Get interval settings
-        $interval = \IPS\Settings::i()->awsses_hard_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_hard_bounce_interval : false;
-
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
             // Make sure nothing is not checked and we have some actions saved
@@ -212,34 +180,8 @@ class _SES extends Manager
 
                 // If we found the member
                 if ($member->email) {
-                    // If we have an interval
-                    $process = true;
-                    if ($interval) {
-                        // Try and find the latest log
-                        try {
-                            // Get the latest log entry
-                            $log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, [
-                                'type=? AND member_id=?',
-                                'hard',
-                                $member->member_id
-                            ], 'date DESC')->first();
-                            $last = \IPS\DateTime::ts($log['date']);
-
-                            // Get our cutoff date
-                            $cutoff = new \DateTime;
-                            $cutoff->sub(new \DateInterval("PT{$interval}S"));
-
-                            // If the previous entry was past the cutoff date
-                            if ($last < $cutoff) {
-                                // Do not process
-                                $process = false;
-                            }
-                        } // Unable to find a log
-                        catch (\UnderflowException $exception) {
-                            // So do not process
-                            $process = false;
-                        }
-                    }
+                    // Determine if we should process this action
+                    $process = $this->_shouldProcessAction($member, 'hard');
 
                     // If we are processing
                     if ($process) {
@@ -326,9 +268,6 @@ class _SES extends Manager
             $actions = [$actions];
         }
 
-        // Get interval settings
-        $interval = \IPS\Settings::i()->awsses_complaint_interval !== '-1' ? \IPS\Settings::i()->awsses_complaint_interval : false;
-
         // Loop through the email addresses
         foreach ($emailAddresses as $emailAddress) {
             // Make sure nothing is not checked
@@ -338,33 +277,8 @@ class _SES extends Manager
 
                 // If we found the member
                 if ($member->email) {
-                    // If we have an interval
-                    $process = true;
-                    if ($interval) {
-                        // Try and find the latest log
-                        try {
-                            // Get the latest log entry
-                            $log = \IPS\Db::i()->select('*', \IPS\awsses\Complaint\Log::$databaseTable, [
-                                'member_id=?',
-                                $member->member_id
-                            ], 'date DESC')->first();
-                            $last = \IPS\DateTime::ts($log['date']);
-
-                            // Get our cutoff date
-                            $cutoff = new \DateTime;
-                            $cutoff->sub(new \DateInterval("PT{$interval}S"));
-
-                            // If the previous entry was past the cutoff date
-                            if ($last < $cutoff) {
-                                // Do not process
-                                $process = false;
-                            }
-                        } // Unable to find a log
-                        catch (\UnderflowException $exception) {
-                            // So do not process
-                            $process = false;
-                        }
-                    }
+                    // Determine if we should process this action
+                    $process = $this->_shouldProcessAction($member, 'complaint');
 
                     // If we are processing
                     if ($process) {
@@ -431,6 +345,148 @@ class _SES extends Manager
                 $this->_logComplaintAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING);
             }
         }
+    }
+
+    /**
+     * @param $member
+     * @param $action
+     *
+     * @return bool
+     */
+    protected function _shouldProcessAction($member, $action)
+    {
+        // DEfault to ues
+        $process = true;
+
+        // Switch between the types
+        switch ($action) {
+            case 'soft':
+                // Get interval settings
+                $interval = \IPS\Settings::i()->awsses_soft_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_soft_bounce_interval : false;
+
+                // If we have an interval
+                if ($interval) {
+                    // Try and find the latest log
+                    try {
+                        // Get the latest log entry
+                        $log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, [
+                            'type=? AND member_id=?',
+                            'soft',
+                            $member->member_id
+                        ], 'date DESC')->first();
+                        $last = \IPS\DateTime::ts($log['date']);
+
+                        // Get our cutoff date
+                        $cutoff = new \DateTime;
+                        $cutoff->sub(new \DateInterval("PT{$interval}S"));
+
+                        // If the previous entry was past the cutoff date
+                        if ($last < $cutoff) {
+                            // Do not process
+                            $process = false;
+                        }
+                    } // Unable to find a log
+                    catch (\UnderflowException $exception) {
+                        // So do not process
+                        $process = false;
+                    }
+                }
+
+                // Get ignore admin settings
+                $ignoreAdmins = \IPS\Settings::i()->awsses_soft_bounce_ignore_admins;
+
+                // If we are ignoring admins and they are an admin
+                if ($ignoreAdmins && ($member->isAdmin() || $member->modPermissions())) {
+                    // Do not process
+                    $process = false;
+                }
+
+            break;
+            case 'hard':
+                // Get interval settings
+                $interval = \IPS\Settings::i()->awsses_hard_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_hard_bounce_interval : false;
+
+                // If we have an interval
+                if ($interval) {
+                    // Try and find the latest log
+                    try {
+                        // Get the latest log entry
+                        $log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, [
+                            'type=? AND member_id=?',
+                            'hard',
+                            $member->member_id
+                        ], 'date DESC')->first();
+                        $last = \IPS\DateTime::ts($log['date']);
+
+                        // Get our cutoff date
+                        $cutoff = new \DateTime;
+                        $cutoff->sub(new \DateInterval("PT{$interval}S"));
+
+                        // If the previous entry was past the cutoff date
+                        if ($last < $cutoff) {
+                            // Do not process
+                            $process = false;
+                        }
+                    } // Unable to find a log
+                    catch (\UnderflowException $exception) {
+                        // So do not process
+                        $process = false;
+                    }
+                }
+
+                // Get ignore admin settings
+                $ignoreAdmins = \IPS\Settings::i()->awsses_hard_bounce_ignore_admins;
+
+                // If we are ignoring admins and they are an admin
+                if ($ignoreAdmins && ($member->isAdmin() || $member->modPermissions())) {
+                    // Do not process
+                    $process = false;
+                }
+            break;
+            case 'complaint':
+                // Get interval settings
+                $interval = \IPS\Settings::i()->awsses_complaint_interval !== '-1' ? \IPS\Settings::i()->awsses_complaint_interval : false;
+
+                // If we have an interval
+                if ($interval) {
+                    // Try and find the latest log
+                    try {
+                        // Get the latest log entry
+                        $log = \IPS\Db::i()->select('*', \IPS\awsses\Complaint\Log::$databaseTable, [
+                            'member_id=?',
+                            $member->member_id
+                        ], 'date DESC')->first();
+                        $last = \IPS\DateTime::ts($log['date']);
+
+                        // Get our cutoff date
+                        $cutoff = new \DateTime;
+                        $cutoff->sub(new \DateInterval("PT{$interval}S"));
+
+                        // If the previous entry was past the cutoff date
+                        if ($last < $cutoff) {
+                            // Do not process
+                            $process = false;
+                        }
+                    } // Unable to find a log
+                    catch (\UnderflowException $exception) {
+                        // So do not process
+                        $process = false;
+                    }
+                }
+
+                // Get ignore admin settings
+                $ignoreAdmins = \IPS\Settings::i()->awsses_complaint_ignore_admins;
+
+                // If we are ignoring admins and they are an admin
+                if ($ignoreAdmins && ($member->isAdmin() || $member->modPermissions())) {
+                    // Do not process
+                    $process = false;
+                }
+            break;
+        }
+
+        // Return whether we should process
+        return $process;
     }
 
     /**
@@ -501,6 +557,7 @@ class _SES extends Manager
     {
         // Set admin emails to false
         $member->allow_admin_mails = false;
+        $member->save();
     }
 
     /**

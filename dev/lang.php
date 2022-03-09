@@ -63,6 +63,12 @@ $lang = array(
 	'awsses_verified_identities_desc' => 'Please enter all your verified identities (email addresses or domains) that will be used to send email through AWS Simple Email Service. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.',
 	'awsses_default_verified_identity' => 'Default Sending Email Address',
 	'awsses_default_verified_identity_desc' => 'If the sending email address does not match one of the identities above, this email address will be used to send the email. This email address must be a verified identity.',
+	'awsses_complaint_ignore_admins' => 'Ignore For Admins/Moderators',
+	'awsses_complaint_ignore_admins_desc' => 'Do not apply any action when the email encountered is registered to an admin or moderator.',
+    'awsses_soft_bounce_ignore_admins' => 'Ignore For Admins/Moderators',
+    'awsses_soft_bounce_ignore_admins_desc' => 'Do not apply any action when the email encountered is registered to an admin or moderator.',
+    'awsses_hard_bounce_ignore_admins' => 'Ignore For Admins/Moderators',
+    'awsses_hard_bounce_ignore_admins_desc' => 'Do not apply any action when the email encountered is registered to an admin or moderator.',
 
 	// Log
 	'awsses_log' => 'Log',
@@ -101,7 +107,8 @@ $lang = array(
 	'awsses_action_spam' => 'User was marked as a spammer.',
 	'awsses_action_delete' => 'User was deleted.',
 	'awsses_action_ban' => 'User was temporarily banned.',
-	'awsses_action_interval' => 'No action applied. Date outside "Process Conditions" setting.',
+	'awsses_action_interval' => 'No action applied. User does not meet processing conditions.',
+	'awsses_action_admin_mail' =>  'User was unsubscribed from admin emails.',
 
 	// Tasks
 	'task__awsSesPruneLogs' => 'Run the prune logs task.',

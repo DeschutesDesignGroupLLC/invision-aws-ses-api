@@ -53,6 +53,7 @@ class _complaints extends \IPS\Dispatcher\Controller
             'unlimited' => '-1',
             'unlimitedLang' => 'awsses_form_process_immediately'
         ]));
+        $form->add(new \IPS\Helpers\Form\YesNo('awsses_complaint_ignore_admins', \IPS\Settings::i()->awsses_complaint_ignore_admins, true));
         $form->add(new \IPS\Helpers\Form\Select('awsses_complaint_action', \IPS\Settings::i()->awsses_complaint_action, true, [
             'options' => [
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_NOTHING => 'Do Nothing',
