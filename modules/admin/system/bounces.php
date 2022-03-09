@@ -63,6 +63,7 @@ class _bounces extends \IPS\Dispatcher\Controller
             'unlimited' => '-1',
             'unlimitedLang' => 'awsses_form_process_immediately'
         ]));
+        $form->add(new \IPS\Helpers\Form\YesNo('awsses_soft_bounce_ignore_admins', \IPS\Settings::i()->awsses_soft_bounce_ignore_admins, true));
         $form->add(new \IPS\Helpers\Form\Select('awsses_soft_bounce_action', \IPS\Settings::i()->awsses_soft_bounce_action, true, [
             'options' => [
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_NOTHING => 'Do Nothing',
@@ -70,7 +71,8 @@ class _bounces extends \IPS\Dispatcher\Controller
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_SET_VALIDATING => 'Set Member As Validating',
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_SET_SPAMMER => 'Flag As Spammer',
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_DELETE_MEMBER => 'Delete Recipient',
-                \IPS\awsses\Manager\SES::AWSSES_ACTION_TEMP_BAN => 'Temporarily Ban'
+                \IPS\awsses\Manager\SES::AWSSES_ACTION_TEMP_BAN => 'Temporarily Ban',
+                \IPS\awsses\Manager\SES::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL => 'Unsubscribe From Admin Emails/Newsletter'
             ],
             'multiple' => true,
             'toggles' => [
@@ -87,6 +89,7 @@ class _bounces extends \IPS\Dispatcher\Controller
             'unlimited' => '-1',
             'unlimitedLang' => 'awsses_form_process_immediately'
         ]));
+        $form->add(new \IPS\Helpers\Form\YesNo('awsses_hard_bounce_ignore_admins', \IPS\Settings::i()->awsses_hard_bounce_ignore_admins, true));
         $form->add(new \IPS\Helpers\Form\Select('awsses_hard_bounce_action', \IPS\Settings::i()->awsses_hard_bounce_action, true, [
             'options' => [
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_NOTHING => 'Do Nothing',
@@ -94,7 +97,8 @@ class _bounces extends \IPS\Dispatcher\Controller
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_SET_VALIDATING => 'Set Member As Validating',
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_SET_SPAMMER => 'Flag As Spammer',
                 \IPS\awsses\Manager\SES::AWSSES_ACTION_DELETE_MEMBER => 'Delete Recipient',
-                \IPS\awsses\Manager\SES::AWSSES_ACTION_TEMP_BAN => 'Temporarily Ban'
+                \IPS\awsses\Manager\SES::AWSSES_ACTION_TEMP_BAN => 'Temporarily Ban',
+                \IPS\awsses\Manager\SES::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL => 'Unsubscribe From Admin Emails/Newsletter'
             ],
             'multiple' => true,
             'toggles' => [
