@@ -39,9 +39,6 @@ class _settings extends \IPS\Dispatcher\Controller
      */
     protected function manage()
     {
-        $manager = new \IPS\awsses\Manager\SES();
-        $manager->processHardBouncedEmailAddresses(['sales@deschutesdesigngroup.com']);
-
         // Create a new form
         $form = new \IPS\Helpers\Form;
 
