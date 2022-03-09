@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10013">
+ <app key="awsses" version="10014">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
@@ -57,6 +57,12 @@
   <word key="awsses_verified_identities_desc" js="0">Please enter all your verified identities (email addresses or domains) that will be used to send email through AWS Simple Email Service. These identities will be checked against the sending email address leaving your Invision Power Board website. If the email does not match one of the verified identities below, the default email address below will be used.</word>
   <word key="awsses_default_verified_identity" js="0">Default Sending Email Address</word>
   <word key="awsses_default_verified_identity_desc" js="0">If the sending email address does not match one of the identities above, this email address will be used to send the email. This email address must be a verified identity.</word>
+  <word key="awsses_complaint_ignore_admins" js="0">Ignore For Admins/Moderators</word>
+  <word key="awsses_complaint_ignore_admins_desc" js="0">Do not apply any action when the email encountered is registered to an admin or moderator.</word>
+  <word key="awsses_soft_bounce_ignore_admins" js="0">Ignore For Admins/Moderators</word>
+  <word key="awsses_soft_bounce_ignore_admins_desc" js="0">Do not apply any action when the email encountered is registered to an admin or moderator.</word>
+  <word key="awsses_hard_bounce_ignore_admins" js="0">Ignore For Admins/Moderators</word>
+  <word key="awsses_hard_bounce_ignore_admins_desc" js="0">Do not apply any action when the email encountered is registered to an admin or moderator.</word>
   <word key="awsses_log" js="0">Log</word>
   <word key="awsses_logs" js="0">Outgoing Logs</word>
   <word key="awsses_bounce_logs" js="0">Bounce Logs</word>
@@ -85,7 +91,8 @@
   <word key="awsses_action_spam" js="0">User was marked as a spammer.</word>
   <word key="awsses_action_delete" js="0">User was deleted.</word>
   <word key="awsses_action_ban" js="0">User was temporarily banned.</word>
-  <word key="awsses_action_interval" js="0">No action applied. Date outside &quot;Process Conditions&quot; setting.</word>
+  <word key="awsses_action_interval" js="0">No action applied. User does not meet processing conditions.</word>
+  <word key="awsses_action_admin_mail" js="0">User was unsubscribed from admin emails.</word>
   <word key="task__awsSesPruneLogs" js="0">Run the prune logs task.</word>
   <word key="awsses_error_log_not_found" js="0">Unable to find the selected log.</word>
   <word key="__api_awsses_bounces" js="0">Bounce Notifications</word>
