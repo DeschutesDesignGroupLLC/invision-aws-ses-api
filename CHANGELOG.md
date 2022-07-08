@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.13] - 2022-07-07
+### Added
+- Added check to make sure AWS SDK is not loaded twice.
+### Changed
+- IMAP extension is now checked to see if it is loaded before calling related functions.
+### Fixed
+- Improved the CSS for the Outgoing Logs when dark mode is enabled.
+
 ## [1.0.12] - 2022-03-09
 ### Added
 - Added ability to unsubscribe members from admin emails as a bounce or complaint action.
