@@ -13,23 +13,23 @@
     {{if $log->messageId}}
         <div class="ipsSpacer_bottom">
             <h3 class="ipsType_minorHeading">{lang="log_messageId"}</h3>
-            <pre class="prettyprint" id="message" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->messageId}</pre>
+            <pre class="prettyprint ipsType_neutral" id="message" style="min-height: 50px; white-space: pre-wrap;">{$log->messageId}</pre>
         </div>
     {{endif}}
     <div class="ipsSpacer_bottom">
         <h3 class="ipsType_minorHeading">{lang="log_payload"}</h3>
-        <pre class="prettyprint lang-json" id="payload" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->payload}</pre>
+        <pre class="prettyprint lang-json ipsType_neutral" id="payload" style="min-height: 50px; white-space: pre-wrap;">{$log->payload}</pre>
     </div>
     {{if $log->errorMessage}}
         <div class="ipsSpacer_bottom">
             <h3 class="ipsType_minorHeading">{lang="log_error_message"}</h3>
-            <pre class="prettyprint lang-html" id="error_message" style="min-height: 50px; background-color: white; white-space: pre-wrap;">{$log->errorMessage}</pre>
+            <pre class="prettyprint lang-html" id="error_message" style="min-height: 50px; white-space: pre-wrap;">{$log->errorMessage}</pre>
         </div>
     {{endif}}
     {{if $log->exception}}
         <div class="ipsSpacer_bottom">
             <h3 class="ipsType_minorHeading">{lang="log_exception"}</h3>
-            <pre class="prettyprint lang-html" id="exception" style="min-height: 50px; background-color: white;">{$log->exception|raw}</pre>
+            <pre class="prettyprint lang-html" id="exception" style="min-height: 50px;">{$log->exception|raw}</pre>
         </div>
     {{endif}}
 </div>]]></template>
