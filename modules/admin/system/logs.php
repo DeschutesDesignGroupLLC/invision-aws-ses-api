@@ -66,12 +66,15 @@ class _logs extends \IPS\Dispatcher\Controller
                 // Return the date
                 $payload = json_decode($row['payload'], true);
                 if (isset($payload['Source'])) {
-                    $decoded = imap_mime_header_decode($payload['Source']);
-                    $name = isset($decoded[0]) ? str_replace(['<', '>', '"'], "", $decoded[0]->text) : null;
-                    $email = isset($decoded[1]) ? str_replace(['<', '>', '"'], "", $decoded[1]->text) : null;
+                    if (\extension_loaded('imap')) {
+                        $decoded = imap_mime_header_decode($payload['Source']);
+                        $name = isset($decoded[0]) ? str_replace(['<', '>', '"'], "", $decoded[0]->text) : null;
+                        $email = isset($decoded[1]) ? str_replace(['<', '>', '"'], "", $decoded[1]->text) : null;
+                        return $email ? (string) $email : (string) $name;
+                    }
+                    return 'Please enable the PHP IMAP extension to view the source.';
                 }
 
-                return $email ? (string) $email : (string) $name;
             },
             'to' => function ($val, $row) {
                 // Return the date
