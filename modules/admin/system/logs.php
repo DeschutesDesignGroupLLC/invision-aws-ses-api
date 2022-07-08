@@ -66,7 +66,7 @@ class _logs extends \IPS\Dispatcher\Controller
                 // Return the date
                 $payload = json_decode($row['payload'], true);
                 if (isset($payload['Source'])) {
-                    if (extension_loaded('imap')) {
+                    if (\extension_loaded('imap')) {
                         $decoded = imap_mime_header_decode($payload['Source']);
                         $name = isset($decoded[0]) ? str_replace(['<', '>', '"'], "", $decoded[0]->text) : null;
                         $email = isset($decoded[1]) ? str_replace(['<', '>', '"'], "", $decoded[1]->text) : null;
