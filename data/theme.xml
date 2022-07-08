@@ -23,13 +23,13 @@
     {{if $log->errorMessage}}
         <div class="ipsSpacer_bottom">
             <h3 class="ipsType_minorHeading">{lang="log_error_message"}</h3>
-            <pre class="prettyprint lang-html" id="error_message" style="min-height: 50px; white-space: pre-wrap;">{$log->errorMessage}</pre>
+            <pre class="prettyprint lang-html ipsType_neutral" id="error_message" style="min-height: 50px; white-space: pre-wrap;">{$log->errorMessage}</pre>
         </div>
     {{endif}}
     {{if $log->exception}}
         <div class="ipsSpacer_bottom">
             <h3 class="ipsType_minorHeading">{lang="log_exception"}</h3>
-            <pre class="prettyprint lang-html" id="exception" style="min-height: 50px;">{$log->exception|raw}</pre>
+            <pre class="prettyprint lang-html ipsType_neutral" id="exception" style="min-height: 50px;">{$log->exception|raw}</pre>
         </div>
     {{endif}}
 </div>]]></template>

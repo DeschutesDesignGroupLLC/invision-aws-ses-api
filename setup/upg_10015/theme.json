@@ -2,6 +2,7 @@
     "html": {
         "added": [],
         "edited": [
+            "admin\/logs\/log",
             "admin\/logs\/log"
         ],
         "removed": []
