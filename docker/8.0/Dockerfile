@@ -8,7 +8,7 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 # Install Extensions
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions gd xdebug exif mysqli zip redis
+    install-php-extensions gd xdebug exif mysqli zip redis imap
 
 # Use default PHP production config file
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
