@@ -5,19 +5,19 @@ services:
     ports:
       - '80:80'
     volumes:
-      - '/Users/jonerickson/Documents/Invision Community/4.7.0:/app' # Edit For Your Local Environment
-      - './api/:/app/applications/awsses/api'
-      - './data/:/app/applications/awsses/data'
-      - './dev/:/app/applications/awsses/dev'
-      - './extensions/:/app/applications/awsses/extensions'
-      - './hooks/:/app/applications/awsses/hooks'
-      - './interface/:/app/applications/awsses/interface'
-      - './modules/:/app/applications/awsses/modules'
-      - './setup/:/app/applications/awsses/setup'
-      - './sources:/app/applications/awsses/sources'
-      - './tasks/:/app/applications/awsses/tasks'
-      - './widgets/:/app/applications/awsses/widgets'
-      - './Application.php:/app/applications/awsses/Application.php'
+      - './invision/:/var/www/html' # Edit For Your Local Environment
+      - './api/:/var/www/html/applications/awsses/api'
+      - './data/:/var/www/html/applications/awsses/data'
+      - './dev/:/var/www/html/applications/awsses/dev'
+      - './extensions/:/var/www/html/applications/awsses/extensions'
+      - './hooks/:/var/www/html/applications/awsses/hooks'
+      - './interface/:/var/www/html/applications/awsses/interface'
+      - './modules/:/var/www/html/applications/awsses/modules'
+      - './setup/:/var/www/html/applications/awsses/setup'
+      - './sources:/var/www/html/applications/awsses/sources'
+      - './tasks/:/var/www/html/applications/awsses/tasks'
+      - './widgets/:/var/www/html/applications/awsses/widgets'
+      - './Application.php:/var/www/html/applications/awsses/Application.php'
       - './nginx/conf.d/site.conf:/etc/nginx/conf.d/site.conf'
     networks:
       - awsses
@@ -32,19 +32,19 @@ services:
       dockerfile: Dockerfile
     image: invision-8.0/app
     volumes:
-      - '/Users/jonerickson/Documents/Invision Community/4.7.0:/app' # Edit For Your Local Environment
-      - './api/:/app/applications/awsses/api'
-      - './data/:/app/applications/awsses/data'
-      - './dev/:/app/applications/awsses/dev'
-      - './extensions/:/app/applications/awsses/extensions'
-      - './hooks/:/app/applications/awsses/hooks'
-      - './interface/:/app/applications/awsses/interface'
-      - './modules/:/app/applications/awsses/modules'
-      - './setup/:/app/applications/awsses/setup'
-      - './sources:/app/applications/awsses/sources'
-      - './tasks/:/app/applications/awsses/tasks'
-      - './widgets/:/app/applications/awsses/widgets'
-      - './Application.php:/app/applications/awsses/Application.php'
+      - './invision/:/var/www/html' # Edit For Your Local Environment
+      - './api/:/var/www/html/applications/awsses/api'
+      - './data/:/var/www/html/applications/awsses/data'
+      - './dev/:/var/www/html/applications/awsses/dev'
+      - './extensions/:/var/www/html/applications/awsses/extensions'
+      - './hooks/:/var/www/html/applications/awsses/hooks'
+      - './interface/:/var/www/html/applications/awsses/interface'
+      - './modules/:/var/www/html/applications/awsses/modules'
+      - './setup/:/var/www/html/applications/awsses/setup'
+      - './sources:/var/www/html/applications/awsses/sources'
+      - './tasks/:/var/www/html/applications/awsses/tasks'
+      - './widgets/:/var/www/html/applications/awsses/widgets'
+      - './Application.php:/var/www/html/applications/awsses/Application.php'
       - './php/conf.d/php.ini:/usr/local/etc/php/conf.d/100-custom.ini'
     extra_hosts:
       host.docker.internal: host-gateway
@@ -56,7 +56,7 @@ services:
       - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-password}'
-      MYSQL_DATABASE: '${DB_DATABASE:-invision-4.7.0}'
+      MYSQL_DATABASE: '${DB_DATABASE:-invision}'
       MYSQL_USER: '${DB_USERNAME:-invision}'
       MYSQL_PASSWORD: '${DB_PASSWORD:-password}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
