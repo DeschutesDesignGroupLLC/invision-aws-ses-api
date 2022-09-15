@@ -244,6 +244,7 @@ class _SES extends Manager
 
             // No action being applied
             else {
+
                 // Still log the bounce
                 $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
             }

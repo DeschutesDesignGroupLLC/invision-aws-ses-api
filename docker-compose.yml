@@ -28,9 +28,9 @@ services:
       - mailhog
   php:
     build:
-      context: ./docker/8.0
+      context: ./docker/8.1
       dockerfile: Dockerfile
-    image: invision-8.0/app
+    image: invision-8.1/app
     volumes:
       - './invision/:/var/www/html' # Edit For Your Local Environment
       - './api/:/var/www/html/applications/awsses/api'

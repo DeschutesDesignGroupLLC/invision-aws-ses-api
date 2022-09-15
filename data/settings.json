@@ -12,6 +12,10 @@
         "default": ""
     },
     {
+        "key": "awsses_complaint_ignore_admins",
+        "default": "0"
+    },
+    {
         "key": "awsses_complaint_interval",
         "default": "-1"
     },
@@ -36,6 +40,10 @@
         "default": ""
     },
     {
+        "key": "awsses_hard_bounce_ignore_admins",
+        "default": "0"
+    },
+    {
         "key": "awsses_hard_bounce_interval",
         "default": "-1"
     },
@@ -58,6 +66,10 @@
     {
         "key": "awsses_soft_bounce_action_group",
         "default": ""
+    },
+    {
+        "key": "awsses_soft_bounce_ignore_admins",
+        "default": "0"
     },
     {
         "key": "awsses_soft_bounce_interval",

@@ -60,7 +60,7 @@ class _SES extends \IPS\Patterns\Singleton
             if ($valid) {
                 if ($message['Type'] === 'Notification') {
                     // Get our message components
-                    $notification = json_decode($message['Message'], true);
+                    $notification = \is_array($message['Message']) ? $message['Message'] : json_decode($message['Message'], true, 512, JSON_THROW_ON_ERROR);
                     $type = $notification['notificationType'];
 
                     // If a bounce

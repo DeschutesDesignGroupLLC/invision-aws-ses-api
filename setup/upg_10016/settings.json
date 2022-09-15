@@ -1,0 +1,9 @@
+{
+    "added": [
+        "awsses_complaint_ignore_admins",
+        "awsses_hard_bounce_ignore_admins",
+        "awsses_soft_bounce_ignore_admins"
+    ],
+    "edited": [],
+    "removed": []
+}
