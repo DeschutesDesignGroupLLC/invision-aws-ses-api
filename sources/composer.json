@@ -17,6 +17,7 @@
   ],
   "homepage": "https://www.deschutesdesigngroup.com/",
   "require": {
+    "php": "^7.4|^8.0",
     "aws/aws-sdk-php": "^3.169.0",
     "guzzlehttp/guzzle": "^7.3.0",
     "aws/aws-php-sns-message-validator": "^1.6"
