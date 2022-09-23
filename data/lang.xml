@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10016">
+ <app key="awsses" version="10017">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
