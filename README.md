@@ -1,16 +1,25 @@
 # AWS Simple Email Service for Invision Power Board
 
-This simple lightweight application allows you to send emails from the Invision Power Board platform through the AWS Simple Email Service API. This application sits on top of your configured email delivery methods and overrides your default settings. With the click of one button, enable and disable the service. The application also features several complaint and bounce management actions that may be applied to members to help improve throughput and deliverability.
 
-Amazon SES is one of the most robust and cheapest transactional email service providers on the market. While this application is extremely lightweight and easy to configure, most of the work to correctly set up will occur within the AWS Console. Follow the following steps to correctly configure AWS to send emails.
+Introducing our powerful yet user-friendly application that revolutionizes email sending on the Invision Power Board platform by leveraging the AWS Simple Email Service API. With this lightweight solution, you can effortlessly send emails, supercharging your communication capabilities.
 
-**NOTE**: When you initially begin to use AWS Simple Email Service, you will be in a non-production, sandbox environment allowing you to test the email service without affecting your deliverability and reputation. Once you are ready to enter production, you will need to request access from AWS under the Sending Statistics section. The form is self-explanatory and will not be covered here.
+By seamlessly integrating with your existing email delivery methods, our application overrides default settings with ease. With just a simple click, you can enable or disable the service, giving you complete control.
 
-**Feature Requests and Bug Reports:** Click [here](https://gitreports.com/issue/DeschutesDesignGroupLLC/AWS-SES-IPB) to file a bug report or suggest a feature for our development team.
+But that's not all - our application goes beyond basic functionality. It incorporates advanced complaint and bounce management actions that can be applied to members, significantly improving email throughput and deliverability. Say goodbye to email delivery headaches and hello to seamless communication.
+
+Harnessing the power of Amazon SES, one of the most robust and cost-effective transactional email service providers available, our application ensures top-notch performance. While the setup process is lightweight and straightforward, the majority of the configuration takes place within the AWS Console, where you can fine-tune your email sending preferences for optimal results.
+
+Please note that when you initially begin using AWS Simple Email Service, you'll operate within a non-production sandbox environment. This allows you to test the service without impacting your reputation or deliverability. When you're ready to transition into production, you can request access from AWS directly through the Sending Statistics section. The process is straightforward, and we'll be there to guide you every step of the way.
+
+Elevate your email sending capabilities to new heights with our application, and experience the efficiency and reliability that comes with AWS-powered communication. Don't miss out on this opportunity to enhance your email delivery and take your communication game to the next level.
 
 **Support Topic:** Click [here](https://invisioncommunity.com/forums/topic/463340-aws-simple-email-service-with-bounce-management/) to read the Invision Power Board support topic.
 
 **[View AWS Simple Email Service Pricing](https://aws.amazon.com/ses/pricing/)**
+
+**[Community Forums](https://community.deschutesdesigngroup.com)**
+
+**[Support](https://www.deschutesdesigngroup.com/support)**
 
 **Simple Email Service Installation For Sending Emails:**
 
