@@ -1,0 +1,614 @@
+<?php
+
+namespace IPS\awsses\Manager;
+
+use Aws\Ses\SesClient;
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
+    exit;
+}
+
+class _SES extends Manager
+{
+    /**
+     * Actions on receipt of bounce or complaint
+     */
+    public const AWSSES_ACTION_NOTHING                 = 'nothing';
+    public const AWSSES_ACTION_MOVE_GROUP              = 'group';
+    public const AWSSES_ACTION_SET_VALIDATING          = 'validating';
+    public const AWSSES_ACTION_SET_SPAMMER             = 'spam';
+    public const AWSSES_ACTION_DELETE_MEMBER           = 'delete';
+    public const AWSSES_ACTION_TEMP_BAN                = 'ban';
+    public const AWSSES_ACTION_INTERVAL                = 'interval';
+    public const AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL = 'admin_mail';
+
+    /**
+     * @var null SES Configuration Set
+     */
+    public $configSet;
+
+    /**
+     * @var SesClient The AWS SES client object.
+     */
+    public $client;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        // Call parent
+        parent::__construct();
+
+        // Set config set
+        $this->configSet = \IPS\Settings::i()->awsses_config_set_name ?? null;
+
+        // Set up our SES Client
+        $this->client = new SesClient([
+            'version' => '2010-12-01',
+            'region' => $this->region,
+            'credentials' => [
+                'key' => $this->accessKey,
+                'secret' => $this->secretKey
+            ]
+        ]);
+    }
+
+    /**
+     * @param array $emailAddresses
+     */
+    public function processSoftBouncedEmailAddresses($emailAddresses = [])
+    {
+        // Make sure the email address is an array
+        if (!\is_array($emailAddresses)) {
+            $emailAddresses = [$emailAddresses];
+        }
+
+        // Get soft bounce settings
+        $actions = \IPS\Settings::i()->awsses_soft_bounce_action;
+
+        // Make sure our actions are an array
+        if (!\is_array($actions)) {
+            $actions = [$actions];
+        }
+
+        // Loop through the email addresses
+        foreach ($emailAddresses as $emailAddress) {
+            // Make sure nothing is not checked
+            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
+                // Try to find the member
+                $member = \IPS\Member::load($emailAddress, 'email');
+
+                // If we found the member
+                if ($member->email) {
+                    // Determine if we should process this action
+                    $process = $this->_shouldProcessAction($member, 'soft');
+
+                    // If we are processing
+                    if ($process) {
+                        // Loop through the actions
+                        foreach ($actions as $action) {
+                            // Switch between the actions
+                            switch ($action) {
+                                // Move Groups
+                                case static::AWSSES_ACTION_MOVE_GROUP:
+                                    $this->_moveToGroup($member, \IPS\Settings::i()->awsses_soft_bounce_action_group);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_MOVE_GROUP, 'soft');
+                                    break;
+
+                                    // Set validating
+                                case static::AWSSES_ACTION_SET_VALIDATING:
+                                    $this->_setAsValidating($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_VALIDATING, 'soft');
+                                    break;
+
+                                    // Set as spammer
+                                case static::AWSSES_ACTION_SET_SPAMMER:
+                                    $this->_setAsSpammer($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_SPAMMER, 'soft');
+                                    break;
+
+                                    // Delete member
+                                case static::AWSSES_ACTION_DELETE_MEMBER:
+                                    $this->_deleteMember($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_DELETE_MEMBER, 'soft');
+                                    break;
+
+                                    // Temp Ban
+                                case static::AWSSES_ACTION_TEMP_BAN:
+                                    $this->_tempBan($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN, 'soft');
+                                    break;
+
+                                    // Unsubscribe admin email
+                                case static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL:
+                                    $this->_unsubsribeFromAdminEmails($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL, 'soft');
+                                    break;
+                            }
+                        }
+                    }
+
+                    // No action being applied
+                    else {
+                        // Still log the bounce
+                        $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_INTERVAL, 'soft');
+                    }
+                }
+
+                // Member not found
+                else {
+                    // Still log the bounce
+                    $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
+                }
+            }
+
+            // No action being applied
+            else {
+                // Still log the bounce
+                $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'soft');
+            }
+        }
+    }
+
+    /**
+     * @param array $emailAddresses
+     */
+    public function processHardBouncedEmailAddresses($emailAddresses = [])
+    {
+        // Make sure the email address is an array
+        if (!\is_array($emailAddresses)) {
+            $emailAddresses = [$emailAddresses];
+        }
+
+        // Get hard bounce settings
+        $actions = \IPS\Settings::i()->awsses_hard_bounce_action;
+
+        // Make sure our actions are an array
+        if (!\is_array($actions)) {
+            $actions = [$actions];
+        }
+
+        // Loop through the email addresses
+        foreach ($emailAddresses as $emailAddress) {
+            // Make sure nothing is not checked and we have some actions saved
+            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
+                // Try to find the member
+                $member = \IPS\Member::load($emailAddress, 'email');
+
+                // If we found the member
+                if ($member->email) {
+                    // Determine if we should process this action
+                    $process = $this->_shouldProcessAction($member, 'hard');
+
+                    // If we are processing
+                    if ($process) {
+                        // Loop through the actions
+                        foreach ($actions as $action) {
+                            // Switch between the actions
+                            switch ($action) {
+                                // Move Groups
+                                case static::AWSSES_ACTION_MOVE_GROUP:
+                                    $this->_moveToGroup($member, \IPS\Settings::i()->awsses_hard_bounce_action_group);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_MOVE_GROUP, 'hard');
+                                    break;
+
+                                    // Set validating
+                                case static::AWSSES_ACTION_SET_VALIDATING:
+                                    $this->_setAsValidating($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_VALIDATING, 'hard');
+                                    break;
+
+                                    // Set as spammer
+                                case static::AWSSES_ACTION_SET_SPAMMER:
+                                    $this->_setAsSpammer($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_SET_SPAMMER, 'hard');
+                                    break;
+
+                                    // Delete member
+                                case static::AWSSES_ACTION_DELETE_MEMBER:
+                                    $this->_deleteMember($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_DELETE_MEMBER, 'hard');
+                                    break;
+
+                                    // Temp Ban
+                                case static::AWSSES_ACTION_TEMP_BAN:
+                                    $this->_tempBan($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN, 'hard');
+                                    break;
+
+                                    // Unsubscribe admin email
+                                case static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL:
+                                    $this->_unsubsribeFromAdminEmails($member);
+                                    $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL, 'hard');
+                                    break;
+                            }
+                        }
+                    }
+
+                    // No action being applied
+                    else {
+                        // Still log the bounce
+                        $this->_logBounceAction($member, $emailAddress, static::AWSSES_ACTION_INTERVAL, 'hard');
+                    }
+                }
+
+                // Member not found
+                else {
+                    // Still log the bounce
+                    $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
+                }
+            }
+
+            // No action being applied
+            else {
+
+                // Still log the bounce
+                $this->_logBounceAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING, 'hard');
+            }
+        }
+    }
+
+    /**
+     * @param array $emailAddresses
+     */
+    public function processComplaintEmailAddresses($emailAddresses = [])
+    {
+        // Make sure the email address is an array
+        if (!\is_array($emailAddresses)) {
+            $emailAddresses = [$emailAddresses];
+        }
+
+        // Get complaint settings
+        $actions = \IPS\Settings::i()->awsses_complaint_action;
+
+        // Make sure our actions are an array
+        if (!\is_array($actions)) {
+            $actions = [$actions];
+        }
+
+        // Loop through the email addresses
+        foreach ($emailAddresses as $emailAddress) {
+            // Make sure nothing is not checked
+            if (!\in_array(static::AWSSES_ACTION_NOTHING, $actions) && \count($actions)) {
+                // Try to find the member
+                $member = \IPS\Member::load($emailAddress, 'email');
+
+                // If we found the member
+                if ($member->email) {
+                    // Determine if we should process this action
+                    $process = $this->_shouldProcessAction($member, 'complaint');
+
+                    // If we are processing
+                    if ($process) {
+                        // Loop through the actions
+                        foreach ($actions as $action) {
+                            // Switch between the actions
+                            switch ($action) {
+                                // Move Groups
+                                case static::AWSSES_ACTION_MOVE_GROUP:
+                                    $this->_moveToGroup($member, \IPS\Settings::i()->awsses_complaint_action_group);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_MOVE_GROUP);
+                                    break;
+
+                                    // Set validating
+                                case static::AWSSES_ACTION_SET_VALIDATING:
+                                    $this->_setAsValidating($member);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_SET_VALIDATING);
+                                    break;
+
+                                    // Set as spammer
+                                case static::AWSSES_ACTION_SET_SPAMMER:
+                                    $this->_setAsSpammer($member);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_SET_SPAMMER);
+                                    break;
+
+                                    // Delete member
+                                case static::AWSSES_ACTION_DELETE_MEMBER:
+                                    $this->_deleteMember($member);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_DELETE_MEMBER);
+                                    break;
+
+                                    // Temp Ban
+                                case static::AWSSES_ACTION_TEMP_BAN:
+                                    $this->_tempBan($member);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_TEMP_BAN);
+                                    break;
+
+                                    // Unsubscribe admin eamil
+                                case static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL:
+                                    $this->_unsubsribeFromAdminEmails($member);
+                                    $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_UNSUBSCRIBE_ADMIN_EMAIL);
+                                    break;
+                            }
+                        }
+                    }
+
+                    // No action being applied
+                    else {
+                        // Still log the complaint
+                        $this->_logComplaintAction($member, $emailAddress, static::AWSSES_ACTION_INTERVAL);
+                    }
+                }
+
+                // Member not found
+                else {
+                    // Still log the bounce
+                    $this->_logComplaintAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING);
+                }
+            }
+
+            // No action being applied
+            else {
+                // Still log the complaint
+                $this->_logComplaintAction(null, $emailAddress, static::AWSSES_ACTION_NOTHING);
+            }
+        }
+    }
+
+    /**
+     * @param $member
+     * @param $action
+     *
+     * @return bool
+     */
+    protected function _shouldProcessAction($member, $action)
+    {
+        // DEfault to ues
+        $process = true;
+
+        // Switch between the types
+        switch ($action) {
+            case 'soft':
+                // Get interval settings
+                $interval = \IPS\Settings::i()->awsses_soft_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_soft_bounce_interval : false;
+
+                // If we have an interval
+                if ($interval) {
+                    // Try and find the latest log
+                    try {
+                        // Get the latest log entry
+                        $log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, [
+                            'type=? AND member_id=?',
+                            'soft',
+                            $member->member_id
+                        ], 'date DESC')->first();
+                        $last = \IPS\DateTime::ts($log['date']);
+
+                        // Get our cutoff date
+                        $cutoff = new \DateTime();
+                        $cutoff->sub(new \DateInterval("PT{$interval}S"));
+
+                        // If the previous entry was past the cutoff date
+                        if ($last < $cutoff) {
+                            // Do not process
+                            $process = false;
+                        }
+                    } // Unable to find a log
+                    catch (\UnderflowException $exception) {
+                        // So do not process
+                        $process = false;
+                    }
+                }
+
+                // Get ignore admin settings
+                $ignoreAdmins = \IPS\Settings::i()->awsses_soft_bounce_ignore_admins;
+
+                // If we are ignoring admins and they are an admin
+                if ($ignoreAdmins && ($member->isAdmin() || $member->modPermissions())) {
+                    // Do not process
+                    $process = false;
+                }
+
+                break;
+            case 'hard':
+                // Get interval settings
+                $interval = \IPS\Settings::i()->awsses_hard_bounce_interval !== '-1' ? \IPS\Settings::i()->awsses_hard_bounce_interval : false;
+
+                // If we have an interval
+                if ($interval) {
+                    // Try and find the latest log
+                    try {
+                        // Get the latest log entry
+                        $log = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, [
+                            'type=? AND member_id=?',
+                            'hard',
+                            $member->member_id
+                        ], 'date DESC')->first();
+                        $last = \IPS\DateTime::ts($log['date']);
+
+                        // Get our cutoff date
+                        $cutoff = new \DateTime();
+                        $cutoff->sub(new \DateInterval("PT{$interval}S"));
+
+                        // If the previous entry was past the cutoff date
+                        if ($last < $cutoff) {
+                            // Do not process
+                            $process = false;
+                        }
+                    } // Unable to find a log
+                    catch (\UnderflowException $exception) {
+                        // So do not process
+                        $process = false;
+                    }
+                }
+
+                // Get ignore admin settings
+                $ignoreAdmins = \IPS\Settings::i()->awsses_hard_bounce_ignore_admins;
+
+                // If we are ignoring admins and they are an admin
+                if ($ignoreAdmins && ($member->isAdmin() || $member->modPermissions())) {
+                    // Do not process
+                    $process = false;
+                }
+                break;
+            case 'complaint':
+                // Get interval settings
+                $interval = \IPS\Settings::i()->awsses_complaint_interval !== '-1' ? \IPS\Settings::i()->awsses_complaint_interval : false;
+
+                // If we have an interval
+                if ($interval) {
+                    // Try and find the latest log
+                    try {
+                        // Get the latest log entry
+                        $log = \IPS\Db::i()->select('*', \IPS\awsses\Complaint\Log::$databaseTable, [
+                            'member_id=?',
+                            $member->member_id
+                        ], 'date DESC')->first();
+                        $last = \IPS\DateTime::ts($log['date']);
+
+                        // Get our cutoff date
+                        $cutoff = new \DateTime();
+                        $cutoff->sub(new \DateInterval("PT{$interval}S"));
+
+                        // If the previous entry was past the cutoff date
+                        if ($last < $cutoff) {
+                            // Do not process
+                            $process = false;
+                        }
+                    } // Unable to find a log
+                    catch (\UnderflowException $exception) {
+                        // So do not process
+                        $process = false;
+                    }
+                }
+
+                // Get ignore admin settings
+                $ignoreAdmins = \IPS\Settings::i()->awsses_complaint_ignore_admins;
+
+                // If we are ignoring admins and they are an admin
+                if ($ignoreAdmins && ($member->isAdmin() || $member->modPermissions())) {
+                    // Do not process
+                    $process = false;
+                }
+                break;
+        }
+
+        // Return whether we should process
+        return $process;
+    }
+
+    /**
+     * @param null $member
+     * @param null $group
+     */
+    protected function _moveToGroup($member = null, $group = null)
+    {
+        // Add the member to the group
+        $groups = explode(',', $member->mgroup_others);
+        $groups[] = $group;
+        $member->mgroup_others = implode(',', array_filter($groups));
+        $member->save();
+    }
+
+    /**
+     * @param null $member
+     */
+    protected function _setAsValidating($member = null)
+    {
+        // Add validation entry
+        $vid = md5($member->members_pass_hash . \IPS\Login::generateRandomString());
+        \IPS\Db::i()->insert('core_validating', [
+            'vid' => $vid,
+            'member_id' => $member->member_id,
+            'user_verified' => false,
+            'spam_flag' => false,
+            'entry_date' => time()
+        ]);
+
+        // Set the member as validating
+        $member->members_bitoptions['validating'] = true;
+        $member->save();
+    }
+
+    /**
+     * @param null $member
+     */
+    protected function _setAsSpammer($member = null)
+    {
+        // Set as spammer
+        $member->flagAsSpammer();
+    }
+
+    /**
+     * @param null $member
+     */
+    protected function _tempBan($member = null)
+    {
+        // Place ban
+        $member->temp_ban = -1;
+        $member->save();
+    }
+
+    /**
+     * @param null $member
+     */
+    protected function _deleteMember($member = null)
+    {
+        // Set as spammer
+        $member->delete();
+    }
+
+    /**
+     * @param null $member
+     */
+    protected function _unsubsribeFromAdminEmails($member = null)
+    {
+        // Set admin emails to false
+        $member->allow_admin_mails = false;
+        $member->save();
+    }
+
+    /**
+     * @param null   $member
+     * @param null   $action
+     * @param string $type
+     */
+    protected function _logBounceAction($member = null, $email = null, $action = null, $type = 'soft')
+    {
+        // Create our log
+        \IPS\awsses\Bounce\Log::log($member, $email, $action, $type);
+    }
+
+    /**
+     * @param null $member
+     * @param null $action
+     */
+    protected function _logComplaintAction($member = null, $email = null, $action = null)
+    {
+        // Create our log
+        \IPS\awsses\Complaint\Log::log($member, $email, $action);
+    }
+
+    /**
+     * @param null $fromEmail
+     *
+     * @return mixed
+     */
+    public function getSendingEmailAddress($fromEmail = null)
+    {
+        // Get default sending email address
+        $email = \IPS\Settings::i()->awsses_default_verified_identity;
+
+        // Get saved verified identities
+        $identities = explode(',', \IPS\Settings::i()->awsses_verified_identities);
+
+        // If a valid email
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // Get just the domain
+            $emailArray = explode('@', $fromEmail);
+            $domain = array_pop($emailArray);
+
+            // If the email or its domains are in the verified list
+            if ($fromEmail && (\in_array($fromEmail, $identities) || \in_array($domain, $identities))) {
+                // Sending email address is valid
+                return $fromEmail;
+            }
+        }
+
+        // Return our default email
+        return $email;
+    }
+}

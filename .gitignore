@@ -1,3 +1,4 @@
 .idea
-sources/vendor
+src/sources/vendor
+vendor
 invision/*
