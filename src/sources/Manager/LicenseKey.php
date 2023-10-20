@@ -12,7 +12,7 @@ class _LicenseKey extends Singleton
 {
     public function isValid(): bool
     {
-        if (! Store::i()->awsses_license_fetched || Store::i()->awsses_license_fetched < (time() - 1814400)) {
+        if (! isset(Store::i()->awsses_license_fetched) || ! isset(Store::i()->awsses_license_status) || Store::i()->awsses_license_fetched < (time() - 1814400)) {
             $this->fetchLicenseStatus();
         }
 
