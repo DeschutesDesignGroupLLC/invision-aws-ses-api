@@ -1,7 +1,7 @@
 <?php
 
-$lang = array(
-    '__app_awsses'	=> "AWS Simple Email Service",
+$lang = [
+    '__app_awsses' => 'AWS Simple Email Service',
 
     // Menu
     'menutab__awsses' => 'AWS SES',
@@ -21,8 +21,14 @@ $lang = array(
     'awsses_settings_tab_system' => 'System',
     'awsses_settings_email_override_message' => 'Enabling this application will override any native email settings you have configured within the ACP regardless of the mail delivery method you have selected.',
     'awsses_settings_message' => 'Before enabling this application, you will need to create an IAM role within the AWS Console and attach the AmazonSESFullAccess and AmazonSNSFullAccess policy. Allow programmatic access and keep track of your Access Key and Secret Key. Input the required information below to allow API access to AWS SES.',
+    'awsses_aws' => 'AWS Settings',
     'awsses_enabled' => 'Enabled',
     'awsses_enabled_desc' => 'Checking yes will force your Invision Power Board community to start sending emails with AWS SES. All errors will be logged under your the ACP System Support tool.',
+    'awsses_license' => 'License Settings',
+    'awsses_license_key' => 'License Key',
+    'awsses_license_key_desc' => 'Your application license key. Manage your license keys at <a href="https://store.deschutesdesigngroup.com" target="_blank">https://store.deschutesdesigngroup.com</a>.',
+    'awsses_license_error' => 'Your license key is not valid or not active. Please update your license to keep using this product.',
+    'awsses_license_refreshed' => 'The license key data has been refreshed.',
     'awsses_access_key' => 'Access Key',
     'awsses_access_key_desc' => 'You will need to make sure you have attached the AmazonSESFullAccess and AmazonSNSFullAccess policy to the IAM role you are using so that IPB can access the AWS Simple Email Service and AWS Simple Notification Service API.',
     'awsses_secret_key' => 'Secret Key',
@@ -108,7 +114,7 @@ $lang = array(
     'awsses_action_delete' => 'User was deleted.',
     'awsses_action_ban' => 'User was temporarily banned.',
     'awsses_action_interval' => 'No action applied. User does not meet processing conditions.',
-    'awsses_action_admin_mail' =>  'User was unsubscribed from admin emails.',
+    'awsses_action_admin_mail' => 'User was unsubscribed from admin emails.',
 
     // Tasks
     'task__awsSesPruneLogs' => 'Run the prune logs task.',
@@ -119,4 +125,4 @@ $lang = array(
     // API
     '__api_awsses_bounces' => 'Bounce Notifications',
     '__api_awsses_complaints' => 'Complaint Notifications',
-);
+];

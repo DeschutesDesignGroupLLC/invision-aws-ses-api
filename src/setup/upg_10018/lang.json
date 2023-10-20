@@ -1,0 +1,19 @@
+{
+    "normal": {
+        "added": [
+            "awsses_aws",
+            "awsses_license",
+            "awsses_license_key",
+            "awsses_license_key_desc",
+            "awsses_license_error",
+            "awsses_license_refreshed"
+        ],
+        "edited": [],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}
