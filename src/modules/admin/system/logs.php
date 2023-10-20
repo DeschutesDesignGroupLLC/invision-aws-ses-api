@@ -2,179 +2,153 @@
 
 namespace IPS\awsses\modules\admin\system;
 
+use IPS\awsses\Outgoing\Log;
+use IPS\DateTime;
+use IPS\Dispatcher;
+use IPS\Dispatcher\Controller;
+use IPS\Helpers\Form;
+use IPS\Helpers\Form\Number;
+use IPS\Helpers\Table\Db;
+use IPS\Http\Url;
+use IPS\Member;
+use IPS\Output;
+use IPS\Request;
+use IPS\Settings;
+use IPS\Theme;
+
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
+if (! \defined('\IPS\SUITE_UNIQUE_KEY')) {
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0').' 403 Forbidden');
     exit;
 }
 
-/**
- * logs
- */
-class _logs extends \IPS\Dispatcher\Controller
+class _logs extends Controller
 {
-    /**
-     * @brief   Has been CSRF-protected
-     */
-    public static $csrfProtected = true;
+    public static bool $csrfProtected = true;
 
-    /**
-     * Execute
-     *
-     * @return  void
-     */
-    public function execute()
+    public function execute(): void
     {
-        // Check permissions
-        \IPS\Dispatcher::i()->checkAcpPermission('logs_manage');
+        Dispatcher::i()->checkAcpPermission('logs_manage');
 
-        // Call parent
         parent::execute();
     }
 
-    /**
-     * Display Logs
-     *
-     * @return  void
-     */
-    protected function manage()
+    protected function manage(): void
     {
-        // Create the table
-        $table = new \IPS\Helpers\Table\Db(\IPS\awsses\Outgoing\Log::$databaseTable, \IPS\Http\Url::internal('app=awsses&module=system&controller=logs'));
+        $table = new Db(Log::$databaseTable, Url::internal('app=awsses&module=system&controller=logs'));
         $table->langPrefix = 'log_';
         $table->include = ['date', 'status', 'subject', 'from', 'to', 'cc', 'bcc'];
         $table->sortBy = $table->sortBy ?: 'date';
         $table->sortDirection = $table->sortDirection ?: 'desc';
         $table->rowClasses = ['messageId' => ['ipsTable_wrap ']];
 
-        // Quick Search
         $table->quickSearch = function ($search) {
             return ["payload LIKE '%{$search}%'"];
         };
 
-        // Table parsers
         $table->parsers = [
             'date' => function ($val) {
-                // Return the date
-                return \IPS\DateTime::ts($val)->html();
+                return DateTime::ts($val)->html();
             },
             'status' => function ($val, $row) {
-                // Return the status
-                return \IPS\Theme::i()->getTemplate('logs', 'awsses', 'admin')->status(isset($row['messageId']) ? true : false);
+                return Theme::i()->getTemplate('logs', 'awsses', 'admin')->status(isset($row['messageId']) ? true : false);
             },
             'from' => function ($val, $row) {
-                // Return the date
                 $payload = json_decode($row['payload'], true);
                 if (isset($payload['Source'])) {
                     if (\extension_loaded('imap')) {
                         $decoded = imap_mime_header_decode($payload['Source']);
-                        $name = isset($decoded[0]) ? str_replace(['<', '>', '"'], "", $decoded[0]->text) : null;
-                        $email = isset($decoded[1]) ? str_replace(['<', '>', '"'], "", $decoded[1]->text) : null;
+                        $name = isset($decoded[0]) ? str_replace(['<', '>', '"'], '', $decoded[0]->text) : null;
+                        $email = isset($decoded[1]) ? str_replace(['<', '>', '"'], '', $decoded[1]->text) : null;
+
                         return $email ? (string) $email : (string) $name;
                     }
+
                     return 'Please enable the PHP IMAP extension to view the source.';
                 }
 
             },
             'to' => function ($val, $row) {
-                // Return the date
                 $payload = json_decode($row['payload'], true);
 
                 return isset($payload['Destination']['ToAddresses']) ? implode(', ', $payload['Destination']['ToAddresses']) : null;
             },
             'cc' => function ($val, $row) {
-                // Return the date
                 $payload = json_decode($row['payload'], true);
 
                 return isset($payload['Destination']['CcAddresses']) ? implode(', ', $payload['Destination']['CcAddresses']) : null;
             },
             'bcc' => function ($val, $row) {
-                // Return the date
                 $payload = json_decode($row['payload'], true);
 
                 return isset($payload['BccAddresses']['BccAddresses']) ? implode(', ', $payload['Destination']['BccAddresses']) : null;
             },
             'subject' => function ($val, $row) {
-                // Return the recipient
                 $payload = json_decode($row['payload'], true);
 
                 return isset($payload['Message']['Subject']) ? $payload['Message']['Subject']['Data'] : null;
-            }
+            },
         ];
 
-        // Row Buttons
         $table->rowButtons = function ($row) {
             return [
                 'view' => [
                     'title' => 'view',
                     'icon' => 'search',
-                    'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=view')->setQueryString('id', $row['id'])
+                    'link' => Url::internal('app=awsses&module=system&controller=logs&do=view')->setQueryString('id', $row['id']),
                 ],
                 'delete' => [
                     'title' => 'delete',
                     'icon' => 'times-circle',
-                    'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=delete')->setQueryString('id', $row['id']),
-                    'data' => ['delete' => '']
-                ]
+                    'link' => Url::internal('app=awsses&module=system&controller=logs&do=delete')->setQueryString('id', $row['id']),
+                    'data' => ['delete' => ''],
+                ],
             ];
         };
 
-        // Create our actions
         $actions = [];
 
-        // Add prune settings
-        if (\IPS\Member::loggedIn()->hasAcpRestriction('awsses', 'logs', 'logs_prune_settings')) {
-            // Add prune button
+        if (Member::loggedIn()->hasAcpRestriction('awsses', 'logs', 'logs_prune_settings')) {
             $actions['settings'] = [
                 'title' => 'awsses_logs_prune',
                 'icon' => 'cog',
-                'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=pruneSettings'),
+                'link' => Url::internal('app=awsses&module=system&controller=logs&do=pruneSettings'),
                 'data' => [
                     'ipsDialog' => '',
-                    'ipsDialog-title' => \IPS\Member::loggedIn()->language()->addToStack('awsses_logs_prune')
-                ]
+                    'ipsDialog-title' => Member::loggedIn()->language()->addToStack('awsses_logs_prune'),
+                ],
             ];
         }
 
-        // Add our other logs
         $actions['bounces'] = [
             'title' => 'awsses_bounce_logs',
             'icon' => 'exclamation-circle',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=bounces'),
+            'link' => Url::internal('app=awsses&module=system&controller=logs&do=bounces'),
         ];
         $actions['complaints'] = [
             'title' => 'awsses_complaint_logs',
             'icon' => 'exclamation-circle',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=complaints'),
+            'link' => Url::internal('app=awsses&module=system&controller=logs&do=complaints'),
         ];
 
-        // Output it
-        \IPS\Output::i()->sidebar['actions'] = $actions;
-        \IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('awsses_logs');
-        \IPS\Output::i()->output = $table;
+        Output::i()->sidebar['actions'] = $actions;
+        Output::i()->title = Member::loggedIn()->language()->addToStack('awsses_logs');
+        Output::i()->output = $table;
     }
 
-    /**
-     * Manage
-     *
-     * @return  void
-     */
-    protected function bounces()
+    protected function bounces(): void
     {
-        // Create the table
-        $table = new \IPS\Helpers\Table\Db('awsses_bounce_logs', \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=bounces'));
+        $table = new Db('awsses_bounce_logs', Url::internal('app=awsses&module=system&controller=logs&do=bounces'));
         $table->langPrefix = 'log_';
         $table->include = ['date', 'member_id', 'email', 'type', 'action'];
         $table->sortBy = $table->sortBy ?: 'date';
         $table->sortDirection = $table->sortDirection ?: 'desc';
         $table->rowClasses = ['messageId' => ['ipsTable_wrap']];
 
-        // Quick Search
         $table->quickSearch = function ($search) {
             return ["action LIKE '%{$search}%'"];
         };
 
-        // Column widths
         $table->widths = [
             'date' => '15',
             'member_id' => '15',
@@ -182,13 +156,12 @@ class _logs extends \IPS\Dispatcher\Controller
             'type' => '15',
         ];
 
-        // Table parsers
         $table->parsers = [
             'date' => function ($val) {
-                return \IPS\DateTime::ts($val)->html();
+                return DateTime::ts($val)->html();
             },
             'member_id' => function ($val) {
-                $member = \IPS\Member::load($val);
+                $member = Member::load($val);
 
                 return "<a href='{$member->acpUrl()}' target='_blank'>{$member->name}</a>";
             },
@@ -198,212 +171,158 @@ class _logs extends \IPS\Dispatcher\Controller
                 return "{$value} Bounce";
             },
             'action' => function ($val) {
-                return \IPS\Member::loggedIn()->language()->addToStack("awsses_action_$val");
-            }
+                return Member::loggedIn()->language()->addToStack("awsses_action_$val");
+            },
         ];
 
-        // Create our actions
         $actions = [];
 
-        // Add prune settings
-        if (\IPS\Member::loggedIn()->hasAcpRestriction('awsses', 'logs', 'logs_prune_settings')) {
-            // Add prune button
+        if (Member::loggedIn()->hasAcpRestriction('awsses', 'logs', 'logs_prune_settings')) {
             $actions['settings'] = [
                 'title' => 'awsses_logs_prune',
                 'icon' => 'cog',
-                'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=pruneSettings'),
+                'link' => Url::internal('app=awsses&module=system&controller=logs&do=pruneSettings'),
                 'data' => [
                     'ipsDialog' => '',
-                    'ipsDialog-title' => \IPS\Member::loggedIn()->language()->addToStack('awsses_logs_prune')
-                ]
+                    'ipsDialog-title' => Member::loggedIn()->language()->addToStack('awsses_logs_prune'),
+                ],
             ];
         }
 
-        // Add our other logs
         $actions['outgoing'] = [
             'title' => 'awsses_logs',
             'icon' => 'envelope',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs'),
+            'link' => Url::internal('app=awsses&module=system&controller=logs'),
         ];
         $actions['complaints'] = [
             'title' => 'awsses_complaint_logs',
             'icon' => 'exclamation-circle',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=complaints'),
+            'link' => Url::internal('app=awsses&module=system&controller=logs&do=complaints'),
         ];
 
-        // Display the table
-        \IPS\Output::i()->sidebar['actions'] = $actions;
-        \IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('awsses_bounce_logs');
-        \IPS\Output::i()->output = $table;
+        Output::i()->sidebar['actions'] = $actions;
+        Output::i()->title = Member::loggedIn()->language()->addToStack('awsses_bounce_logs');
+        Output::i()->output = $table;
     }
 
-    /**
-     * Manage
-     *
-     * @return  void
-     */
-    protected function complaints()
+    protected function complaints(): void
     {
-        // Create the table
-        $table = new \IPS\Helpers\Table\Db('awsses_complaint_logs', \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=complaints'));
+        $table = new Db('awsses_complaint_logs', Url::internal('app=awsses&module=system&controller=logs&do=complaints'));
         $table->langPrefix = 'log_';
         $table->include = ['date', 'member_id', 'email', 'action'];
         $table->sortBy = $table->sortBy ?: 'date';
         $table->sortDirection = $table->sortDirection ?: 'desc';
         $table->rowClasses = ['messageId' => ['ipsTable_wrap ']];
 
-        // Quick Search
         $table->quickSearch = function ($search) {
             return ["action LIKE '%{$search}%'"];
         };
 
-        // Column widths
         $table->widths = [
             'date' => '15',
             'member_id' => '15',
-            'email' => '25'
+            'email' => '25',
         ];
 
-        // Table parsers
         $table->parsers = [
             'date' => function ($val) {
-                return \IPS\DateTime::ts($val)->html();
+                return DateTime::ts($val)->html();
             },
             'member_id' => function ($val) {
-                $member = \IPS\Member::load($val);
+                $member = Member::load($val);
 
                 return "<a href='{$member->acpUrl()}' target='_blank'>{$member->name}</a>";
             },
             'action' => function ($val) {
-                return \IPS\Member::loggedIn()->language()->addToStack("awsses_action_$val");
-            }
+                return Member::loggedIn()->language()->addToStack("awsses_action_$val");
+            },
         ];
 
-        // Create our actions
         $actions = [];
 
-        // Add prune settings
-        if (\IPS\Member::loggedIn()->hasAcpRestriction('awsses', 'logs', 'logs_prune_settings')) {
-            // Add prune button
+        if (Member::loggedIn()->hasAcpRestriction('awsses', 'logs', 'logs_prune_settings')) {
             $actions['settings'] = [
                 'title' => 'awsses_logs_prune',
                 'icon' => 'cog',
-                'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=pruneSettings'),
+                'link' => Url::internal('app=awsses&module=system&controller=logs&do=pruneSettings'),
                 'data' => [
                     'ipsDialog' => '',
-                    'ipsDialog-title' => \IPS\Member::loggedIn()->language()->addToStack('awsses_logs_prune')
-                ]
+                    'ipsDialog-title' => Member::loggedIn()->language()->addToStack('awsses_logs_prune'),
+                ],
             ];
         }
 
-        // Add our other logs
         $actions['outgoing'] = [
             'title' => 'awsses_logs',
             'icon' => 'envelope',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs'),
+            'link' => Url::internal('app=awsses&module=system&controller=logs'),
         ];
         $actions['bounces'] = [
             'title' => 'awsses_bounce_logs',
             'icon' => 'exclamation-circle',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=bounces'),
+            'link' => Url::internal('app=awsses&module=system&controller=logs&do=bounces'),
         ];
 
-        // Display the table
-        \IPS\Output::i()->sidebar['actions'] = $actions;
-        \IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('awsses_complaint_logs');
-        \IPS\Output::i()->output = $table;
+        Output::i()->sidebar['actions'] = $actions;
+        Output::i()->title = Member::loggedIn()->language()->addToStack('awsses_complaint_logs');
+        Output::i()->output = $table;
     }
 
-    /**
-     * View a log
-     *
-     * @return void
-     */
-    protected function view()
+    protected function view(): void
     {
-        // Try and load the log
         try {
-            // Load the log
-            $log = \IPS\awsses\Outgoing\Log::load(\IPS\Request::i()->id);
-        } // Unable to load the log
-        catch (\OutOfRangeException $e) {
-            // Return an error
-            \IPS\Output::i()->error('awsses_error_log_not_found', '1AWSSES/2', 404);
+            $log = Log::load(Request::i()->id);
+        } catch (\OutOfRangeException $e) {
+            Output::i()->error('awsses_error_log_not_found', '1AWSSES/2', 404);
         }
 
-        // Add delete button
-        \IPS\Output::i()->sidebar['actions']['delete'] = [
+        Output::i()->sidebar['actions']['delete'] = [
             'icon' => 'times-circle',
-            'link' => \IPS\Http\Url::internal('app=awsses&module=system&controller=logs&do=delete')->setQueryString('id', $log->id),
+            'link' => Url::internal('app=awsses&module=system&controller=logs&do=delete')->setQueryString('id', $log->id),
             'title' => 'delete',
-            'data' => ['confirm' => '']
+            'data' => ['confirm' => ''],
         ];
 
-        // Display the log
-        \IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('awsses_log');
-        \IPS\Output::i()->breadcrumb[] = [
-            \IPS\Http\Url::internal("app=awsses&module=system&controller=logs"),
-            \IPS\Member::loggedIn()->language()->addToStack('awsses_logs')
+        Output::i()->title = Member::loggedIn()->language()->addToStack('awsses_log');
+        Output::i()->breadcrumb[] = [
+            Url::internal('app=awsses&module=system&controller=logs'),
+            Member::loggedIn()->language()->addToStack('awsses_logs'),
         ];
-        \IPS\Output::i()->output = \IPS\Theme::i()->getTemplate('logs', 'awsses', 'admin')->log($log);
+        Output::i()->output = Theme::i()->getTemplate('logs', 'awsses', 'admin')->log($log);
     }
 
-
-    /**
-     * Delete a log
-     *
-     * @return void
-     */
-    protected function delete()
+    protected function delete(): void
     {
-        // Try and load the log
         try {
-            // Load the log
-            $log = \IPS\awsses\Outgoing\Log::load(\IPS\Request::i()->id);
-        } // Unable to load the log
-        catch (\OutOfRangeException $e) {
-            // Return error
-            \IPS\Output::i()->error('awsses_error_log_not_found', '1AWSSES/1', 404);
+            $log = Log::load(Request::i()->id);
+        } catch (\OutOfRangeException $e) {
+            Output::i()->error('awsses_error_log_not_found', '1AWSSES/1', 404);
         }
 
-        // Make sure we confirmed deletion
-        \IPS\Request::i()->confirmedDelete();
+        Request::i()->confirmedDelete();
 
-        // Delete the log
         $log->delete();
 
-        // Redirect
-        \IPS\Output::i()->redirect(\IPS\Http\Url::internal('app=awsses&module=system&controller=logs'), 'deleted');
+        Output::i()->redirect(Url::internal('app=awsses&module=system&controller=logs'), 'deleted');
     }
 
-    /**
-     * Prune Settings
-     *
-     * @return  void
-     */
-    protected function pruneSettings()
+    protected function pruneSettings(): void
     {
-        // Check permissions
-        \IPS\Dispatcher::i()->checkAcpPermission('logs_prune_settings');
+        Dispatcher::i()->checkAcpPermission('logs_prune_settings');
 
-        // Create our form
-        $form = new \IPS\Helpers\Form();
-        $form->add(new \IPS\Helpers\Form\Number('awsses_log_prune_settings', \IPS\Settings::i()->awsses_log_prune_settings, false, [
+        $form = new Form();
+        $form->add(new Number('awsses_log_prune_settings', Settings::i()->awsses_log_prune_settings, false, [
             'unlimited' => 0,
-            'unlimitedLang' => 'never'
-        ], null, \IPS\Member::loggedIn()->language()->addToStack('after'), \IPS\Member::loggedIn()->language()->addToStack('days'), 'prune_log_moderator'));
+            'unlimitedLang' => 'never',
+        ], null, Member::loggedIn()->language()->addToStack('after'), Member::loggedIn()->language()->addToStack('days'), 'prune_log_moderator'));
 
-        // If we have values
-        if ($values = $form->values()) {
-            // Save the form settings
+        if ($form->values()) {
             $form->saveAsSettings();
 
-            // Redirect back to logs
-            \IPS\Output::i()->redirect(\IPS\Http\Url::internal('app=awsses&module=system&controller=logs'), 'saved');
+            Output::i()->redirect(Url::internal('app=awsses&module=system&controller=logs'), 'saved');
         }
 
-        // Set title and output
-        \IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('awsses_log_prune_settings');
-        \IPS\Output::i()->output = \IPS\Theme::i()->getTemplate('global', 'core', 'admin')->block('awsses_log_prune_settings', $form, false);
+        Output::i()->title = Member::loggedIn()->language()->addToStack('awsses_log_prune_settings');
+        Output::i()->output = Theme::i()->getTemplate('global', 'core', 'admin')->block('awsses_log_prune_settings', $form, false);
     }
 }

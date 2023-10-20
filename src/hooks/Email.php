@@ -1,7 +1,7 @@
 //<?php
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
+if (! \defined('\IPS\SUITE_UNIQUE_KEY')) {
     exit;
 }
 
@@ -10,7 +10,7 @@ abstract class awsses_hook_Email extends _HOOK_CLASS_
     /**
      * Get the class to use
      *
-     * @param	string	$type	See TYPE_* constants
+     * @param  string  $type	See TYPE_* constants
      * @return	string
      */
     public static function classToUse($type)

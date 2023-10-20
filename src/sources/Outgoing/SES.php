@@ -2,87 +2,52 @@
 
 namespace IPS\awsses\Outgoing;
 
+use Aws\Exception\AwsException;
+use IPS\awsses\Manager\LicenseKey;
+use IPS\awsses\Manager\SES;
+use IPS\Email;
+use IPS\Log;
+use IPS\Settings;
+
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
+if (! \defined('\IPS\SUITE_UNIQUE_KEY')) {
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0').' 403 Forbidden');
     exit;
 }
 
-use Aws\Exception\AwsException;
-
-/**
- * Class AWS SES
- *
- * @package IPS\awsses\Outgoing
- */
-class _SES extends \IPS\Email
+class _SES extends Email
 {
-    /**
-     * Send the email
-     *
-     * @param mixed $to                The member or email address, or array of members or email addresses, to send to
-     * @param mixed $cc                Addresses to CC (can also be email, member or array of either)
-     * @param mixed $bcc               Addresses to BCC (can also be email, member or array of either)
-     * @param mixed $fromEmail         The email address to send from. If NULL, default setting is used
-     * @param mixed $fromName          The name the email should appear from. If NULL, default setting is used
-     * @param array $additionalHeaders The name the email should appear from. If NULL, default setting is used
-     *
-     * @return  void
-     * @throws  \IPS\Email\Outgoing\Exception
-     */
     public function _send($to, $cc = [], $bcc = [], $fromEmail = null, $fromName = null, $additionalHeaders = [])
     {
-        // Create an instance of our SES manager
-        $manager = new \IPS\awsses\Manager\SES();
+        if (LicenseKey::i()->isValid()) {
+            $manager = new SES();
 
-        // Try and send the email
-        try {
-            // Compose the payload
-            $payload = $this->_composeEmailPayload($to, $cc, $bcc, $fromEmail, $fromName, $additionalHeaders, $manager->configSet);
+            try {
+                $payload = $this->_composeEmailPayload($to, $cc, $bcc, $fromEmail, $fromName, $additionalHeaders, $manager->configSet);
 
-            // Get the email and store the result
-            $result = $manager->client->sendEmail($payload);
+                $result = $manager->client->sendEmail($payload);
 
-            // Log the message
-            \IPS\awsses\Outgoing\Log::log($payload, $result['MessageId']);
+                \IPS\awsses\Outgoing\Log::log($payload, $result['MessageId']);
+            } catch (AwsException $exception) {
+                \IPS\awsses\Outgoing\Log::log($payload, null, preg_replace("/\n/", '<br>', $exception->getTraceAsString()), $exception->getAwsErrorMessage());
 
-            // Email send failed with exception
-        } catch (AwsException $exception) {
-            // Log the message
-            \IPS\awsses\Outgoing\Log::log($payload, null, preg_replace("/\n/", '<br>', $exception->getTraceAsString()), $exception->getAwsErrorMessage());
-
-            // Log our exceptions
-            \IPS\Log::log($exception, 'awsses');
+                Log::log($exception, 'awsses');
+            }
         }
     }
 
-    /**
-     * @param         $to
-     * @param array   $cc
-     * @param array   $bcc
-     * @param null    $fromEmail
-     * @param null    $fromName
-     * @param array   $additionalHeaders
-     * @param null    $configSet
-     *
-     * @return array
-     */
-    public function _composeEmailPayload($to, $cc = [], $bcc = [], $fromEmail = null, $fromName = null, $additionalHeaders = [], $configSet = null)
+    public function _composeEmailPayload($to, $cc = [], $bcc = [], $fromEmail = null, $fromName = null, $additionalHeaders = [], $configSet = null): array
     {
-        // Parse our $to recipients
         $toRecipients = array_unique(array_map('trim', explode(',', static::_parseRecipients($to, true))));
 
-        // Get instance of SES Manager
-        $manager = new \IPS\awsses\Manager\SES();
+        $manager = new SES();
 
-        // Get from settings
-        $fromName = $fromName ?? \IPS\Settings::i()->board_name;
-        $fromEmail = $manager->getSendingEmailAddress($fromEmail) ?? \IPS\Settings::i()->email_out;
+        $fromName = $fromName ?? Settings::i()->board_name;
+        $fromEmail = $manager->getSendingEmailAddress($fromEmail) ?? Settings::i()->email_out;
 
-        // Compose the email payload
         $payload = [
             'Destination' => [
-                'ToAddresses' => $toRecipients
+                'ToAddresses' => $toRecipients,
             ],
             'ReplyToAddresses' => [$fromEmail],
             'Source' => static::encodeHeader($fromName, $fromEmail),
@@ -90,11 +55,11 @@ class _SES extends \IPS\Email
                 'Body' => [
                     'Html' => [
                         'Charset' => 'UTF-8',
-                        'Data' => $this->compileContent('html', static::_getMemberFromRecipients($to))
+                        'Data' => $this->compileContent('html', static::_getMemberFromRecipients($to)),
                     ],
                     'Text' => [
                         'Charset' => 'UTF-8',
-                        'Data' => $this->compileContent('plaintext', static::_getMemberFromRecipients($to))
+                        'Data' => $this->compileContent('plaintext', static::_getMemberFromRecipients($to)),
                     ],
                 ],
                 'Subject' => [
@@ -105,19 +70,14 @@ class _SES extends \IPS\Email
             'ConfigurationSet' => $configSet,
         ];
 
-        // If any carbon copy
         if ($cc) {
-            // Add to recipients array
             $payload['Destination']['CcAddresses'] = array_unique(array_map('trim', explode(',', static::_parseRecipients($cc, true))));
         }
 
-        // If any blind carbon copy
         if ($bcc) {
-            // Add to recipients array
             $payload['Destination']['BccAddresses'] = array_unique(array_map('trim', explode(',', static::_parseRecipients($bcc, true))));
         }
 
-        // Return our payload
         return $payload;
     }
 }

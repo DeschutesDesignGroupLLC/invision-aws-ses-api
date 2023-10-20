@@ -1,0 +1,12 @@
+{
+    "added": [
+        "awsses_license_key"
+    ],
+    "edited": [
+        "awsses_complaint_ignore_admins",
+        "awsses_enabled",
+        "awsses_hard_bounce_ignore_admins",
+        "awsses_soft_bounce_ignore_admins"
+    ],
+    "removed": []
+}

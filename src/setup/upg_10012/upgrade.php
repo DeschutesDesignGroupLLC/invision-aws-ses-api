@@ -3,8 +3,8 @@
 namespace IPS\awsses\setup\upg_10012;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
+if (! \defined('\IPS\SUITE_UNIQUE_KEY')) {
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0').' 403 Forbidden');
     exit;
 }
 
@@ -21,11 +21,11 @@ class _Upgrade
     public function step1()
     {
         // Migrate all member_id fields to email fields
-        $stmt = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, array('member_id IS NOT NULL AND member_id<>0 AND email IS NULL'));
+        $stmt = \IPS\Db::i()->select('*', \IPS\awsses\Bounce\Log::$databaseTable, ['member_id IS NOT NULL AND member_id<>0 AND email IS NULL']);
         foreach ($stmt as $row) {
             $member = \IPS\Member::load($row['member_id']);
             if ($email = $member->email) {
-                \IPS\Db::i()->update(\IPS\awsses\Bounce\Log::$databaseTable, array('email' => $email), array('member_id=?', $row['member_id']));
+                \IPS\Db::i()->update(\IPS\awsses\Bounce\Log::$databaseTable, ['email' => $email], ['member_id=?', $row['member_id']]);
             }
         }
 

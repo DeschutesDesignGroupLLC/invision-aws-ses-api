@@ -2,35 +2,26 @@
 
 namespace IPS\awsses\Manager;
 
+use IPS\Settings;
+use IPS\Text\Encrypt;
+
 class _Manager
 {
-    /**
-     * AWS Credentials
-     *
-     * @var mixed
-     */
-    protected $accessKey;
-    protected $secretKey;
-    protected $region;
+    protected ?string $accessKey;
 
-    /**
-     * Constructor
-     *
-     * @param          $accessKey
-     * @param          $secretKey
-     * @param string   $region
-     */
+    protected ?string $secretKey;
+
+    protected ?string $region;
+
     public function __construct($accessKey = null, $secretKey = null, $region = null)
     {
-        // Decrypt the secret key
         $decryptedSecret = null;
-        if (\IPS\Settings::i()->awsses_secret_key) {
-            $decryptedSecret = \IPS\Text\Encrypt::fromTag(\IPS\Settings::i()->awsses_secret_key)->decrypt();
+        if (Settings::i()->awsses_secret_key) {
+            $decryptedSecret = Encrypt::fromTag(Settings::i()->awsses_secret_key)->decrypt();
         }
 
-        // Set class properties
-        $this->accessKey = $accessKey ?? \IPS\Settings::i()->awsses_access_key;
+        $this->accessKey = $accessKey ?? Settings::i()->awsses_access_key;
         $this->secretKey = $secretKey ?? $decryptedSecret;
-        $this->region = $region ?? (\IPS\Settings::i()->awsses_region ?? 'us-west-2');
+        $this->region = $region ?? (Settings::i()->awsses_region ?? 'us-west-2');
     }
 }

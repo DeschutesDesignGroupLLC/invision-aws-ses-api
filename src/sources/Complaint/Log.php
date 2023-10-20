@@ -3,18 +3,13 @@
 namespace IPS\awsses\Complaint;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
-if (!\defined('\IPS\SUITE_UNIQUE_KEY')) {
-    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0') . ' 403 Forbidden');
+if (! \defined('\IPS\SUITE_UNIQUE_KEY')) {
+    header((isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0').' 403 Forbidden');
     exit;
 }
 
 use Aws\Result;
 
-/**
- * Class Log
- *
- * @package IPS\awsses\Outgoing
- */
 class _Log extends \IPS\Node\Model
 {
     /**
@@ -67,7 +62,7 @@ class _Log extends \IPS\Node\Model
     protected static $restrictions = [
         'app' => 'awsses',
         'module' => 'system',
-        'prefix' => 'logs_'
+        'prefix' => 'logs_',
     ];
 
     /**
@@ -103,12 +98,11 @@ class _Log extends \IPS\Node\Model
     /**
      * Log a Complaint Email
      *
-     * @param Result   $result
-     * @param          $to
-     * @param null     $fromName
-     * @param null     $fromEmail
-     * @param null     $subject
-     *
+     * @param  Result  $result
+     * @param    $to
+     * @param  null  $fromName
+     * @param  null  $fromEmail
+     * @param  null  $subject
      * @return null
      */
     public static function log($member, $email, $action)
@@ -125,8 +119,7 @@ class _Log extends \IPS\Node\Model
     /**
      * Prune logs
      *
-     * @param int $days Older than (days) to prune
-     *
+     * @param  int  $days Older than (days) to prune
      * @return  void
      */
     public static function pruneLogs($days)
@@ -134,7 +127,7 @@ class _Log extends \IPS\Node\Model
         // Select from the database where date is greater than
         \IPS\Db::i()->delete(static::$databaseTable, [
             'date<?',
-            \IPS\DateTime::create()->sub(new \DateInterval('P' . $days . 'D'))->getTimestamp()
+            \IPS\DateTime::create()->sub(new \DateInterval('P'.$days.'D'))->getTimestamp(),
         ]);
     }
 
