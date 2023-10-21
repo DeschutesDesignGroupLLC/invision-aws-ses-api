@@ -23,7 +23,7 @@
   <word key="awsses_license_key_desc" js="0"><![CDATA[Your application license key. Manage your license keys at <a href="https://store.deschutesdesigngroup.com" target="_blank">https://store.deschutesdesigngroup.com</a>.]]></word>
   <word key="awsses_license_error" js="0">Your license key is not valid or not active. Please update your license to keep using this product.</word>
   <word key="awsses_license_refreshed" js="0">The license key data has been refreshed.</word>
-  <word key="awsses_license_data_message" js="0">The following information is useful in debugging your license key status.</word>
+  <word key="awsses_license_data_message" js="0">The following information is useful in debugging your license key status. Do not change unless asked by support personnel.</word>
   <word key="awsses_license_status" js="0">License Key Status</word>
   <word key="awsses_license_fetched" js="0">License Key Data Last Fetched</word>
   <word key="awsses_license_instance" js="0">License Key Instance ID</word>

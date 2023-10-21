@@ -29,7 +29,7 @@ $lang = [
     'awsses_license_key_desc' => 'Your application license key. Manage your license keys at <a href="https://store.deschutesdesigngroup.com" target="_blank">https://store.deschutesdesigngroup.com</a>.',
     'awsses_license_error' => 'Your license key is not valid or not active. Please update your license to keep using this product.',
     'awsses_license_refreshed' => 'The license key data has been refreshed.',
-    'awsses_license_data_message' => 'The following information is useful in debugging your license key status.',
+    'awsses_license_data_message' => 'The following information is useful in debugging your license key status. Do not change unless asked by support personnel.',
     'awsses_license_status' => 'License Key Status',
     'awsses_license_fetched' => 'License Key Data Last Fetched',
     'awsses_license_instance' => 'License Key Instance ID',
