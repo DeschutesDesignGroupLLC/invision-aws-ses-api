@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="awsses" version="10018">
+ <app key="awsses" version="10019">
   <word key="__app_awsses" js="0">AWS Simple Email Service</word>
   <word key="menutab__awsses" js="0">AWS SES</word>
   <word key="menutab__awsses_icon" js="0">amazon</word>
@@ -23,6 +23,13 @@
   <word key="awsses_license_key_desc" js="0"><![CDATA[Your application license key. Manage your license keys at <a href="https://store.deschutesdesigngroup.com" target="_blank">https://store.deschutesdesigngroup.com</a>.]]></word>
   <word key="awsses_license_error" js="0">Your license key is not valid or not active. Please update your license to keep using this product.</word>
   <word key="awsses_license_refreshed" js="0">The license key data has been refreshed.</word>
+  <word key="awsses_license_data_message" js="0">The following information is useful in debugging your license key status. Do not change unless asked by support personnel.</word>
+  <word key="awsses_license_status" js="0">License Key Status</word>
+  <word key="awsses_license_fetched" js="0">License Key Data Last Fetched</word>
+  <word key="awsses_license_instance" js="0">License Key Instance ID</word>
+  <word key="awsses_license_status_payload" js="0">License Key Status Payload</word>
+  <word key="awsses_license_activation_payload" js="0">License Key Activation Payload</word>
+  <word key="awsses_debug" js="0">Debug Data</word>
   <word key="awsses_access_key" js="0">Access Key</word>
   <word key="awsses_access_key_desc" js="0">You will need to make sure you have attached the AmazonSESFullAccess and AmazonSNSFullAccess policy to the IAM role you are using so that IPB can access the AWS Simple Email Service and AWS Simple Notification Service API.</word>
   <word key="awsses_secret_key" js="0">Secret Key</word>

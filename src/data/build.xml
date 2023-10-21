@@ -14,7 +14,13 @@
  <setting key="awsses_hard_bounce_action_group"><![CDATA[{"key":"awsses_hard_bounce_action_group","default":""}]]></setting>
  <setting key="awsses_hard_bounce_ignore_admins"><![CDATA[{"key":"awsses_hard_bounce_ignore_admins","default":""}]]></setting>
  <setting key="awsses_hard_bounce_interval"><![CDATA[{"key":"awsses_hard_bounce_interval","default":"-1"}]]></setting>
+ <setting key="awsses_license_activation_payload"><![CDATA[{"key":"awsses_license_activation_payload","default":""}]]></setting>
+ <setting key="awsses_license_fetched"><![CDATA[{"key":"awsses_license_fetched","default":""}]]></setting>
+ <setting key="awsses_license_instance"><![CDATA[{"key":"awsses_license_instance","default":""}]]></setting>
  <setting key="awsses_license_key"><![CDATA[{"key":"awsses_license_key","default":""}]]></setting>
+ <setting key="awsses_license_status"><![CDATA[{"key":"awsses_license_status","default":""}]]></setting>
+ <setting key="awsses_license_status_payload"><![CDATA[{"key":"awsses_license_status_payload","default":""}]]></setting>
+ <setting key="awsses_license_valid"><![CDATA[{"key":"awsses_license_valid","default":""}]]></setting>
  <setting key="awsses_log_prune_settings"><![CDATA[{"key":"awsses_log_prune_settings","default":""}]]></setting>
  <setting key="awsses_region"><![CDATA[{"key":"awsses_region","default":""}]]></setting>
  <setting key="awsses_secret_key"><![CDATA[{"key":"awsses_secret_key","default":""}]]></setting>
