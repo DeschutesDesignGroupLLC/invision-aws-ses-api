@@ -1,0 +1,20 @@
+{
+    "normal": {
+        "added": [
+            "awsses_license_data_message",
+            "awsses_license_status",
+            "awsses_license_fetched",
+            "awsses_license_instance",
+            "awsses_license_status_payload",
+            "awsses_license_activation_payload",
+            "awsses_debug"
+        ],
+        "edited": [],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

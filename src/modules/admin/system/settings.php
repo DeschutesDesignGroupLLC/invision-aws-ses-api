@@ -7,6 +7,7 @@ use IPS\awsses\Manager\LicenseKey;
 use IPS\Dispatcher;
 use IPS\Dispatcher\Controller;
 use IPS\Helpers\Form;
+use IPS\Helpers\Form\Codemirror;
 use IPS\Helpers\Form\Email;
 use IPS\Helpers\Form\Password;
 use IPS\Helpers\Form\Stack;
@@ -64,6 +65,14 @@ class _settings extends Controller
         $form->add(new Text('awsses_config_set_name', Settings::i()->awsses_config_set_name, false));
         $form->add(new Stack('awsses_verified_identities', explode(',', Settings::i()->awsses_verified_identities), true, ['stackFieldType' => VerifiedIdentity::class]));
         $form->add(new Email('awsses_default_verified_identity', Settings::i()->awsses_default_verified_identity, true));
+
+        $form->addTab('awsses_debug');
+        $form->addMessage('awsses_license_data_message');
+        $form->add(new YesNo('awsses_license_status', Settings::i()->awsses_license_status, false, ['disabled' => true]));
+        $form->add(new Text('awsses_license_fetched', Settings::i()->awsses_license_fetched, false, ['disabled' => true]));
+        $form->add(new Text('awsses_license_instance', Settings::i()->awsses_license_instance, false));
+        $form->add(new Codemirror('awsses_license_status_payload', json_encode(json_decode(Settings::i()->awsses_license_status_payload), JSON_PRETTY_PRINT), false, ['disabled' => true, 'mode' => 'json']));
+        $form->add(new Codemirror('awsses_license_activation_payload', json_encode(json_decode(Settings::i()->awsses_license_activation_payload), JSON_PRETTY_PRINT), false, ['disabled' => true, 'mode' => 'json']));
 
         if ($values = $form->values()) {
             Session::i()->log('awsses_settings_updated');

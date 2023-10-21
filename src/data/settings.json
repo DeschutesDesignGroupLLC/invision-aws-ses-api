@@ -48,7 +48,31 @@
         "default": "-1"
     },
     {
+        "key": "awsses_license_activation_payload",
+        "default": ""
+    },
+    {
+        "key": "awsses_license_fetched",
+        "default": ""
+    },
+    {
+        "key": "awsses_license_instance",
+        "default": ""
+    },
+    {
         "key": "awsses_license_key",
+        "default": ""
+    },
+    {
+        "key": "awsses_license_status",
+        "default": ""
+    },
+    {
+        "key": "awsses_license_status_payload",
+        "default": ""
+    },
+    {
+        "key": "awsses_license_valid",
         "default": ""
     },
     {
