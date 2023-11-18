@@ -69,7 +69,7 @@ class _settings extends Controller
         $form->addTab('awsses_debug');
         $form->addMessage('awsses_license_data_message');
         $form->add(new YesNo('awsses_license_status', Settings::i()->awsses_license_status, false, ['disabled' => true]));
-        $form->add(new Text('awsses_license_fetched', Settings::i()->awsses_license_fetched, false, ['disabled' => true]));
+        $form->add(new Text('awsses_license_fetched', Settings::i()->awsses_license_fetched ? date('m/d/Y', (int) Settings::i()->awsses_license_fetched) : null, false, ['disabled' => true]));
         $form->add(new Text('awsses_license_instance', Settings::i()->awsses_license_instance, false));
         $form->add(new Codemirror('awsses_license_status_payload', json_encode(json_decode(Settings::i()->awsses_license_status_payload), JSON_PRETTY_PRINT), false, ['disabled' => true, 'mode' => 'json']));
         $form->add(new Codemirror('awsses_license_activation_payload', json_encode(json_decode(Settings::i()->awsses_license_activation_payload), JSON_PRETTY_PRINT), false, ['disabled' => true, 'mode' => 'json']));
