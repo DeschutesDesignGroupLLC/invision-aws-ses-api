@@ -47,10 +47,11 @@ class _settings extends Controller
         }
 
         $form->addTab('awsses_license');
-        if (! LicenseKey::i()->isValid()) {
-            $form->addMessage('awsses_license_error', ' ipsMessage ipsMessage_error ipsType_reset ipsSpacer_top');
-        }
-        $form->add(new Text('awsses_license_key', Settings::i()->awsses_license_key, true));
+        $form->add(new Text('awsses_license_key', Settings::i()->awsses_license_key, true, [], function ($value) {
+            if (! LicenseKey::i()->fetchLicenseStatus(true, $value)) {
+                throw new \DomainException('The license key you entered is not valid.');
+            }
+        }));
 
         $form->addTab('awsses_aws');
         $form->addMessage('awsses_settings_email_override_message', ' ipsMessage ipsMessage_warning ipsType_reset ipsSpacer_top');
@@ -68,9 +69,9 @@ class _settings extends Controller
 
         $form->addTab('awsses_debug');
         $form->addMessage('awsses_license_data_message');
-        $form->add(new YesNo('awsses_license_status', Settings::i()->awsses_license_status, false, ['disabled' => true]));
-        $form->add(new Text('awsses_license_fetched', Settings::i()->awsses_license_fetched ? date('m/d/Y', (int) Settings::i()->awsses_license_fetched) : null, false, ['disabled' => true]));
-        $form->add(new Text('awsses_license_instance', Settings::i()->awsses_license_instance, false));
+        $form->add(new YesNo('awsses_license_status', LicenseKey::i()->isValid(), false, ['disabled' => true]));
+        $form->add(new Text('awsses_license_fetched', Settings::i()->awsses_license_fetched ? date('m/d/Y h:i A', (int) Settings::i()->awsses_license_fetched) : null, false, ['disabled' => true]));
+        $form->add(new Text('awsses_license_instance', Settings::i()->awsses_license_instance, false, ['disabled' => true]));
         $form->add(new Codemirror('awsses_license_status_payload', json_encode(json_decode(Settings::i()->awsses_license_status_payload), JSON_PRETTY_PRINT), false, ['disabled' => true, 'mode' => 'json']));
         $form->add(new Codemirror('awsses_license_activation_payload', json_encode(json_decode(Settings::i()->awsses_license_activation_payload), JSON_PRETTY_PRINT), false, ['disabled' => true, 'mode' => 'json']));
 
@@ -86,15 +87,18 @@ class _settings extends Controller
             }
 
             $form->saveAsSettings($values);
-
-            LicenseKey::i()->fetchLicenseStatus();
         }
 
         Output::i()->title = Member::loggedIn()->language()->addToStack('settings');
         Output::i()->sidebar['actions']['refresh'] = [
             'icon' => 'refresh',
             'link' => Url::internal('app=awsses&module=system&controller=settings&do=refresh'),
-            'title' => 'license_refresh',
+            'title' => 'awsses_license_refresh_title',
+        ];
+        Output::i()->sidebar['actions']['reset'] = [
+            'icon' => 'trash',
+            'link' => Url::internal('app=awsses&module=system&controller=settings&do=reset'),
+            'title' => 'awsses_license_reset_title',
         ];
         Output::i()->output = $form;
     }
@@ -104,5 +108,12 @@ class _settings extends Controller
         LicenseKey::i()->fetchLicenseStatus();
 
         Output::i()->redirect(Url::internal('app=awsses&module=system&controller=settings'), 'awsses_license_refreshed');
+    }
+
+    protected function reset(): void
+    {
+        LicenseKey::i()->resetLicenseKeyData();
+
+        Output::i()->redirect(Url::internal('app=awsses&module=system&controller=settings'), 'awsses_license_reset');
     }
 }
