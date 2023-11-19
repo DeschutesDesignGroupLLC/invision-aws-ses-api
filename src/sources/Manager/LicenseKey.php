@@ -11,15 +11,33 @@ class _LicenseKey extends Singleton
 {
     public function isValid(): bool
     {
-        if (! Settings::i()->awsses_license_fetched || ! Settings::i()->awsses_license_status || Settings::i()->awsses_license_fetched < (time() - 1814400)) {
-            $this->fetchLicenseStatus();
-        }
-
-        return (bool) Settings::i()->awsses_license_status;
+        return $this->fetchLicenseStatus();
     }
 
-    public function fetchLicenseStatus(): bool
+    public function resetLicenseKeyData(): void
     {
+        Settings::i()->changeValues([
+            'awsses_license_key' => null,
+            'awsses_license_status' => false,
+            'awsses_license_fetched' => null,
+            'awsses_license_status_payload' => null,
+            'awsses_license_instance' => null,
+            'awsses_license_activation_payload' => null,
+        ]);
+    }
+
+    public function fetchLicenseStatus(bool $force = false, string $licenseKey = null): bool
+    {
+        if (! $force && Settings::i()->awsses_license_fetched > (time() - 1814400)) {
+            return (bool) Settings::i()->awsses_license_status;
+        }
+
+        $licenseKey = $licenseKey ?? Settings::i()->awsses_license_key;
+
+        if (! $licenseKey) {
+            return false;
+        }
+
         Settings::i()->changeValues([
             'awsses_license_status' => false,
             'awsses_license_fetched' => null,
@@ -27,7 +45,7 @@ class _LicenseKey extends Singleton
         ]);
 
         if (! Settings::i()->awsses_license_instance) {
-            $response = $this->activateLicense();
+            $response = $this->activateLicense($licenseKey);
 
             if (array_key_exists('activated', $response) && $response['activated'] === false) {
                 return false;
@@ -42,7 +60,7 @@ class _LicenseKey extends Singleton
             ])
             ->post(
                 json_encode([
-                    'license_key' => Settings::i()->awsses_license_key,
+                    'license_key' => $licenseKey,
                     'instance_id' => Settings::i()->awsses_license_instance,
                 ])
             );
@@ -59,12 +77,12 @@ class _LicenseKey extends Singleton
             'awsses_license_status_payload' => $payload,
         ]);
 
-        Log::log("Fetched license key data. Payload: $payload", 'awsses');
+        Log::debug("Fetched license key data. Payload: $payload", 'awsses');
 
         return $valid;
     }
 
-    protected function activateLicense(): ?array
+    protected function activateLicense(string $licenseKey): ?array
     {
         $response = Url::external('https://api.lemonsqueezy.com/v1/licenses/activate')
             ->request()
@@ -74,7 +92,7 @@ class _LicenseKey extends Singleton
             ])
             ->post(
                 json_encode([
-                    'license_key' => Settings::i()->awsses_license_key,
+                    'license_key' => $licenseKey,
                     'instance_name' => Settings::i()->base_url,
                 ])
             );
@@ -88,7 +106,7 @@ class _LicenseKey extends Singleton
             'awsses_license_activation_payload' => $payload,
         ]);
 
-        Log::log("Activated license key. Payload: $payload", 'awsses');
+        Log::debug("Activated license key. Payload: $payload", 'awsses');
 
         return $content;
     }
