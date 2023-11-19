@@ -17,8 +17,6 @@ if (! \defined('\IPS\SUITE_UNIQUE_KEY')) {
 
 class _SES extends Email
 {
-    protected $language = null;
-
     public function _send($to, $cc = [], $bcc = [], $fromEmail = null, $fromName = null, $additionalHeaders = [])
     {
         if (LicenseKey::i()->isValid()) {
